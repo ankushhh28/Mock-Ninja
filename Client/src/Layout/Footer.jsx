@@ -1,62 +1,3 @@
-// import React from "react";
-// import CopyrightIcon from "@mui/icons-material/Copyright";
-
-// const Footer = () => {
-//   return (
-//     <footer className="bg-[#8667F2] text-white w-full min-h-[50vh] py-16 px-10 sm:px-20">
-//       <div className="max-w-7xl mx-auto">
-//         {/* Main Footer Sections */}
-//         <div className="flex flex-wrap justify-between gap-10">
-//           {/* About Us */}
-//           <div className="max-w-sm">
-//             <h2 className="text-3xl font-semibold mb-4">About Us</h2>
-//             <p className="text-lg opacity-90">
-//               AI-powered interview platform to help job seekers practice, get ATS scores,
-//               and gain confidence with real-time feedback.
-//             </p>
-//           </div>
-
-//           {/* Quick Links */}
-//           <div className="flex flex-col">
-//             <h2 className="text-3xl font-semibold mb-4">Quick Links</h2>
-//             <ul className="space-y-3 text-lg opacity-90">
-//               <li><a href="#" className="hover:text-gray-300 transition">Home</a></li>
-//               <li><a href="#" className="hover:text-gray-300 transition">AI Interview</a></li>
-//               <li><a href="#" className="hover:text-gray-300 transition">Real Interview</a></li>
-//               <li><a href="#" className="hover:text-gray-300 transition">Resume ATS Score</a></li>
-//               <li><a href="#" className="hover:text-gray-300 transition">Contact Us</a></li>
-//             </ul>
-//           </div>
-
-//           {/* Contact Info */}
-//           <div className="flex flex-col">
-//             <h2 className="text-3xl font-semibold mb-4">Contact</h2>
-//             <p className="text-lg opacity-90">Email: abc@gmail.com</p>
-//             <p className="text-lg opacity-90">Phone: +91 7869863059</p>
-//           </div>
-
-//           {/* Legal Section */}
-//           <div className="flex flex-col">
-//             <h2 className="text-3xl font-semibold mb-4">Legal</h2>
-//             <ul className="space-y-3 text-lg opacity-90">
-//               <li><a href="#" className="hover:text-gray-300 transition">Privacy Policy</a></li>
-//               <li><a href="#" className="hover:text-gray-300 transition">Terms & Conditions</a></li>
-//               <li><a href="#" className="hover:text-gray-300 transition">Refund Policy</a></li>
-//             </ul>
-//           </div>
-//         </div>
-
-//         {/* Copyright Section */}
-//         <div className="border-t border-white mt-16 pt-6 flex items-center justify-center text-lg opacity-90">
-//           <CopyrightIcon className="mr-2" />
-//           <span>2025 AI Interview Platform. All Rights Reserved.</span>
-//         </div>
-//       </div>
-//     </footer>
-//   );
-// };
-
-// export default Footer;
 import React from "react";
 import { Box, Typography } from "@mui/material";
 
@@ -71,7 +12,7 @@ import Logo from "../assets/Logo.png"
 const Footer = () => {
   return (
     <Box
-      className="w-screen h-auto mt-12"
+      className="w-screen h-auto relative sm:absolute bottom-0"
       sx={{
         backgroundColor: "#8667F2",
         color: "white",
@@ -80,7 +21,7 @@ const Footer = () => {
         position: "relative",
       }}
     >
-      {/* -------------------------------------------------------------------------------------- */}
+{/* -------------------------------------------------------------------------------------- */}
 
       <Box className="flex flex-col sm:flex-row justify-between  py-6 sm:py-6 px-6 sm:px-20">
         {/* Logo */}
@@ -116,7 +57,7 @@ const Footer = () => {
         </Box>
       </Box>
 
-      {/* -------------------------------------------------------------------------------------- */}
+{/* -------------------------------------------------------------------------------------- */}
 
       <Box className="px-6 sm:px-16 mb-8">
         <Box className="flex flex-nowrap items-center border-[1px] border-white p-4 w-fit rounded-[30px] cursor-pointer hover:bg-gray-700">
@@ -127,7 +68,7 @@ const Footer = () => {
         </Box>
       </Box>
 
-      {/* -------------------------------------------------------------------------------------- */}
+{/* -------------------------------------------------------------------------------------- */}
 
       <Box className="px-6 sm:px-16 sm:pr-28 mb-12 flex flex-col sm:flex-row justify-between items-center sm:items-start">
         <Box className="text-center sm:text-left">

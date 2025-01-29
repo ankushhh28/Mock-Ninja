@@ -1,5 +1,5 @@
 import { AppBar, Box, Button, Drawer, Toolbar, Typography } from "@mui/material";
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import Logo from "../assets/Logo.png"
@@ -11,7 +11,29 @@ import PermContactCalendarIcon from '@mui/icons-material/PermContactCalendar';
 import HowToRegIcon from '@mui/icons-material/HowToReg';
 import VpnKeyIcon from '@mui/icons-material/VpnKey';
 
+import { useGSAP } from "@gsap/react";
+import gsap from "gsap";
+
 const NavBar = () =>  {
+
+  const logoBoxRef = useRef(null) 
+  const MenuRef = useRef(null)
+  const BoxRef = useRef(null)
+
+  useGSAP(() => {
+
+    gsap.from([logoBoxRef.current, BoxRef.current, MenuRef.current], {
+      y: -40,
+      opacity: 0,
+      delay: 0.5,
+      duration:0.3
+    });
+
+  });
+
+// -------------------------------------------------------------------------------
+// -------------------------------------------------------------------------------
+// -------------------------------------------------------------------------------
 
   const navigate = useNavigate()
 
@@ -36,13 +58,16 @@ const NavBar = () =>  {
 
 {/* ------------------------------------------------------------------------------------ */}
 
-    <Box className="flex items-center gap-1">
+    <Box 
+    ref={logoBoxRef}
+    className="flex items-center gap-1">
 
       <img 
       className="h-[70px]"
       src={Logo} alt="Mocn Ninja Logo" />
 
-      <Typography className="text-xl sm:text-2xl md:text-3xl sm:inline-block text-nowrap font-[roboto] font-extrabold tracking-tight">
+      <Typography 
+      className="text-xl sm:text-2xl md:text-3xl sm:inline-block text-nowrap font-[roboto] font-extrabold tracking-tight">
         Mock Ninja
       </Typography>
 
@@ -51,6 +76,7 @@ const NavBar = () =>  {
 {/* ------------------------------------------------------------------------------------ */}
   
   <Button 
+  ref={MenuRef}
   onClick={() => SetDrawerOpen(true)}
   className="text-white w-fit mr-[-15px]">
   <MenuIcon className="md:hidden text-[30px] sm:text-[33px] cursor-pointer"/> 
@@ -58,7 +84,9 @@ const NavBar = () =>  {
 
 {/* ------------------------------------------------------------------------------------ */}
 
-  <Box className="hidden gap-8 md:flex">
+  <Box 
+  ref={BoxRef}
+  className="hidden gap-8 md:flex">
 
   <Box className="flex justify-between items-center md:gap-2">
 
@@ -108,6 +136,12 @@ const NavBar = () =>  {
 
       </Toolbar>
     </AppBar>
+
+{/* ----------------------------------------------------------------------------------------- */}
+{/* ----------------------------------------------------------------------------------------- */}
+{/* ----------------------------------------------------------------------------------------- */}
+{/* ----------------------------------------------------------------------------------------- */}
+{/* ----------------------------------------------------------------------------------------- */}
 
     <Drawer
     anchor="right" 
