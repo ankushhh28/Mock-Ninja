@@ -11,30 +11,8 @@ import PermContactCalendarIcon from '@mui/icons-material/PermContactCalendar';
 import HowToRegIcon from '@mui/icons-material/HowToReg';
 import VpnKeyIcon from '@mui/icons-material/VpnKey';
 
-import { useGSAP } from "@gsap/react";
-import gsap from "gsap";
-
 const NavBar = () =>  {
-
-  const logoBoxRef = useRef(null) 
-  const MenuRef = useRef(null)
-  const BoxRef = useRef(null)
-
-  useGSAP(() => {
-
-    gsap.from([logoBoxRef.current, BoxRef.current, MenuRef.current], {
-      y: -40,
-      opacity: 0,
-      delay: 0.5,
-      duration:0.3
-    });
-
-  });
-
-// -------------------------------------------------------------------------------
-// -------------------------------------------------------------------------------
-// -------------------------------------------------------------------------------
-
+  
   const navigate = useNavigate()
 
   const today = new Date().toLocaleDateString("en-IN", {
@@ -59,7 +37,6 @@ const NavBar = () =>  {
 {/* ------------------------------------------------------------------------------------ */}
 
     <Box 
-    ref={logoBoxRef}
     className="flex items-center gap-1">
 
       <img 
@@ -76,7 +53,6 @@ const NavBar = () =>  {
 {/* ------------------------------------------------------------------------------------ */}
   
   <Button 
-  ref={MenuRef}
   onClick={() => SetDrawerOpen(true)}
   className="text-white w-fit mr-[-15px]">
   <MenuIcon className="md:hidden text-[30px] sm:text-[33px] cursor-pointer"/> 
@@ -85,7 +61,6 @@ const NavBar = () =>  {
 {/* ------------------------------------------------------------------------------------ */}
 
   <Box 
-  ref={BoxRef}
   className="hidden gap-8 md:flex">
 
   <Box className="flex justify-between items-center md:gap-2">
