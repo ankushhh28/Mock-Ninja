@@ -2,6 +2,7 @@ import React, { lazy, Suspense } from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 
 import { Box, CircularProgress } from "@mui/material";
+import DataProvider from "./Context/DataProvider";
 
 //------- PUBLIC IMPORTS ONLY ---------------
 
@@ -24,6 +25,7 @@ const SelectorHome = lazy(() => import("./Selector/SelectorHome"));
 const App = () => {
   return (
     <>
+    <DataProvider>
       <BrowserRouter>
         <Suspense fallback={
         <Box className="h-[100vh] flex justify-center items-center text-purple-400">
@@ -53,6 +55,7 @@ const App = () => {
           </Routes>
         </Suspense>
       </BrowserRouter>
+      </DataProvider>
     </>
   );
 };
