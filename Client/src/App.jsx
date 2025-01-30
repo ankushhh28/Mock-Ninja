@@ -24,35 +24,35 @@ const SelectorHome = lazy(() => import("./Selector/SelectorHome"));
 const App = () => {
   return (
     <>
-      <BrowserRouter>
-        <Suspense fallback={
-        <Box className="h-[100vh] flex justify-center items-center text-purple-400">
-        <CircularProgress />
-        </Box>
-        }>
-          <Routes>
+    <BrowserRouter>
+      <Suspense fallback={
+      <Box className="h-[100vh] flex justify-center items-center text-purple-400">
+      <CircularProgress />
+      </Box>
+      }>
+        <Routes>
 
 {/*---------------- PUBLIC ROUTES (WITHOUT LOGIN) ----------------*/}
 
-            <Route path="/" element={<Home />} />
-            <Route path="/About" element={<About />} />
-            <Route path="/Contact-us" element={<ContactUs />} />
-            <Route path="/Register" element={<RegisterType />} />
-            <Route path="/SignUp" element={<Register />} />
-            <Route path="/Login" element={<Login />} />
-            <Route path="/Forgot-password" element={<ForgotPass />} />
+        <Route path="/" element={<Home />} />
+        <Route path="/About" element={<About />} />
+        <Route path="/Contact-us" element={<ContactUs />} />
+        <Route path="/Register" element={<RegisterType />} />
+        <Route path="/SignUp" element={<Register />} />
+        <Route path="/Login" element={<Login />} />
+        <Route path="/Forgot-password" element={<ForgotPass />} />
 
 {/*---------------- STUDENT ROUTES (WITH LOGIN) ----------------*/}
 
-            <Route path="/Candidate/Home" element={<CanHome />} />
+        <Route path="/Candidate/Home" element={<CanHome />} />
 
 {/*---------------- SELECTOR ROUTES (WITH LOGIN) ----------------*/}
 
-            <Route path="/Selector/Home" element={<SelectorHome />} />
+        <Route path="/Selector/Home" element={<SelectorHome />} />
 
-          </Routes>
-        </Suspense>
-      </BrowserRouter>
+        </Routes>
+      </Suspense>
+    </BrowserRouter>
     </>
   );
 };

@@ -8,6 +8,8 @@ import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 
 import googleImg from "../assets/google.svg"
+import backImg1 from "../assets/images/signUpBackImg.png"
+import backImg2 from "../assets/images/signUpBackImg2.png"
 
 const Login = () => {
 
@@ -43,7 +45,9 @@ const Login = () => {
 
   return (
 <>
-  <Box className="flex h-screen w-screen items-center justify-center bg-[#8667F2] px-40">
+  <Box 
+    // sx={{backgroundImage: `url(${backImg1})`}}
+  className="flex h-screen w-screen items-center justify-center px-40 bg-gradient-to-br from-purple-200 to-purple-700">
     
     <Box className="flex gap-4 bg-white py-8 px-4 rounded-[20px] h-[600px] shadow-xl">
 
@@ -175,8 +179,8 @@ const Login = () => {
 
 {/* ------------------------------------------------------------------------------------ */}
 
-    </Box>
-    </Box>
+  </Box>
+  </Box>
 
   </Box>
     </>

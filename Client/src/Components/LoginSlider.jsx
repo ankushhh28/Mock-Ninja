@@ -24,7 +24,7 @@ const LoginSlider = () => {
   useEffect(() => {
     const timer = setInterval(() => {
       setCurrentSlide((prevSlide) => (prevSlide + 1) % slides.length);
-    }, 7000);
+    }, 5000);
 
     return () => clearInterval(timer);
   }, [slides.length]);

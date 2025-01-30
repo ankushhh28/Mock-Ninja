@@ -1,0 +1,37 @@
+import mongoose from "mongoose";
+
+const useregisterschema = mongoose.Schema({
+  candidateName:{
+    type:String
+  },
+  candidateEmail:{
+    type:String
+  },
+  candidatePassword:{
+    type:String
+  },
+  candidateCollege:{
+    type:String
+  },
+  candidateBranch:{
+    type:String
+  },
+  expertName:{
+    type:String
+  },
+  expertOrgEmail:{
+    type:String
+  },
+  expertPassword:{
+    type:String
+  },
+  expertDomain:{
+    type:String
+  },
+  role:{
+    type:String
+  }
+}) 
+
+const UserRegisterSchema = mongoose.model("userdetails", UserRegisterSchema)
+export default UserRegisterSchema;
