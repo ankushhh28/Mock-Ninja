@@ -1,6 +1,6 @@
 import express from "express"
 import cors from "cors"
-import ConnectionDB from "./database/Database.js";
+import ConnectionDB from "./Database/Database.js";
 
 import dotenv from "dotenv"
 
