@@ -33,5 +33,5 @@ const useregisterschema = mongoose.Schema({
   }
 }) 
 
-const UserRegisterSchema = mongoose.model("userdetails", UserRegisterSchema)
+const UserRegisterSchema = mongoose.model("userdetails", useregisterschema)
 export default UserRegisterSchema;

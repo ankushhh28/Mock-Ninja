@@ -6,6 +6,7 @@ import dotenv from "dotenv"
 
 import cluster from 'cluster';
 import os from 'os';
+import Router from "./Routes/Routes.js";
 
 dotenv.config()
 
@@ -16,6 +17,8 @@ const numCPUs = os.cpus().length;
 const StartServer = () => {
 
   app.use(cors())
+
+  app.use("/", Router)
   
   const PORT = process.env.PORT_NUMBER || 5000
   app.listen(PORT, () => {

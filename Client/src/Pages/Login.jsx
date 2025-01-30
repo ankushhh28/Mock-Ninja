@@ -1,19 +1,27 @@
-import React, { useState } from 'react';
+import axios from "axios"
+import React, { useContext, useEffect, useState } from 'react';
 import LoginSlider from '../Components/LoginSlider';
-import { Box, Button, TextField, Typography } from '@mui/material';
+import { Box, Button, CircularProgress, TextField, Typography } from '@mui/material';
+import { Link, NavLink, useNavigate } from 'react-router-dom';
+
+import { DataContext } from "../Context/DataProvider"
+
 import InputAdornment from "@mui/material/InputAdornment";
 import IconButton from "@mui/material/IconButton";
-
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 
 import googleImg from "../assets/google.svg"
-import backImg1 from "../assets/images/signUpBackImg.png"
-import backImg2 from "../assets/images/signUpBackImg2.png"
 
 const Login = () => {
 
+  const {backendUrl} = useContext(DataContext)
+
+  const navigate = useNavigate()
+
   const [showPassword, setShowPassword] = useState(false);
+  const [loading, setLoading] = useState(false)
+  const [errorMsg, setErrorMsg] = useState("")
 
 // ------------------------------------------------------------
 
@@ -31,10 +39,44 @@ const Login = () => {
 
 // ------------------------------------------------------------
 
-  const handleSubmit = (e) => {
+  useEffect(() => {
+    setErrorMsg("")
+  },[formdata])
+
+// ------------------------------------------------------------
+
+  const handleSubmit = async(e) => {
     e.preventDefault();
 
-    console.log(formdata)
+    setLoading(true)
+
+    if(!formdata.email){
+      setLoading(false)
+      setErrorMsg("Email is required")
+      return
+    }
+
+    if(!formdata.password){
+      setLoading(false)
+      setErrorMsg("Password is required")
+      return
+    }
+
+    try {
+      const response = await axios.post(`${backendUrl}/Login`, formdata)
+      if(response.status === 200){
+        if(response.data.role === "Candidate"){
+          navigate("/Candidate/Home")
+        }
+        else if(response.data.role === "Interviewer"){
+          navigate("/Interviewer/Home")
+        }
+      }
+    } catch (error) {
+      setErrorMsg(error?.response?.data?.message || "Check your connetions! Try Later")
+    } finally {
+      setLoading(false)
+    }
   };
 
 // ------------------------------------------------------------
@@ -86,11 +128,13 @@ const Login = () => {
   
 {/* ------------------------------------------------------------------------------------ */}
 
-  {/* <Box className="px-8 sm:px-4">
-   <Typography className='text-sm text-red-500 font-bold bg-red-100 text-center py-1 rounded-[10px]'>
-    Error while login
-   </Typography>
-   </Box>  */}
+  {errorMsg && (
+  <Box className="px-8 sm:px-4">
+  <Typography className='text-sm text-red-500 font-bold bg-red-100 text-center py-1 rounded-[10px]'>
+    {errorMsg}
+  </Typography>
+  </Box> 
+  )}
 
 {/* ------------------------------------------------------------------------------------ */}
   
@@ -156,7 +200,12 @@ const Login = () => {
 
 {/* ------------------------------------------------------------------------------------ */}
 
-  <Box className="sm:px-4 mt-6 sm:mt-8">
+  {loading ? (
+    <Box className="flex items-center justify-center mt-6 sm:mt-8">
+    <CircularProgress className="text-black"/>
+    </Box>
+  ): (
+    <Box className="sm:px-4 mt-6 sm:mt-8">
     <Button
     onClick={handleSubmit}
     variant='outlined'
@@ -166,13 +215,19 @@ const Login = () => {
       Login
     </Button>
   </Box>
-
+  )}
+  
+  <NavLink to={"/Forgot-password"}>
   <Typography className='text-center font-medium mt-8 sm:mt-10 cursor-pointer'>
     Forgot password?
   </Typography>
+  </NavLink>
 
   <Typography className='text-center mt-2 sm:mt-4'>
-    Dont have an account? <span className='underline cursor-pointer text-gray-500 hover:text-black'>Sign up</span>
+    Dont have an account? 
+    <Link to={"/Register"}>
+    <span className='underline cursor-pointer text-gray-500 hover:text-black'>Sign up</span>
+    </Link>
   </Typography>
 
   </Box>
