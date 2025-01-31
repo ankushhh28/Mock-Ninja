@@ -15,7 +15,7 @@ import googleImg from "../assets/google.svg"
 
 const Login = () => {
 
-  const {backendUrl} = useContext(DataContext)
+  const { backendUrl, setAccount } = useContext(DataContext)
 
   const navigate = useNavigate()
 
@@ -65,6 +65,7 @@ const Login = () => {
     try {
       const response = await axios.post(`${backendUrl}/Login`, formdata)
       if(response.status === 200){
+        setAccount(response.data)
         if(response.data.role === "Candidate"){
           navigate("/Candidate/Home")
         }

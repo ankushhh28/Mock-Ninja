@@ -12,7 +12,7 @@ import Logo from "../assets/Logo.png"
 const Footer = () => {
   return (
     <Box
-      className="w-screen h-auto relative sm:absolute bottom-0"
+      className="w-screen h-auto relative bottom-0"
       sx={{
         backgroundColor: "#8667F2",
         color: "white",
