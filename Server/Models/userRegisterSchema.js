@@ -10,12 +10,6 @@ const useregisterschema = mongoose.Schema({
   candidatePassword:{
     type:String
   },
-  candidateCollege:{
-    type:String
-  },
-  candidateBranch:{
-    type:String
-  },
   expertName:{
     type:String
   },
@@ -23,9 +17,6 @@ const useregisterschema = mongoose.Schema({
     type:String
   },
   expertPassword:{
-    type:String
-  },
-  expertDomain:{
     type:String
   },
   role:{

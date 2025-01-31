@@ -12,13 +12,10 @@ import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import LoginSlider from "../Components/LoginSlider";
 
-import bgImg from "../assets/images/bg1.jpg"
 
 const Register = () => {
 
   const { backendUrl } = useContext(DataContext);
-
-  const scrollBox = useRef(null)
 
   const navigate = useNavigate()
 
@@ -38,8 +35,6 @@ const Register = () => {
     candidateEmail: "",
     candidatePassword: "",
     candidateConfirmPassword: "",
-    candidateCollege: "",
-    candidateBranch: "",
     role:"Candidate"
   });
 
@@ -50,7 +45,6 @@ const Register = () => {
     expertOrgEmail: "",
     expertPassword: "",
     expertConfirmPassword: "",
-    expertDomain: "",
     role:"Interviewer"
   });
 
@@ -70,12 +64,6 @@ useEffect(() => {
   setErrorMsg("")
   setLoading(false)
 },[candidateData, userRole, successMsg])
-
-// ----------------------------------------------------------------
-
-  useEffect(() => {
-    scrollBox.current.scrollTo(0, 0);
-  }, [errorMsg, successMsg]);
 
 // ----------------------------------------------------------------
 
@@ -187,14 +175,7 @@ useEffect(() => {
 
   return (
     <>
-      {/* <Layout> */}
       <Box 
-        // sx={{
-        //   backgroundImage: `url(${bgImg})`,
-        //   backgroundSize: "contained", // Ensures the image covers the entire box
-        //   backgroundPosition: "center", // Centers the image
-        //   backgroundRepeat: "no-repeat", // Prevents the image from repeating
-        // }}
       className="bg-gradient-to-br from-purple-700 to-purple-200 flex h-screen w-screen items-center justify-center bg-cover px-40">
         <Box className="flex gap-4 bg-white py-8 px-4 rounded-[20px] h-[600px] shadow-xl">
           {/* ------------------------------------------------------------------------------------ */}
@@ -207,21 +188,20 @@ useEffect(() => {
 
 <Box>
 <Box
-ref={scrollBox}
- className="h-full px-3 sm:px-6 w-[300px] sm:w-[350px] md:w-[400px] bg-gray-100 pt-8 rounded-[20px] flex-col shadow-lg overflow-y-scroll scrollbar-thumb-gray-300 scrollbar-track-gray-200 scrollbar-thin">
+ className="h-full px-3 sm:px-6 w-[300px] sm:w-[350px] md:w-[400px] bg-gray-100 pt-1 rounded-[20px] flex-col shadow-lg">
 
-  <Typography className="text-center text-[2rem] font-bold font-[roboto] mb-2">
+  <Typography className="text-center text-[2rem] font-bold font-[roboto]">
     Sign up
   </Typography>
 
   {/* ------------------------------------------------------------------------------------ */}
 
-  <Box className="flex items-center justify-between w-fit md:w-fit rounded-[30px] p-2  h-12 md:h-14  bg-[#E0E7FF] mt-4 md:mt-4 mx-auto">
+  <Box className="flex items-center justify-between w-fit md:w-fit rounded-[30px] p-2 h-12 bg-[#E0E7FF] mt-2 mx-auto">
     <Box
       onClick={() => setUserRole(true)}
       className={`${
         userRole ? "bg-white shadow-md" : "bg-transparent"
-      } flex-1 flex justify-center items-center text-nowrap p-2 md:p-3 rounded-3xl cursor-pointer transition-all`}
+      } flex-1 flex justify-center items-center text-nowrap p-2 rounded-3xl cursor-pointer transition-all`}
     >
       <Typography
         className={`font-bold text-sm md:text-[15px] text-black`}
@@ -234,7 +214,7 @@ ref={scrollBox}
       onClick={() => setUserRole(false)}
       className={`${
         !userRole ? "bg-white shadow-md" : "bg-transparent"
-      } flex-1 flex justify-center text-nowrap items-center p-2 md:p-3 rounded-3xl cursor-pointer transition-all`}
+      } flex-1 flex justify-center text-nowrap items-center p-2 rounded-3xl cursor-pointer transition-all`}
     >
       <Typography
         className={`font-bold text-sm md:text-[15px] text-black`}
@@ -248,7 +228,7 @@ ref={scrollBox}
 
     {errorMsg && (
       <Box className="px-8 sm:px-4">
-      <Typography className='text-sm text-red-500 mt-3 font-bold bg-red-100 text-center py-1 rounded-[10px]'>
+      <Typography className='text-sm text-red-500 mt-2 font-bold bg-red-100 text-center py-1 rounded-[10px]'>
       {errorMsg}
       </Typography>
       </Box> 
@@ -256,7 +236,7 @@ ref={scrollBox}
 
     {successMsg && (
       <Box className="px-8 sm:px-4">
-      <Typography className='text-sm text-green-500 mt-3 font-bold bg-green-100 text-center py-1 rounded-[10px]'>
+      <Typography className='text-sm text-green-500 mt-1 font-bold bg-green-100 text-center py-1 rounded-[10px]'>
       {successMsg}
       </Typography>
       </Box> 
@@ -266,7 +246,7 @@ ref={scrollBox}
 
               {userRole ? (
                 <>
-                  <Box className="sm:px-4 mt-4 sm:mt-6">
+                  <Box className="sm:px-4 mt-4">
                     <TextField
                       type="text"
                       value={candidateData.candidateName}
@@ -302,54 +282,6 @@ ref={scrollBox}
                       placeholder="Enter your Email"
                       variant="outlined"
                       name="candidateEmail"
-                      className="mb-5 bg-gray-100 rounded-lg"
-                      sx={{
-                        "& .MuiOutlinedInput-root": {
-                          "&.Mui-focused fieldset": {
-                            borderColor: "black",
-                          },
-                        },
-                        "& .MuiInputLabel-root.Mui-focused": {
-                          color: "black",
-                        },
-                      }}
-                    />
-                  </Box>
-
-                  <Box className="sm:px-4 ">
-                    <TextField
-                      type="text"
-                      value={candidateData.candidateCollege}
-                      onChange={handleCandidateChange}
-                      label="College Name"
-                      fullWidth
-                      placeholder="Enter your College Name"
-                      variant="outlined"
-                      name="candidateCollege"
-                      className="mb-5 bg-gray-100 rounded-lg"
-                      sx={{
-                        "& .MuiOutlinedInput-root": {
-                          "&.Mui-focused fieldset": {
-                            borderColor: "black",
-                          },
-                        },
-                        "& .MuiInputLabel-root.Mui-focused": {
-                          color: "black",
-                        },
-                      }}
-                    />
-                  </Box>
-
-                  <Box className="sm:px-4">
-                    <TextField
-                      type="text"
-                      value={candidateData.candidateBranch}
-                      onChange={handleCandidateChange}
-                      label="Branch Name"
-                      fullWidth
-                      placeholder="e.g. IT, AIML"
-                      variant="outlined"
-                      name="candidateBranch"
                       className="mb-5 bg-gray-100 rounded-lg"
                       sx={{
                         "& .MuiOutlinedInput-root": {
@@ -451,7 +383,7 @@ ref={scrollBox}
                     <CircularProgress className="text-black"/>
                     </Box>
                   ):(
-                    <Box className="sm:px-4 mt-6 sm:mt-8">
+                    <Box className="sm:px-4 mt-2">
                     <Button
                       onClick={handleCandidateSubmit}
                       variant="outlined"
@@ -471,7 +403,7 @@ ref={scrollBox}
                 </>
               ) : (
                 <>
-                  <Box className="sm:px-4 mt-4 sm:mt-6">
+                  <Box className="sm:px-4 mt-4">
                     <TextField
                       type="text"
                       value={expertData.expertName}
@@ -507,30 +439,6 @@ ref={scrollBox}
                       placeholder="Enter your work email"
                       variant="outlined"
                       name="expertOrgEmail"
-                      className="mb-5 bg-gray-100 rounded-lg"
-                      sx={{
-                        "& .MuiOutlinedInput-root": {
-                          "&.Mui-focused fieldset": {
-                            borderColor: "black",
-                          },
-                        },
-                        "& .MuiInputLabel-root.Mui-focused": {
-                          color: "black",
-                        },
-                      }}
-                    />
-                  </Box>
-
-                  <Box className="sm:px-4 ">
-                    <TextField
-                      type="text"
-                      value={expertData.expertDomain}
-                      onChange={handleExpertChange}
-                      label="Domain"
-                      fullWidth
-                      placeholder="e.g. Web Development,Data Analytics"
-                      variant="outlined"
-                      name="expertDomain"
                       className="mb-5 bg-gray-100 rounded-lg"
                       sx={{
                         "& .MuiOutlinedInput-root": {
@@ -632,14 +540,13 @@ ref={scrollBox}
                   <CircularProgress className="text-black"/>
                   </Box>
                 ): (
-                  <Box className="sm:px-4 mt-6 sm:mt-8">
+                  <Box className="sm:px-4 mt-2">
                   <Button
                     onClick={handleExpertSubmit}
                     variant="outlined"
                     disabled={
                       !expertData.expertName ||
                       !expertData.expertOrgEmail ||
-                      !expertData.expertDomain ||
                       !expertData.expertPassword ||
                       !expertData.expertConfirmPassword
                     }
@@ -656,7 +563,7 @@ ref={scrollBox}
 
               {/* ------------------------------------------------------------------------------------ */}
 
-              <Typography className="text-center mt-2 sm:mt-4 mb-4">
+              <Typography className="text-center sm:mt-4">
                 Already have an account?{" "}
                 <NavLink to={"/login"}>
                 <span className="underline cursor-pointer text-gray-500 hover:text-black">
@@ -670,7 +577,6 @@ ref={scrollBox}
           </Box>
         </Box>
       </Box>
-      {/* </Layout> */}
     </>
   );
 };

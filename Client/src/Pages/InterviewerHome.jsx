@@ -3,9 +3,11 @@ import Layout from "../Layout/Layout";
 
 const InterviewerHome = () => {
   return (
-      <Layout>
+  <Layout>
+ 
+  <h1 className='h-[20vh]'></h1>
 
-      </Layout>
+  </Layout>
   )
 }
 
