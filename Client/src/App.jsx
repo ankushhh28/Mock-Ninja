@@ -12,6 +12,7 @@ const ContactUs = lazy(() => import("./Pages/ContactUs"));
 const Register = lazy(() => import("./Pages/Register"));
 const Login = lazy(() => import("./Pages/Login"));
 const ForgotPass = lazy(() => import("./Pages/ForgotPass"));
+const InterviewerHome = lazy(() => import("./Pages/InterviewerHome"));
 
 //---------------------- CANDIDATES IMPORTS ONLY -----------------------
 
@@ -58,6 +59,7 @@ const InterviewerPrivate = () => {
         <Route path="/Register" element={<Register />} />
         <Route path="/Login" element={<Login />} />
         <Route path="/Forgot-password" element={<ForgotPass />} />
+        <Route path="/Interviewer/Home" element={<InterviewerHome />} />
 
 {/*---------------- STUDENT ROUTES (WITH LOGIN) ----------------*/}
 
