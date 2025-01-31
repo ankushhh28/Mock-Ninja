@@ -1,6 +1,6 @@
 import { AppBar, Box, Button, Drawer, Toolbar, Typography } from "@mui/material";
 import React, { useRef, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 
 import Logo from "../assets/Logo.png"
 
@@ -64,47 +64,53 @@ const NavBar = () =>  {
   className="hidden gap-8 md:flex">
 
   <Box className="flex justify-between items-center md:gap-2">
-
+    
+    <NavLink to={"/"}>
     <Button 
-    onClick={() => navigate("/")}
     variant="outlined"
     className="text-white text-[17px] normal-case font-bold border-none hover:bg-white hover:text-[#8667F2] transition-all">
       Home
     </Button>
-
+    </NavLink>
+    
+    <NavLink to={"/About"}>
     <Button 
-    onClick={() => navigate("/About")}
     variant="outlined"
     className="text-white text-[17px] normal-case font-bold border-none hover:bg-white hover:text-[#8667F2] transition-all">
       About
     </Button>
-
+    </NavLink>
+    
+    <NavLink to={"/Contact-us"}>
     <Button 
-    onClick={() => navigate("/Contact-us")}
     variant="outlined"
     className="text-white text-nowrap text-[17px] normal-case font-bold border-none hover:bg-white hover:text-[#8667F2] transition-all">
       Contact Us
     </Button>
+    </NavLink>
 
   </Box>
 
 {/* ------------------------------------------------------------------------------------ */}
 
   <Box className="flex gap-4">
-
+    
+    <NavLink to={"/Register"}>
     <Button 
-    onClick={() => navigate("/Register")}
     variant="outlined"
     className="hover:text-[#8667F2] normal-case hover:bg-white font-bold bg-[#8667F2] text-white hover:shadow-none border-1 border-white transition-all rounded-[20px]">
       Register
     </Button>
-
+    </NavLink>
+    
+    <NavLink to={"/Login"}>
     <Button 
     onClick={() => navigate("/Login")}
     variant="outlined"
     className="hover:text-[#8667F2] normal-case hover:bg-white font-bold bg-[#8667F2] text-white hover:shadow-none border-1 border-white transition-all rounded-[20px]">
       Login
     </Button>
+    </NavLink>
     
   </Box>
   </Box>
