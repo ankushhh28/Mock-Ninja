@@ -1,28 +1,31 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Box, Typography, TextField, Button, CircularProgress } from "@mui/material";
 import { NavLink } from "react-router-dom";
+import { DataContext } from "../Context/DataProvider";
 
 import ForgotImg from "../assets/forgotSvg.svg"
+import Logo from "../assets/Logo.png"
 
 import LockOpenIcon from '@mui/icons-material/LockOpen';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import Logo from "../assets/Logo.png"
 
 const ForgotPass = () => {
 
-// ------------------------------------------------------------
+  const { backendUrl } = useContext(DataContext)
+
+// -----------------------------------------------------------------------
 
   const [email, setEmail] = useState("")
   const [errorMsg, setErrorMsg] = useState("")
   const [loading, setLoading] = useState(false)
 
-// ------------------------------------------------------------
+// -----------------------------------------------------------------------
 
   useEffect(() => {
     setErrorMsg("")
   },[email])
 
-// ------------------------------------------------------------
+// -----------------------------------------------------------------------
 
   const handleSubmit = (e) => {
     e.preventDefault()
@@ -41,7 +44,7 @@ const ForgotPass = () => {
     console.log(email)
   }
 
-// ------------------------------------------------------------
+// -----------------------------------------------------------------------
 
   return (
   <>
