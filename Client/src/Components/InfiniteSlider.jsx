@@ -35,7 +35,8 @@ const InfiniteSlider = () => {
   ];
 
   return (
-    <div className="w-[80%] overflow-hidden relative">
+    <div className="flex flex-col items-center">
+    <div className="w-[90%] overflow-hidden relative">
       <div className="flex animate-scroll gap-4 sm:gap-4">
         {[...icons, ...icons].map((icon, index) => (
           <img
@@ -46,6 +47,7 @@ const InfiniteSlider = () => {
           />
         ))}
       </div>
+    </div>
     </div>
   );
 };
