@@ -1,46 +1,23 @@
-import React, { useState } from "react";
-import { Box, Button, Typography } from "@mui/material";
+import React, { useContext, useState } from "react";
+import { Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, Typography } from "@mui/material";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import homeRobot from "../assets/homeRobot.gif";
+import { NavLink } from "react-router-dom";
+import ToggleButton from "./ToggleButton";
+import { DataContext } from "../Context/DataProvider";
 
 const HomeBanner = () => {
-  const [role, setRole] = useState(true);
+
+  const { account } = useContext(DataContext)
+
+  const [open, setopen] = useState(false)
 
   return (
+    <>
     <Box className="flex flex-col sm:gap-12 items-center min-h-screen w-full bg-[#f5f3ff] px-12 md:px-20  pt-6">
-      <Box className="relative flex items-center justify-between w-80 h-14 sm:h-16 rounded-full bg-gray-200 shadow-md p-2 mt-6">
-        <Box
-          className={`absolute top-1 left-1 w-1/2 h-[90%] bg-[#8667f2] rounded-full transition-all duration-300 ${
-            role ? "translate-x-0" : "translate-x-full"
-          }`}
-        />
 
-        <Box
-          onClick={() => setRole(true)}
-          className="flex-1 flex justify-center items-center text-nowrap px-4 py-2 rounded-full cursor-pointer relative z-10 transition-all"
-        >
-          <Typography
-            className={`font-extrabold tracking-wider text-base md:text-lg ${
-              role ? "text-white" : "text-black"
-            }`}
-          >
-            Candidate
-          </Typography>
-        </Box>
+      <ToggleButton/>
 
-        <Box
-          onClick={() => setRole(false)}
-          className="flex-1 flex justify-center items-center text-nowrap px-4 py-2 rounded-full cursor-pointer relative z-10 transition-all"
-        >
-          <Typography
-            className={`font-bold md:font-extrabold tracking-wider text-base md:text-lg ${
-              !role ? "text-white" : "text-black"
-            }`}
-          >
-            Interviewer
-          </Typography>
-        </Box>
-      </Box>
 
       <Box className="flex flex-col md:flex-row items-center justify-between w-full mt-10">
         <Box className="flex flex-col items-start text-left w-full md:w-1/2 space-y-8">
@@ -56,12 +33,14 @@ const HomeBanner = () => {
 
           <Box className="flex flex-col md:flex-row gap-4">
             <Button
+            onClick={() => setopen(true)}
               className="normal-case text-white bg-gradient-to-r from-gray-800 via-gray-700 to-gray-950 px-6 py-4 font-bold text-xl rounded-xl flex items-center transition-all duration-300 shadow-md hover:shadow-lg"
               endIcon={<ArrowForwardIcon />}
             >
               Interview with AI
             </Button>
             <Button
+            onClick={() => setopen(true)}
               className="normal-case text-white bg-gradient-to-r from-purple-600 to-[#8667f2] hover:from-purple-700 hover:to-[#764de8] px-6 py-4 font-bold text-xl rounded-xl flex items-center transition-all duration-300 shadow-md hover:shadow-lg"
               endIcon={<ArrowForwardIcon />}
             >
@@ -79,6 +58,28 @@ const HomeBanner = () => {
         </Box>
       </Box>
     </Box>
+
+{/* --------------------- MODAL BEFORE LOGIN AT HOME ----------------------- */}
+
+    <Dialog open={open} onClose={() => setopen(false)}>
+
+      <DialogTitle>
+        
+      
+
+      </DialogTitle>
+
+      <DialogContent>
+
+      </DialogContent>
+
+      <DialogActions>
+
+      </DialogActions>
+
+    </Dialog>
+
+    </>
   );
 };
 
