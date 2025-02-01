@@ -1,20 +1,17 @@
 import React from "react";
 import Layout from "../Layout/Layout";
-import LoginSlider from "../Components/LoginSlider"
 import InfiniteSlider from "../Components/InfiniteSlider";
+import ImageSlider from "../Components/ImageSlider";
 
 const Home = () => {
   return (
     <>
-    <Layout>
-      
-      {/* <LoginSlider/> */}
-
-      <InfiniteSlider/>
-
-    </Layout>
+      <Layout>
+        <ImageSlider />
+        <InfiniteSlider />
+      </Layout>
     </>
-  )
-}
+  );
+};
 
-export default Home
+export default Home;
