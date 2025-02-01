@@ -4,6 +4,9 @@ import LoginSlider from '../Components/LoginSlider';
 import { Box, Button, CircularProgress, TextField, Typography } from '@mui/material';
 import { Link, NavLink, useNavigate } from 'react-router-dom';
 
+import { GoogleLogin } from '@react-oauth/google';
+import { jwtDecode } from "jwt-decode";
+
 import { DataContext } from "../Context/DataProvider"
 
 import InputAdornment from "@mui/material/InputAdornment";
@@ -22,6 +25,11 @@ const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false)
   const [errorMsg, setErrorMsg] = useState("")
+  const [cred, setCridentials] = useState("")
+
+  useEffect(() => {
+    console.log(cred)
+  },[cred])
 
 // ------------------------------------------------------------
 
@@ -112,7 +120,7 @@ const Login = () => {
 
 {/* ------------------------------------------------------------------------------------ */}
 
-  <Box className="p-4">
+  {/* <Box className="p-4">
   <Button 
   fullWidth
   variant="outlined"
@@ -125,6 +133,21 @@ const Login = () => {
       Continue with <span className="font-bold">Google</span>
     </Typography>
   </Button>
+  </Box> */}
+  
+  <Box className="flex justify-center mb-2">
+  <GoogleLogin
+    onSuccess={(credentialResponse) => {
+      const decoded = jwtDecode(credentialResponse.credential)
+      if(decoded){
+        setCridentials(decoded)
+      }
+    }}
+    onError={() => {
+      console.log("Google Login Failed");
+    }}
+    useOneTap
+  />
   </Box>
   
 {/* ------------------------------------------------------------------------------------ */}

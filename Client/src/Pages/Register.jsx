@@ -12,7 +12,6 @@ import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import LoginSlider from "../Components/LoginSlider";
 
-
 const Register = () => {
 
   const { backendUrl } = useContext(DataContext);
