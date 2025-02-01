@@ -64,10 +64,10 @@ const HomeBanner = () => {
     <Dialog open={open && !account.name} onClose={() => setopen(false)}>
 
       <DialogTitle>
-
       </DialogTitle>
 
       <DialogContent>
+      <h1 className="text-[2rem] text-red-600 bg-red-200 rounded-[20px] px-4 py-1">Bewakuf pehle login toh karle</h1>
 
       </DialogContent>
 
