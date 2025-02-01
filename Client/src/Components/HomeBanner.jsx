@@ -34,14 +34,14 @@ const HomeBanner = () => {
           <Box className="flex flex-col md:flex-row gap-4">
             <Button
             onClick={() => setopen(true)}
-              className="normal-case text-white bg-gradient-to-r from-gray-800 via-gray-700 to-gray-950 px-6 py-4 font-bold text-xl rounded-xl flex items-center transition-all duration-300 shadow-md hover:shadow-lg"
+              className="normal-case text-white bg-gradient-to-r from-gray-800 via-gray-700 to-gray-950 px-6 py-4 font-bold text-xl rounded-xl flex items-center transition-all duration-300 shadow-md hover:shadow-lg text-nowrap"
               endIcon={<ArrowForwardIcon />}
             >
               Interview with AI
             </Button>
             <Button
             onClick={() => setopen(true)}
-              className="normal-case text-white bg-gradient-to-r from-purple-600 to-[#8667f2] hover:from-purple-700 hover:to-[#764de8] px-6 py-4 font-bold text-xl rounded-xl flex items-center transition-all duration-300 shadow-md hover:shadow-lg"
+              className="normal-case text-white bg-gradient-to-r from-purple-600 to-[#8667f2] hover:from-purple-700 hover:to-[#764de8] px-6 py-4 font-bold text-xl rounded-xl flex items-center transition-all duration-300 shadow-md hover:shadow-lg text-nowrap"
               endIcon={<ArrowForwardIcon />}
             >
               Book Mock Interview
@@ -61,11 +61,9 @@ const HomeBanner = () => {
 
 {/* --------------------- MODAL BEFORE LOGIN AT HOME ----------------------- */}
 
-    <Dialog open={open} onClose={() => setopen(false)}>
+    <Dialog open={open && !account.name} onClose={() => setopen(false)}>
 
       <DialogTitle>
-        
-      
 
       </DialogTitle>
 

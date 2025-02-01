@@ -116,7 +116,7 @@ const handleSubmit = async(e) => {
     }
   }
 
-// -----------------------------------------------------------------------
+// ----------------------------------------------------------------------------
   
   const handleChangePassword = async(e) => {
     e.preventDefault()
@@ -149,7 +149,7 @@ const handleSubmit = async(e) => {
     }
   }
 
-// -----------------------------------------------------------------------
+// ----------------------------------------------------------------------------
 
   const handleClick = (e) => {
   if (changePassword) {
@@ -296,7 +296,7 @@ const handleSubmit = async(e) => {
     onChange={(e) => setCode(e.target.value)}
     label="OTP"
     required
-    placeholder="Enter your OTP here"
+    placeholder="Enter your 4 digit OTP"
     variant="outlined"
     name="code"
     className="mb-5 bg-gray-100 rounded-lg w-[70vw] sm:w-[330px]"
