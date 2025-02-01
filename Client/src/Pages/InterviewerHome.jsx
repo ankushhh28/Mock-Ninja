@@ -1,14 +1,12 @@
-import React from 'react'
+import React from "react";
 import Layout from "../Layout/Layout";
 
 const InterviewerHome = () => {
   return (
-  <Layout>
- 
-  <h1 className='h-[20vh]'></h1>
+    <Layout>
+      <h1 className="h-[20vh]"></h1>
+    </Layout>
+  );
+};
 
-  </Layout>
-  )
-}
-
-export default InterviewerHome
+export default InterviewerHome;
