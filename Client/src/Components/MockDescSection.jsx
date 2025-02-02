@@ -159,7 +159,9 @@ const MockDescSection = () => {
             Check your <span className="text-[#8667F2]">ATS Score</span>
           </h1>
           <p className="mt-4 text-lg text-gray-600 text-justify">
-          Check your ATS score instantly! Get insights on your resume’s strengths, weaknesses, and tips to improve your chances of passing automated screenings.
+            Check your ATS score instantly! Get insights on your resume’s
+            strengths, weaknesses, and tips to improve your chances of passing
+            automated screenings.
           </p>
           <a
             href="#"
@@ -184,9 +186,7 @@ const MockDescSection = () => {
                 <h3 className="text-lg font-semibold text-gray-900">
                   Upload Resume
                 </h3>
-                <p className="text-sm text-gray-500">
-                  Your resume Analyzer
-                </p>
+                <p className="text-sm text-gray-500">Your resume Analyzer</p>
               </div>
             </div>
             <div className="w-7xl p-4 flex justify-center">
