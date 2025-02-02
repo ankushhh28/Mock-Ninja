@@ -26,14 +26,6 @@ const InterviewerBanner = () => {
         <ToggleButton />
 
         <Box className="flex flex-col md:flex-row items-center justify-between w-full mt-10">
-          <Box className="w-full md:w-1/2 flex justify-center mt-10 md:mt-0">
-            <img
-              src={homeRobot}
-              alt="Illustration"
-              className="w-[1000px] h-auto"
-            />
-          </Box>
-
           <Box className="flex flex-col items-start text-left w-full md:w-1/2 space-y-8">
             <Typography className="text-3xl sm:text-5xl font-extrabold tracking-tighter text-black">
               <span className="text-purple-500">Transform Careers with </span>,{" "}
@@ -53,16 +45,23 @@ const InterviewerBanner = () => {
                 className="normal-case text-white bg-gradient-to-r from-purple-600 to-[#8667f2] hover:from-purple-700 hover:to-[#764de8] px-6 py-4 font-bold text-xl rounded-xl flex items-center transition-all duration-300 shadow-md hover:shadow-lg text-nowrap"
                 endIcon={<ArrowForwardIcon />}
               >
-                Schedule a Mock Interview
+                Become an Interviewer
               </Button>
               <Button
                 onClick={() => setopen(true)}
                 className="normal-case text-white bg-gradient-to-r from-gray-800 via-gray-700 to-gray-950 px-6 py-4 font-bold text-xl rounded-xl flex items-center transition-all duration-300 shadow-md hover:shadow-lg text-nowrap"
                 endIcon={<ArrowForwardIcon />}
               >
-                Become an Interviewer
+                Schedule a Mock Interview
               </Button>
             </Box>
+          </Box>
+          <Box className="w-full md:w-1/2 flex justify-center mt-10 md:mt-0">
+            <img
+              src={homeRobot}
+              alt="Illustration"
+              className="w-[1000px] h-auto"
+            />
           </Box>
         </Box>
       </Box>
