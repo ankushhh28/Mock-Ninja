@@ -1,7 +1,5 @@
 import React from "react";
 import Layout from "../Layout/Layout";
-import ToggleButton from "../Components/ToggleButton";
-import { Box } from "@mui/material";
 import InterviewerBanner from "../Components/InterviewerBanner";
 
 const InterviewerHome = () => {

@@ -31,7 +31,7 @@ const ToggleButton = () => {
         </Box>
         </NavLink>
 
-        <NavLink to={"/Interviewer/Home"}>
+        <NavLink to={"/Interviewer-Home"}>
         <Box
           className="flex-1 flex justify-center items-center text-nowrap px-4 py-2 rounded-full cursor-pointer relative z-10 transition-all"
         >
