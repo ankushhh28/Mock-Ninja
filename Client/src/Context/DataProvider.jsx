@@ -11,6 +11,15 @@ const DataProvider = ({ children }) => {
 
 // ----------------------------------------------------------------------------
 
+  const [beforeLogin, setBeforeLogin] = useState(false)
+
+// ----------------------------------------------------------------------------
+ 
+  const [intBeforeLogin, setintBeforeLogin] = useState(false)
+  
+
+// ----------------------------------------------------------------------------
+
   const [account, setAccount] = useState(() => {
     const savedAccount = sessionStorage.getItem("account")
     return savedAccount ? JSON.parse(savedAccount) : {
@@ -20,8 +29,6 @@ const DataProvider = ({ children }) => {
       role:""
     }
   })
-
-  console.log(account)
 
   useEffect(() => {
     sessionStorage.setItem("account", JSON.stringify(account))
@@ -35,7 +42,11 @@ const DataProvider = ({ children }) => {
       value={{
         backendUrl,
         account,
-        setAccount
+        setAccount,
+        beforeLogin,
+        setBeforeLogin,
+        setintBeforeLogin,
+        intBeforeLogin
       }}
     >
       {children}

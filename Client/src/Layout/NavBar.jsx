@@ -32,7 +32,7 @@ const NavBar = () =>  {
     <>
 
     <AppBar className="static">
-      <Toolbar className="bg-[#8667F2] flex justify-between items-center">
+      <Toolbar className="bg-primary flex justify-between items-center">
 
 {/* ------------------------------------------------------------------------------------ */}
 

@@ -1,5 +1,5 @@
-import React, { useContext, useState } from "react";
-
+import React, { useContext } from "react";
+import { FaUserLock, FaSignInAlt, FaUserPlus, FaTimes } from "react-icons/fa";
 import {
   Box,
   Button,
@@ -7,6 +7,7 @@ import {
   DialogActions,
   DialogContent,
   DialogTitle,
+  IconButton,
   Typography,
 } from "@mui/material";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
@@ -16,9 +17,7 @@ import ToggleButton from "./ToggleButton";
 import { DataContext } from "../Context/DataProvider";
 
 const InterviewerBanner = () => {
-  const { account } = useContext(DataContext);
-
-  const [open, setopen] = useState(false);
+  const { account , intBeforeLogin, setintBeforeLogin } = useContext(DataContext);
 
   return (
     <>
@@ -41,14 +40,14 @@ const InterviewerBanner = () => {
 
             <Box className="flex flex-col md:flex-row gap-4">
               <Button
-                onClick={() => setopen(true)}
+                onClick={() => setintBeforeLogin(true)}
                 className="normal-case text-white bg-gradient-to-r from-purple-600 to-[#8667f2] hover:from-purple-700 hover:to-[#764de8] px-6 py-4 font-bold text-xl rounded-xl flex items-center transition-all duration-300 shadow-md hover:shadow-lg text-nowrap"
                 endIcon={<ArrowForwardIcon />}
               >
                 Become an Interviewer
               </Button>
               <Button
-                onClick={() => setopen(true)}
+                onClick={() => setintBeforeLogin(true)}
                 className="normal-case text-white bg-gradient-to-r from-gray-800 via-gray-700 to-gray-950 px-6 py-4 font-bold text-xl rounded-xl flex items-center transition-all duration-300 shadow-md hover:shadow-lg text-nowrap"
                 endIcon={<ArrowForwardIcon />}
               >
@@ -68,36 +67,44 @@ const InterviewerBanner = () => {
 
       {/* --------------------- MODAL BEFORE LOGIN AT HOME ----------------------- */}
       <Dialog
-        open={open && !account.name}
-        onClose={() => setopen(false)}
-        className="backdrop-blur-sm"
-      >
-        <DialogTitle className="mt-6 text-gray-900 text-3xl sm:text-4xl font-bold text-center">
-          Sign-in Required
+      open={intBeforeLogin && !account.name}
+      onClose={() => setintBeforeLogin(false)}
+      className="backdrop-blur-[1px] flex items-center justify-center"
+    >
+      <div className="bg-gradient-to-br from-[#9870e9] to-[#8E2DE2] shadow-2xl max-w-lg w-full p-8 text-center text-white">
+
+      <IconButton
+          className="absolute top-4 right-4 text-white hover:text-gray-200"
+          onClick={() => setintBeforeLogin(false)}
+        >
+          <FaTimes className="text-2xl" />
+        </IconButton>
+        <DialogTitle className="text-4xl font-extrabold flex items-center justify-center gap-3">
+          <FaUserLock className="text-5xl" /> Access Required
         </DialogTitle>
 
-        <DialogContent className="mt-4 px-4 sm:px-6">
-          <Typography className="text-xl sm:text-2xl text-gray-600 text-center leading-relaxed">
-            Log in to access AI-powered interviews, resume analysis, and
-            expert-led Mock Interviews
-          </Typography>
+        <DialogContent className="mt-4 px-6 text-lg sm:text-xl leading-relaxed">
+        To become an interviewer or schedule a mock interview, sign in or create an account.
         </DialogContent>
 
-        <DialogActions className="flex flex-col sm:flex-row justify-center gap-4 sm:gap-8 mt-6 mb-6 px-4 sm:px-0">
+        <DialogActions className="flex flex-col sm:flex-row justify-center gap-4 mt-6 px-4">
+          <NavLink to={"/Login"}>
           <button
-            onClick={() => navigate("/Login")}
-            className="bg-gradient-to-r from-blue-600 to-blue-500 text-white text-lg sm:text-xl px-8 sm:px-10 py-3 sm:py-4 rounded-lg font-semibold hover:from-blue-700 hover:to-blue-600 transition-all shadow-md w-full sm:w-auto"
+            className="bg-white text-[#4A00E0] text-lg sm:text-xl px-6 py-3 rounded-xl font-semibold hover:bg-gray-200 transition-all shadow-lg text-nowrap flex items-center gap-2 justify-center w-full sm:w-auto"
           >
-            Sign In
+            <FaSignInAlt className="text-xl sm:text-2xl" /> Sign In
           </button>
+          </NavLink>
+          <NavLink to={"/Register"}>
           <button
-            className="bg-gray-200 text-gray-700 px-8 sm:px-10 py-3 sm:py-4 rounded-lg font-semibold text-lg sm:text-xl hover:bg-gray-300 transition-all shadow-md w-full sm:w-auto"
-            onClick={() => setopen(false)}
+            className="bg-white text-[#8E2DE2] text-lg sm:text-xl px-6 py-3 rounded-xl font-semibold hover:bg-gray-200 transition-all shadow-lg flex items-center gap-2 justify-center w-full sm:w-auto"
           >
-            Cancel
+            <FaUserPlus className="text-xl" /> Register
           </button>
+          </NavLink>
         </DialogActions>
-      </Dialog>
+      </div>
+    </Dialog>
     </>
   );
 };

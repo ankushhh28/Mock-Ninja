@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FaCloudUploadAlt } from "react-icons/fa";
 import atsCheck from "../assets/images/atsCheck.png";
 
@@ -30,9 +30,9 @@ export default function Ats() {
           and <span className="font-bold">land more interviews.</span>
         </p>
         
-      {/* Text Section-------------------------------------------------------------------------------------------- */}
+      {/* Text Section------------------------------------------------------------------------------------ */}
 
-        {/* For LoggedIn Users Only--------------------------------------------------------------------------------*/}
+        {/* For LoggedIn Users Only----------------------------------------------------------*/}
         <div className="rounded-lg border-dashed border-2 border-white mt-8 p-6 inline-block">
           <label
             htmlFor="resume-upload"
@@ -56,7 +56,7 @@ export default function Ats() {
 
       </div>
 
-      {/* Not LoggedIn Users----------------------------------------------------------------------- */}
+      {/* Not LoggedIn Users------------------------------------------------------------ */}
               
               {/* Button */}
 

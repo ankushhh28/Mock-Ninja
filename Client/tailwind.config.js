@@ -6,6 +6,9 @@ module.exports = {
   ],
   theme: {
     extend: {
+      colors: {
+        'primary':'#8667F2',
+      },
       keyframes: {
         marqueeLTR: {
           "0%": { transform: "translateX(-100%)" },
