@@ -14,8 +14,6 @@ import IconButton from "@mui/material/IconButton";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 
-import googleImg from "../assets/google.svg"
-
 const Login = () => {
 
   const { backendUrl, setAccount } = useContext(DataContext)
@@ -25,11 +23,10 @@ const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false)
   const [errorMsg, setErrorMsg] = useState("")
-  const [cred, setCridentials] = useState("")
-
-  useEffect(() => {
-    console.log(cred)
-  },[cred])
+  const [credentials, setCridentials] = useState({
+    name:"",
+    email:"",
+  })
 
 // ------------------------------------------------------------
 
@@ -37,6 +34,31 @@ const Login = () => {
     email:"",
     password:"",
   })
+
+// ------------------------------------------------------------
+
+  useEffect(() => {
+  if(credentials.email !== ""){
+  const handleGoogleLogin = async() => {
+    setLoading(true)
+    try {
+      const response = await axios.post(`${backendUrl}/Google-Login`, credentials)
+      setAccount(response.data)
+      if(response.data.role === "Candidate"){
+        navigate("/Candidate/Home")
+      }
+      else if(response.data.role === "Interviewer"){
+        navigate("/Interviewer/Home")
+      }
+    } catch (error) {
+      setErrorMsg(error?.response?.data?.message || "Check your connetions! Try Later")
+    } finally {
+      setLoading(false)
+    }
+  }
+  handleGoogleLogin()
+  }
+  },[credentials])
 
 // ------------------------------------------------------------
 
@@ -100,7 +122,7 @@ const Login = () => {
     // sx={{backgroundImage: `url(${backImg1})`}}
   className="flex h-screen w-screen items-center justify-center px-40 bg-gradient-to-br from-purple-200 to-purple-700">
     
-    <Box className="flex gap-4 bg-white py-8 px-4 rounded-[20px] h-[600px] shadow-xl">
+    <Box className="flex gap-4 bg-white py-8 px-4 rounded-[20px] h-[580px] sm:h-[680px] shadow-xl">
 
 {/* ------------------------------------------------------------------------------------ */}
 
@@ -119,23 +141,8 @@ const Login = () => {
   </Typography>
 
 {/* ------------------------------------------------------------------------------------ */}
-
-  {/* <Box className="p-4">
-  <Button 
-  fullWidth
-  variant="outlined"
-  className="normal-case flex w-fit ml-3 px-5 sm:ml-6 md:ml-12 gap-3 p-2 rounded-[10px] border-black">
-    <img
-    className="h-6" 
-    src={googleImg} alt="Google img"/>
-    <Typography 
-    className="text-gray-700 text-sm text-nowrap">
-      Continue with <span className="font-bold">Google</span>
-    </Typography>
-  </Button>
-  </Box> */}
   
-  <Box className="flex justify-center mb-2">
+  <Box className="flex justify-center mb-2 mt-4">
   <GoogleLogin
     onSuccess={(credentialResponse) => {
       const decoded = jwtDecode(credentialResponse.credential)
@@ -153,7 +160,7 @@ const Login = () => {
 {/* ------------------------------------------------------------------------------------ */}
 
   {errorMsg && (
-  <Box className="px-8 sm:px-4">
+  <Box className="px-8 sm:px-4 mt-3 sm:mt-6">
   <Typography className='text-sm text-red-500 font-bold bg-red-100 text-center py-1 rounded-[10px]'>
     {errorMsg}
   </Typography>
@@ -162,7 +169,7 @@ const Login = () => {
 
 {/* ------------------------------------------------------------------------------------ */}
   
-  <Box className="sm:px-4 mt-4 sm:mt-6">
+  <Box className="sm:px-4 mt-4 sm:mt-8">
   <TextField
   type="email"
   value={formdata.email}

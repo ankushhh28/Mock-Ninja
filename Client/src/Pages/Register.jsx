@@ -1,9 +1,12 @@
 import axios from "axios";
-import React, { useContext, useEffect, useRef } from "react";
+import React, { useContext, useEffect } from "react";
 import { useState } from "react";
 import { Box, Button, CircularProgress, TextField, Typography } from "@mui/material";
 import { NavLink, useNavigate } from "react-router-dom";
 import { DataContext } from "../Context/DataProvider";
+
+import { GoogleLogin } from '@react-oauth/google';
+import { jwtDecode } from "jwt-decode";
 
 import InputAdornment from "@mui/material/InputAdornment";
 import IconButton from "@mui/material/IconButton";
@@ -26,6 +29,11 @@ const Register = () => {
   const [errorMsg, setErrorMsg] = useState("")
   const [successMsg, setSuccessMsg] = useState("")
   const [loading, setLoading] = useState(false)
+  const [credentials, setCridentials] = useState({
+    name:"",
+    email:"",
+    picture:""
+  })
 
 // ----------------------------------------------------------------
 
@@ -33,6 +41,7 @@ const Register = () => {
     candidateName: "",
     candidateEmail: "",
     candidatePassword: "",
+    candidatePicture:"",
     candidateConfirmPassword: "",
     role:"Candidate"
   });
@@ -43,9 +52,30 @@ const Register = () => {
     expertName: "",
     expertOrgEmail: "",
     expertPassword: "",
+    expertPicture:"",
     expertConfirmPassword: "",
     role:"Interviewer"
   });
+
+// ----------------------------------------------------------------
+
+  useEffect(() => {
+  const handleGoogleData = () => {
+    if(userRole && credentials){
+      setCandidateData({...candidateData,
+        candidateName:credentials.name,
+        candidateEmail:credentials.email,
+        candidatePicture:credentials.picture
+      })}
+    else{
+      setExpertData({...expertData,
+        expertName:credentials.name,
+        expertOrgEmail:credentials.email,
+        expertPicture:credentials.picture
+      })}
+    } 
+    handleGoogleData()
+  },[credentials])
 
 // ----------------------------------------------------------------
 
@@ -174,14 +204,15 @@ useEffect(() => {
 
   return (
     <>
-      <Box 
-      className="bg-gradient-to-br from-purple-700 to-purple-200 flex h-screen w-screen items-center justify-center bg-cover px-40">
-        <Box className="flex gap-4 bg-white py-8 px-4 rounded-[20px] h-[600px] shadow-xl">
-          {/* ------------------------------------------------------------------------------------ */}
+<Box 
+className="bg-gradient-to-br from-purple-700 to-purple-200 flex h-screen w-screen items-center justify-center bg-cover px-40">
+  <Box className="flex gap-4 bg-white py-8 px-4 rounded-[20px] h-[680px] shadow-xl">
 
-          <Box className="hidden md:inline-block w-[28vw] shadow-lg rounded-2xl">
-            <LoginSlider />
-          </Box>
+{/* ------------------------------------------------------------------------------------ */}
+
+  <Box className="hidden md:inline-block w-[28vw] shadow-lg rounded-2xl">
+    <LoginSlider />
+  </Box>
 
 {/* ------------------------------------------------------------------------------------ */}
 
@@ -192,6 +223,25 @@ useEffect(() => {
   <Typography className="text-center text-[2rem] font-bold font-[roboto]">
     Sign up
   </Typography>
+
+  <Box className="flex justify-center mb-3 mt-2">
+  <GoogleLogin
+    onSuccess={(credentialResponse) => {
+      const decoded = jwtDecode(credentialResponse.credential)
+      if(decoded){
+        setCridentials({
+          name:decoded.name,
+          email:decoded.email,
+          picture:decoded.picture
+        })
+      }
+    }}
+    onError={() => {
+      console.log("Google Login Failed");
+    }}
+    useOneTap
+  />
+  </Box>
 
   {/* ------------------------------------------------------------------------------------ */}
 
@@ -226,8 +276,8 @@ useEffect(() => {
     {/* ------------------------------------------------------------------------------------ */}
 
     {errorMsg && (
-      <Box className="px-8 sm:px-4">
-      <Typography className='text-sm text-red-500 mt-2 font-bold bg-red-100 text-center py-1 rounded-[10px]'>
+      <Box className="px-4 sm:px-14">
+      <Typography className='text-sm px-2 text-nowrap w-fit text-red-500 mt-2 font-bold bg-red-100 text-center py-1 rounded-[10px]'>
       {errorMsg}
       </Typography>
       </Box> 
@@ -243,339 +293,339 @@ useEffect(() => {
 
     {/* ------------------------------------------------------------------------------------ */}
 
-              {userRole ? (
-                <>
-                  <Box className="sm:px-4 mt-4">
-                    <TextField
-                      type="text"
-                      value={candidateData.candidateName}
-                      onChange={handleCandidateChange}
-                      label="Candidate Name"
-                      fullWidth
-                      required
-                      placeholder="Enter your Name"
-                      variant="outlined"
-                      name="candidateName"
-                      className="mb-5 bg-gray-100 rounded-lg"
-                      sx={{
-                        "& .MuiOutlinedInput-root": {
-                          "&.Mui-focused fieldset": {
-                            borderColor: "black",
-                          },
-                        },
-                        "& .MuiInputLabel-root.Mui-focused": {
-                          color: "black",
-                        },
-                      }}
-                    />
-                  </Box>
-
-                  <Box className="sm:px-4">
-                    <TextField
-                      type="email"
-                      value={candidateData.candidateEmail}
-                      onChange={handleCandidateChange}
-                      label="Email"
-                      fullWidth
-                      required
-                      placeholder="Enter your Email"
-                      variant="outlined"
-                      name="candidateEmail"
-                      className="mb-5 bg-gray-100 rounded-lg"
-                      sx={{
-                        "& .MuiOutlinedInput-root": {
-                          "&.Mui-focused fieldset": {
-                            borderColor: "black",
-                          },
-                        },
-                        "& .MuiInputLabel-root.Mui-focused": {
-                          color: "black",
-                        },
-                      }}
-                    />
-                  </Box>
-
-                  <Box className="sm:px-4">
-                    <TextField
-                      value={candidateData.candidatePassword}
-                      onChange={handleCandidateChange}
-                      type={showPassword ? "text" : "password"}
-                      fullWidth
-                      label="Password"
-                      required
-                      placeholder="Enter your password"
-                      variant="outlined"
-                      name="candidatePassword"
-                      className="bg-gray-100 rounded-lg"
-                      sx={{
-                        "& .MuiOutlinedInput-root": {
-                          "&.Mui-focused fieldset": {
-                            borderColor: "black",
-                          },
-                        },
-                        "& .MuiInputLabel-root.Mui-focused": {
-                          color: "black",
-                        },
-                      }}
-                      InputProps={{
-                        endAdornment: (
-                          <InputAdornment position="end">
-                            <IconButton
-                              onClick={togglePasswordVisibility}
-                              edge="end"
-                            >
-                              {showPassword ? (
-                                <VisibilityOff />
-                              ) : (
-                                <Visibility />
-                              )}
-                            </IconButton>
-                          </InputAdornment>
-                        ),
-                      }}
-                    />
-                  </Box>
-
-                  <Box className="sm:px-4 mt-4">
-                    <TextField
-                      value={candidateData.candidateConfirmPassword}
-                      onChange={handleCandidateChange}
-                      type={showPasswords ? "text" : "password"}
-                      fullWidth
-                      label="Confirm Password"
-                      required
-                      placeholder="Confirm your Password"
-                      variant="outlined"
-                      name="candidateConfirmPassword"
-                      className="bg-gray-100 rounded-lg"
-                      sx={{
-                        "& .MuiOutlinedInput-root": {
-                          "&.Mui-focused fieldset": {
-                            borderColor: "black",
-                          },
-                        },
-                        "& .MuiInputLabel-root.Mui-focused": {
-                          color: "black",
-                        },
-                      }}
-                      InputProps={{
-                        endAdornment: (
-                          <InputAdornment position="end">
-                            <IconButton
-                              onClick={togglePasswordVisibilitys}
-                              edge="end"
-                            >
-                              {showPasswords ? (
-                                <VisibilityOff />
-                              ) : (
-                                <Visibility />
-                              )}
-                            </IconButton>
-                          </InputAdornment>
-                        ),
-                      }}
-                    />
-                  </Box>
-
-                  {loading ? (
-                    <Box className="flex items-center justify-center mt-6 sm:mt-8">
-                    <CircularProgress className="text-black"/>
-                    </Box>
-                  ):(
-                    <Box className="sm:px-4 mt-2">
-                    <Button
-                      onClick={handleCandidateSubmit}
-                      variant="outlined"
-                      disabled={
-                        !candidateData.candidateName ||
-                        !candidateData.candidateEmail ||
-                        !candidateData.candidatePassword ||
-                        !candidateData.candidateConfirmPassword
-                      }
-                      fullWidth
-                      className="normal-case border-black h-10 text-black hover:text-white font-bold hover:bg-black transition-all rounded-[10px]"
-                    >
-                      Submit
-                    </Button>
-                  </Box>
-                  )}
-                </>
-              ) : (
-                <>
-                  <Box className="sm:px-4 mt-4">
-                    <TextField
-                      type="text"
-                      value={expertData.expertName}
-                      onChange={handleExpertChange}
-                      label="Interviewer Name"
-                      fullWidth
-                      required
-                      placeholder="Enter your Name"
-                      variant="outlined"
-                      name="expertName"
-                      className="mb-5 bg-gray-100 rounded-lg"
-                      sx={{
-                        "& .MuiOutlinedInput-root": {
-                          "&.Mui-focused fieldset": {
-                            borderColor: "black",
-                          },
-                        },
-                        "& .MuiInputLabel-root.Mui-focused": {
-                          color: "black",
-                        },
-                      }}
-                    />
-                  </Box>
-
-                  <Box className="sm:px-4">
-                    <TextField
-                      type="email"
-                      value={expertData.expertOrgEmail}
-                      onChange={handleExpertChange}
-                      label="Organization Email"
-                      fullWidth
-                      required
-                      placeholder="Enter your work email"
-                      variant="outlined"
-                      name="expertOrgEmail"
-                      className="mb-5 bg-gray-100 rounded-lg"
-                      sx={{
-                        "& .MuiOutlinedInput-root": {
-                          "&.Mui-focused fieldset": {
-                            borderColor: "black",
-                          },
-                        },
-                        "& .MuiInputLabel-root.Mui-focused": {
-                          color: "black",
-                        },
-                      }}
-                    />
-                  </Box>
-
-                  <Box className="sm:px-4">
-                    <TextField
-                      value={expertData.expertPassword}
-                      onChange={handleExpertChange}
-                      type={showPassword ? "text" : "password"}
-                      fullWidth
-                      label="Password"
-                      required
-                      placeholder="Enter your password"
-                      variant="outlined"
-                      name="expertPassword"
-                      className="bg-gray-100 rounded-lg"
-                      sx={{
-                        "& .MuiOutlinedInput-root": {
-                          "&.Mui-focused fieldset": {
-                            borderColor: "black",
-                          },
-                        },
-                        "& .MuiInputLabel-root.Mui-focused": {
-                          color: "black",
-                        },
-                      }}
-                      InputProps={{
-                        endAdornment: (
-                          <InputAdornment position="end">
-                            <IconButton
-                              onClick={togglePasswordVisibility}
-                              edge="end"
-                            >
-                              {showPassword ? (
-                                <VisibilityOff />
-                              ) : (
-                                <Visibility />
-                              )}
-                            </IconButton>
-                          </InputAdornment>
-                        ),
-                      }}
-                    />
-                  </Box>
-
-                  <Box className="sm:px-4 mt-4">
-                    <TextField
-                      value={expertData.expertConfirmPassword}
-                      onChange={handleExpertChange}
-                      type={showPasswords ? "text" : "password"}
-                      fullWidth
-                      label="Confirm Password"
-                      required
-                      placeholder="Confirm your Password"
-                      variant="outlined"
-                      name="expertConfirmPassword"
-                      className="bg-gray-100 rounded-lg"
-                      sx={{
-                        "& .MuiOutlinedInput-root": {
-                          "&.Mui-focused fieldset": {
-                            borderColor: "black",
-                          },
-                        },
-                        "& .MuiInputLabel-root.Mui-focused": {
-                          color: "black",
-                        },
-                      }}
-                      InputProps={{
-                        endAdornment: (
-                          <InputAdornment position="end">
-                            <IconButton
-                              onClick={togglePasswordVisibilitys}
-                              edge="end"
-                            >
-                              {showPasswords ? (
-                                <VisibilityOff />
-                              ) : (
-                                <Visibility />
-                              )}
-                            </IconButton>
-                          </InputAdornment>
-                        ),
-                      }}
-                    />
-                  </Box>
-
-                {loading ? (
-                  <Box className="flex items-center justify-center mt-6 sm:mt-8">
-                  <CircularProgress className="text-black"/>
-                  </Box>
-                ): (
-                  <Box className="sm:px-4 mt-2">
-                  <Button
-                    onClick={handleExpertSubmit}
-                    variant="outlined"
-                    disabled={
-                      !expertData.expertName ||
-                      !expertData.expertOrgEmail ||
-                      !expertData.expertPassword ||
-                      !expertData.expertConfirmPassword
-                    }
-                    fullWidth
-                    className="normal-case border-black h-10 text-black hover:text-white font-bold hover:bg-black transition-all rounded-[10px]"
-                  >
-                    Submit
-                  </Button>
-                </Box>
-                )}
-
-                </>
-              )}
-
-              {/* ------------------------------------------------------------------------------------ */}
-
-              <Typography className="text-center sm:mt-4">
-                Already have an account?{" "}
-                <NavLink to={"/login"}>
-                <span className="underline cursor-pointer text-gray-500 hover:text-black">
-                  Sign In
-                </span>
-                </NavLink>
-              </Typography>
-            </Box>
-
-            {/* ------------------------------------------------------------------------------------ */}
-          </Box>
-        </Box>
+  {userRole ? (
+    <>
+      <Box className="sm:px-4 mt-4">
+        <TextField
+          type="text"
+          value={candidateData.candidateName}
+          onChange={handleCandidateChange}
+          label="Candidate Name"
+          fullWidth
+          required
+          placeholder="Enter your Name"
+          variant="outlined"
+          name="candidateName"
+          className="mb-5 bg-gray-100 rounded-lg"
+          sx={{
+            "& .MuiOutlinedInput-root": {
+              "&.Mui-focused fieldset": {
+                borderColor: "black",
+              },
+            },
+            "& .MuiInputLabel-root.Mui-focused": {
+              color: "black",
+            },
+          }}
+        />
       </Box>
+
+      <Box className="sm:px-4">
+        <TextField
+          type="email"
+          value={candidateData.candidateEmail}
+          onChange={handleCandidateChange}
+          label="Email"
+          fullWidth
+          required
+          placeholder="Enter your Email"
+          variant="outlined"
+          name="candidateEmail"
+          className="mb-5 bg-gray-100 rounded-lg"
+          sx={{
+            "& .MuiOutlinedInput-root": {
+              "&.Mui-focused fieldset": {
+                borderColor: "black",
+              },
+            },
+            "& .MuiInputLabel-root.Mui-focused": {
+              color: "black",
+            },
+          }}
+        />
+      </Box>
+
+      <Box className="sm:px-4">
+        <TextField
+          value={candidateData.candidatePassword}
+          onChange={handleCandidateChange}
+          type={showPassword ? "text" : "password"}
+          fullWidth
+          label="Password"
+          required
+          placeholder="Enter your password"
+          variant="outlined"
+          name="candidatePassword"
+          className="bg-gray-100 rounded-lg"
+          sx={{
+            "& .MuiOutlinedInput-root": {
+              "&.Mui-focused fieldset": {
+                borderColor: "black",
+              },
+            },
+            "& .MuiInputLabel-root.Mui-focused": {
+              color: "black",
+            },
+          }}
+          InputProps={{
+            endAdornment: (
+              <InputAdornment position="end">
+                <IconButton
+                  onClick={togglePasswordVisibility}
+                  edge="end"
+                >
+                  {showPassword ? (
+                    <VisibilityOff />
+                  ) : (
+                    <Visibility />
+                  )}
+                </IconButton>
+              </InputAdornment>
+            ),
+          }}
+        />
+      </Box>
+
+      <Box className="sm:px-4 mt-4">
+        <TextField
+          value={candidateData.candidateConfirmPassword}
+          onChange={handleCandidateChange}
+          type={showPasswords ? "text" : "password"}
+          fullWidth
+          label="Confirm Password"
+          required
+          placeholder="Confirm your Password"
+          variant="outlined"
+          name="candidateConfirmPassword"
+          className="bg-gray-100 rounded-lg"
+          sx={{
+            "& .MuiOutlinedInput-root": {
+              "&.Mui-focused fieldset": {
+                borderColor: "black",
+              },
+            },
+            "& .MuiInputLabel-root.Mui-focused": {
+              color: "black",
+            },
+          }}
+          InputProps={{
+            endAdornment: (
+              <InputAdornment position="end">
+                <IconButton
+                  onClick={togglePasswordVisibilitys}
+                  edge="end"
+                >
+                  {showPasswords ? (
+                    <VisibilityOff />
+                  ) : (
+                    <Visibility />
+                  )}
+                </IconButton>
+              </InputAdornment>
+            ),
+          }}
+        />
+      </Box>
+
+      {loading ? (
+        <Box className="flex items-center justify-center mt-6 sm:mt-8">
+        <CircularProgress className="text-black"/>
+        </Box>
+      ):(
+        <Box className="sm:px-4 mt-4">
+        <Button
+          onClick={handleCandidateSubmit}
+          variant="outlined"
+          disabled={
+            !candidateData.candidateName ||
+            !candidateData.candidateEmail ||
+            !candidateData.candidatePassword ||
+            !candidateData.candidateConfirmPassword
+          }
+          fullWidth
+          className="normal-case border-black h-10 text-black hover:text-white font-bold hover:bg-black transition-all rounded-[10px]"
+        >
+          Submit
+        </Button>
+      </Box>
+      )}
+    </>
+  ) : (
+    <>
+      <Box className="sm:px-4 mt-4">
+        <TextField
+          type="text"
+          value={expertData.expertName}
+          onChange={handleExpertChange}
+          label="Interviewer Name"
+          fullWidth
+          required
+          placeholder="Enter your Name"
+          variant="outlined"
+          name="expertName"
+          className="mb-5 bg-gray-100 rounded-lg"
+          sx={{
+            "& .MuiOutlinedInput-root": {
+              "&.Mui-focused fieldset": {
+                borderColor: "black",
+              },
+            },
+            "& .MuiInputLabel-root.Mui-focused": {
+              color: "black",
+            },
+          }}
+        />
+      </Box>
+
+      <Box className="sm:px-4">
+        <TextField
+          type="email"
+          value={expertData.expertOrgEmail}
+          onChange={handleExpertChange}
+          label="Organization Email"
+          fullWidth
+          required
+          placeholder="Enter your work email"
+          variant="outlined"
+          name="expertOrgEmail"
+          className="mb-5 bg-gray-100 rounded-lg"
+          sx={{
+            "& .MuiOutlinedInput-root": {
+              "&.Mui-focused fieldset": {
+                borderColor: "black",
+              },
+            },
+            "& .MuiInputLabel-root.Mui-focused": {
+              color: "black",
+            },
+          }}
+        />
+      </Box>
+
+      <Box className="sm:px-4">
+        <TextField
+          value={expertData.expertPassword}
+          onChange={handleExpertChange}
+          type={showPassword ? "text" : "password"}
+          fullWidth
+          label="Password"
+          required
+          placeholder="Enter your password"
+          variant="outlined"
+          name="expertPassword"
+          className="bg-gray-100 rounded-lg"
+          sx={{
+            "& .MuiOutlinedInput-root": {
+              "&.Mui-focused fieldset": {
+                borderColor: "black",
+              },
+            },
+            "& .MuiInputLabel-root.Mui-focused": {
+              color: "black",
+            },
+          }}
+          InputProps={{
+            endAdornment: (
+              <InputAdornment position="end">
+                <IconButton
+                  onClick={togglePasswordVisibility}
+                  edge="end"
+                >
+                  {showPassword ? (
+                    <VisibilityOff />
+                  ) : (
+                    <Visibility />
+                  )}
+                </IconButton>
+              </InputAdornment>
+            ),
+          }}
+        />
+      </Box>
+
+      <Box className="sm:px-4 mt-4">
+        <TextField
+          value={expertData.expertConfirmPassword}
+          onChange={handleExpertChange}
+          type={showPasswords ? "text" : "password"}
+          fullWidth
+          label="Confirm Password"
+          required
+          placeholder="Confirm your Password"
+          variant="outlined"
+          name="expertConfirmPassword"
+          className="bg-gray-100 rounded-lg"
+          sx={{
+            "& .MuiOutlinedInput-root": {
+              "&.Mui-focused fieldset": {
+                borderColor: "black",
+              },
+            },
+            "& .MuiInputLabel-root.Mui-focused": {
+              color: "black",
+            },
+          }}
+          InputProps={{
+            endAdornment: (
+              <InputAdornment position="end">
+                <IconButton
+                  onClick={togglePasswordVisibilitys}
+                  edge="end"
+                >
+                  {showPasswords ? (
+                    <VisibilityOff />
+                  ) : (
+                    <Visibility />
+                  )}
+                </IconButton>
+              </InputAdornment>
+            ),
+          }}
+        />
+      </Box>
+
+    {loading ? (
+      <Box className="flex items-center justify-center mt-6 sm:mt-8">
+      <CircularProgress className="text-black"/>
+      </Box>
+    ): (
+      <Box className="sm:px-4 mt-4">
+      <Button
+        onClick={handleExpertSubmit}
+        variant="outlined"
+        disabled={
+          !expertData.expertName ||
+          !expertData.expertOrgEmail ||
+          !expertData.expertPassword ||
+          !expertData.expertConfirmPassword
+        }
+        fullWidth
+        className="normal-case border-black h-10 text-black hover:text-white font-bold hover:bg-black transition-all rounded-[10px]"
+      >
+        Submit
+      </Button>
+    </Box>
+    )}
+
+    </>
+  )}
+
+  {/* ------------------------------------------------------------------------------------ */}
+
+  <Typography className="text-center mt-6">
+    Already have an account?{" "}
+    <NavLink to={"/login"}>
+    <span className="underline cursor-pointer text-gray-500 hover:text-black">
+      Sign In
+    </span>
+    </NavLink>
+  </Typography>
+</Box>
+
+{/* ------------------------------------------------------------------------------------ */}
+</Box>
+</Box>
+</Box>
     </>
   );
 };

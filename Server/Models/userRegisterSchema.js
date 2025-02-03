@@ -21,7 +21,13 @@ const useregisterschema = mongoose.Schema({
   },
   role:{
     type:String
-  }
+  },
+  candidatePicture:{
+    type:String
+  },
+  expertPicture:{
+    type:String
+  },
 }) 
 
 const UserRegisterSchema = mongoose.model("userdetails", useregisterschema)

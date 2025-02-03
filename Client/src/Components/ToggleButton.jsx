@@ -22,7 +22,7 @@ const ToggleButton = () => {
           className="flex-1 flex justify-center items-center text-nowrap px-4 py-2 rounded-full cursor-pointer relative z-10 transition-all"
         >
           <Typography
-            className={`font-extrabold tracking-wider text-base md:text-lg ${
+            className={`font-extrabold tracking-wider text-base md:text-lg ml-2 ${
               isActive !== "Home" ? "text-white" : "text-black"
             }`}
           >
@@ -36,7 +36,7 @@ const ToggleButton = () => {
           className="flex-1 flex justify-center items-center text-nowrap px-4 py-2 rounded-full cursor-pointer relative z-10 transition-all"
         >
           <Typography
-            className={`font-bold md:font-extrabold tracking-wider text-base md:text-lg ${
+            className={`font-bold md:font-extrabold tracking-wider text-base md:text-lg ml-2 ${
               isActive === "Home" ? "text-white" : "text-black"
             }`}
           >

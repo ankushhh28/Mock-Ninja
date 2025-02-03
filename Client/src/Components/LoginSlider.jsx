@@ -30,7 +30,7 @@ const LoginSlider = () => {
   }, [slides.length]);
 
   return (
-    <div className="relative w-auto h-[533px] rounded-2xl shadow-lg bg-[#E0E7FF]">
+    <div className="relative w-auto h-[616px] rounded-2xl shadow-lg bg-[#E0E7FF]">
       <div className="w-full h-full">
         <img
           src={slides[currentSlide].img}
