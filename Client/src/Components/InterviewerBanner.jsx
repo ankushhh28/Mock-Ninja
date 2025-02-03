@@ -71,7 +71,7 @@ const InterviewerBanner = () => {
       onClose={() => setintBeforeLogin(false)}
       className="backdrop-blur-[1px] flex items-center justify-center"
     >
-      <div className="bg-gradient-to-br from-[#4A00E0] to-[#8E2DE2] shadow-2xl max-w-lg w-full p-8 text-center text-white">
+      <div className="bg-gradient-to-br from-[#9870e9] to-[#8E2DE2] shadow-2xl max-w-lg w-full p-8 text-center text-white">
 
       <IconButton
           className="absolute top-4 right-4 text-white hover:text-gray-200"
