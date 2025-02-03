@@ -15,7 +15,7 @@ import { NavLink } from "react-router-dom";
 import ToggleButton from "./ToggleButton";
 import { DataContext } from "../Context/DataProvider";
 
-const HomeBanner = () => {
+const CandidateBanner = () => {
   const { account } = useContext(DataContext);
 
   const [open, setopen] = useState(false);
@@ -102,4 +102,4 @@ const HomeBanner = () => {
   );
 };
 
-export default HomeBanner;
+export default CandidateBanner;
