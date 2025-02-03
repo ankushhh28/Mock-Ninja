@@ -1,6 +1,6 @@
 import { AppBar, Box, Button, Drawer, Toolbar, Typography } from "@mui/material";
 import React, { useRef, useState } from "react";
-import { NavLink, useNavigate } from "react-router-dom";
+import { NavLink, useLocation, useNavigate } from "react-router-dom";
 
 import Logo from "../assets/Logo.png"
 
@@ -14,6 +14,8 @@ import VpnKeyIcon from '@mui/icons-material/VpnKey';
 const NavBar = () =>  {
   
   const navigate = useNavigate()
+  const location = useLocation()
+  const activePage = location.pathname
 
   const today = new Date().toLocaleDateString("en-IN", {
     weekday: "long",
@@ -63,37 +65,37 @@ const NavBar = () =>  {
   <Box 
   className="hidden gap-8 md:flex">
 
-  <Box className="flex justify-between items-center md:gap-2">
+  <Box className="flex justify-between items-center md:gap-10">
     
-    <NavLink to={"/"}>
-    <Button 
-    variant="outlined"
-    className="text-white text-[17px] normal-case font-bold border-none hover:bg-white hover:text-[#8667F2] transition-all">
-      Home
-    </Button>
-    </NavLink>
+  <NavLink to={"/"}>
+  <Box 
+  variant="outlined"
+  className={`text-white text-nowrap text-[17px] font-bold border-none transition-all btn-line-animation ${activePage === "/" ? "text-gray-800" : ""}`}>
+  Home
+  </Box>
+  </NavLink>
     
-    <NavLink to={"/About"}>
-    <Button 
-    variant="outlined"
-    className="text-white text-[17px] normal-case font-bold border-none hover:bg-white hover:text-[#8667F2] transition-all">
-      About
-    </Button>
-    </NavLink>
-    
-    <NavLink to={"/Contact-us"}>
-    <Button 
-    variant="outlined"
-    className="text-white text-nowrap text-[17px] normal-case font-bold border-none hover:bg-white hover:text-[#8667F2] transition-all">
-      Contact Us
-    </Button>
-    </NavLink>
+  <NavLink to={"/About"}>
+  <Box 
+  variant="outlined"
+  className={`text-white text-nowrap text-[17px] font-bold border-none transition-all btn-line-animation ${activePage === "/About" ? "text-gray-800" : ""}`}>
+  About
+  </Box>
+  </NavLink>
+  
+  <NavLink to={"/Contact-us"}>
+  <Box 
+  variant="outlined"
+  className={`text-white text-nowrap text-[17px] font-bold border-none transition-all btn-line-animation ${activePage === "/Contact-us" ? "text-gray-800" : ""}`}>
+  Contact Us
+  </Box>
+  </NavLink>
 
   </Box>
 
 {/* ------------------------------------------------------------------------------------ */}
 
-  <Box className="flex gap-4">
+  <Box className="flex gap-4 ml-3">
     
     <NavLink to={"/Register"}>
     <Button 
@@ -155,13 +157,13 @@ const NavBar = () =>  {
 
 {/* -------------------------------------------------------------------------------------- */}
 
-  <Box className="flex flex-col gap-1 mt-6 mx-10">
+  <Box className="flex flex-col gap-2 mt-6 mx-10">
 
     <Button
     onClick={() => navigate("/")}
     startIcon={<HomeIcon />}
     variant="contained"
-    className="text-black pr-[68px] text-[15px] hover:rounded-[20px] rounded-[20px] hover:bg-gray-300 font-bold bg-[#E5E5E5] shadow-none hover:shadow-none w-full"
+    className={`text-black pr-[68px] text-[15px] hover:rounded-[20px] rounded-[20px] hover:bg-gray-300 hover:text-black transition-all ${activePage === "/" ? "bg-black text-white" : ""} font-bold bg-[#E5E5E5] shadow-none hover:shadow-none w-full`}
     >
       Home
     </Button>
@@ -170,7 +172,7 @@ const NavBar = () =>  {
     onClick={() => navigate("/About")}
     startIcon={<InfoIcon/>}
     variant="contained"
-    className="text-black pr-[60px] text-[15px] hover:rounded-[20px] rounded-[20px] hover:bg-gray-300 font-bold bg-[#E5E5E5] shadow-none hover:shadow-none w-full"
+    className={`text-black pr-[60px] text-[15px] hover:rounded-[20px] rounded-[20px] hover:bg-gray-300 hover:text-black transition-all ${activePage === "/About" ? "bg-black text-white" : ""} font-bold bg-[#E5E5E5] shadow-none hover:shadow-none w-full`}
     >
       About
     </Button>
@@ -179,7 +181,7 @@ const NavBar = () =>  {
     onClick={() => navigate("/Contact-us")}
     startIcon={<PermContactCalendarIcon/>}
     variant="contained"
-    className="text-black text-[15px] hover:rounded-[20px] rounded-[20px] hover:bg-gray-300 font-bold bg-[#E5E5E5] shadow-none hover:shadow-none w-full"
+    className={`text-black text-[15px] hover:rounded-[20px] rounded-[20px] hover:bg-gray-300 font-bold hover:text-black transition-all ${activePage === "/Contact-us" ? "bg-black text-white" : ""} bg-[#E5E5E5] shadow-none hover:shadow-none w-full`}
     >
       Contact us
     </Button>

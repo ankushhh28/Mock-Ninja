@@ -39,6 +39,7 @@ export const Login = async(req, res) => {
         accessToken, 
         refreshToken, 
         name: user.candidateName || user.expertName, 
+        email: user.candidateEmail || user.expertOrgEmail,
         role:user.role})
     }
     else{
@@ -83,6 +84,7 @@ export const GoogleLogin = async(req,res) => {
     accessToken,
     refreshToken,
     name: userExists.candidateName || userExists.candidateEmail,
+    email: userExists.candidateEmail || userExists.expertOrgEmail,
     role: userExists.role
   })
 

@@ -7,7 +7,7 @@ const DataProvider = ({ children }) => {
   // http://localhost:5000
   // https://mock-ninja-backend.onrender.com
 
-  const backendUrl = "https://mock-ninja-backend.onrender.com";
+  const backendUrl = "http://localhost:5000";
 
 // ----------------------------------------------------------------------------
 
@@ -25,10 +25,13 @@ const DataProvider = ({ children }) => {
     return savedAccount ? JSON.parse(savedAccount) : {
       accessToken:"",
       name:"",
+      email:"",
       refreshToken:"",
       role:""
     }
   })
+
+  // console.log(account);
 
   useEffect(() => {
     sessionStorage.setItem("account", JSON.stringify(account))

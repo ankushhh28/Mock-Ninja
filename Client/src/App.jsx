@@ -17,6 +17,10 @@ const InterviewerHome = lazy(() => import("./Pages/InterviewerHome"));
 //---------------------- CANDIDATES IMPORTS ONLY -----------------------
 
 const CanHome = lazy(() => import("./Candidate/Can_Home"));
+const CanAiMock = lazy(() => import("./Candidate/Can_AiMock"));
+const CanMock = lazy(() => import("./Candidate/Can_Mock"));
+const CanATS = lazy(() => import("./Candidate/Can_ATS"));
+const CanProfile = lazy(() => import("./Candidate/Can_Profile"));
 
 //---------------------- SELECTOR IMPORTS ONLY -------------------------
 
@@ -65,6 +69,10 @@ const InterviewerPrivate = () => {
 
       <Route element={<CandidatePrivate/>}>
         <Route path="/Candidate/Home" element={<CanHome />} />
+        <Route path="/Candidate/AI/Mock" element={<CanAiMock />} />
+        <Route path="/Candidate/Mock" element={<CanMock />} />
+        <Route path="/Candidate/ATS" element={<CanATS />} />
+        <Route path="/Candidate/Profile" element={<CanProfile />} />
       </Route>
 
 {/*---------------- SELECTOR ROUTES (WITH LOGIN) ----------------*/}
