@@ -7,7 +7,16 @@ const DataProvider = ({ children }) => {
   // http://localhost:5000
   // https://mock-ninja-backend.onrender.com
 
-  const backendUrl = "https://mock-ninja-backend.onrender.com";
+  const backendUrl = "http://localhost:5000";
+
+// ----------------------------------------------------------------------------
+
+  const [beforeLogin, setBeforeLogin] = useState(false)
+
+// ----------------------------------------------------------------------------
+ 
+  const [intBeforeLogin, setintBeforeLogin] = useState(false)
+  
 
 // ----------------------------------------------------------------------------
 
@@ -21,8 +30,6 @@ const DataProvider = ({ children }) => {
     }
   })
 
-  console.log(account)
-
   useEffect(() => {
     sessionStorage.setItem("account", JSON.stringify(account))
   },[account])
@@ -35,7 +42,11 @@ const DataProvider = ({ children }) => {
       value={{
         backendUrl,
         account,
-        setAccount
+        setAccount,
+        beforeLogin,
+        setBeforeLogin,
+        setintBeforeLogin,
+        intBeforeLogin
       }}
     >
       {children}

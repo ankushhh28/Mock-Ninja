@@ -23,7 +23,7 @@ const ToggleButton = () => {
         >
           <Typography
             className={`font-extrabold tracking-wider text-base md:text-lg ml-2 ${
-              isActive !== "Home" ? "text-white" : "text-black"
+              isActive !== "Interviewer-Home" ? "text-white" : "text-black"
             }`}
           >
             Candidate
@@ -37,7 +37,7 @@ const ToggleButton = () => {
         >
           <Typography
             className={`font-bold md:font-extrabold tracking-wider text-base md:text-lg ml-2 ${
-              isActive === "Home" ? "text-white" : "text-black"
+              isActive === "Interviewer-Home" ? "text-white" : "text-black"
             }`}
           >
             Interviewer

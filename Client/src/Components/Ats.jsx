@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FaCloudUploadAlt } from "react-icons/fa";
 import atsCheck from "../assets/images/atsCheck.png";
 
@@ -14,8 +14,8 @@ export default function Ats() {
 
   return (
     <div className="flex flex-row bg-gradient-to-b from-[#c28ceb] to-[#8667F2] text-white rounded-3xl m-8 w-full mb-20">
-    <section className="flex flex-row">
-      {/* Text Section-------------------------------------------------------------------------------------------- */}
+    <section className="flex flex-row md:flex-col">
+      {/* Text Section------------------------------------------------------------------ */}
       <div className="flex flex-col justify-center text-center ml-16 p-8 w-full">
         <h2 className="text-lg font-semibold tracking-wide uppercase">
           Free Resume Checker
@@ -30,9 +30,9 @@ export default function Ats() {
           and <span className="font-bold">land more interviews.</span>
         </p>
         
-      {/* Text Section-------------------------------------------------------------------------------------------- */}
+      {/* Text Section------------------------------------------------------------------------------------ */}
 
-        {/* For LoggedIn Users Only--------------------------------------------------------------------------------*/}
+        {/* For LoggedIn Users Only----------------------------------------------------------*/}
         <div className="rounded-lg border-dashed border-2 border-white mt-8 p-6 inline-block">
           <label
             htmlFor="resume-upload"
@@ -56,7 +56,7 @@ export default function Ats() {
 
       </div>
 
-      {/* Not LoggedIn Users----------------------------------------------------------------------- */}
+      {/* Not LoggedIn Users------------------------------------------------------------ */}
               
               {/* Button */}
 
@@ -65,7 +65,7 @@ export default function Ats() {
       
     </section>
     {/* Image Section---------------------------------------------------------------------------- */}
-    <div className="relative -right-32 rounded-lg z-10 mt-7 mb-7">
+    <div className="rounded-lg z-10 mt-7 mb-7">
         <img
           src={atsCheck}
           alt="atsCheck"
