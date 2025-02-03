@@ -5,6 +5,8 @@ import HomeBanner from "../Components/CandidateBanner";
 import MockDescSection from "../Components/MockDescSection";
 import StepsHome from "../Components/StepsHome";
 import CandidateBanner from "../Components/CandidateBanner";
+import ThreeCircles from "../Components/ThreeCircles";
+import Ats from "../Components/Ats"
 
 const Home = () => {
   return (
@@ -12,9 +14,11 @@ const Home = () => {
       <Layout>
         <div>
           <CandidateBanner />
-          <MockDescSection />
           <InfiniteSlider />
+          <MockDescSection />
           <StepsHome />
+          <ThreeCircles />
+          <Ats />
         </div>
       </Layout>
     </>
