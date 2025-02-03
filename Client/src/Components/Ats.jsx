@@ -13,10 +13,10 @@ export default function Ats() {
   };
 
   return (
-    <div className="flex flex-row bg-gradient-to-b from-[#c28ceb] to-[#8667F2] text-white rounded-3xl m-8 w-full mb-20">
-    <section className="flex flex-row md:flex-col">
-      {/* Text Section------------------------------------------------------------------ */}
-      <div className="flex flex-col justify-center text-center ml-16 p-8 w-full">
+    <div className="flex flex-col lg:flex-row bg-gradient-to-b from-[#c28ceb] to-[#8667F2] text-white rounded-3xl lg:m-8 w-full lg:mb-20">
+    <section className="flex flex-col lg:flex-row w-full">
+      {/* Text Section-------------------------------------------------------------------------------------------- */}
+      <div className="flex flex-col justify-center text-center lg:ml-16 p-8 w-full">
         <h2 className="text-lg font-semibold tracking-wide uppercase">
           Free Resume Checker
         </h2>
@@ -65,11 +65,11 @@ export default function Ats() {
       
     </section>
     {/* Image Section---------------------------------------------------------------------------- */}
-    <div className="rounded-lg z-10 mt-7 mb-7">
+    <div className="flex w-full rounded-lg z-10 sm: mt-7 mb-7 justify-center lg:justify-end">
         <img
           src={atsCheck}
           alt="atsCheck"
-          className="max-w-2xl h-96 rounded-lg"
+          className="max-w-full lg:max-w-2xl h-48 lg:h-auto rounded-lg"
         />
   </div>
       {/* Image Section---------------------------------------------------------------------------- */}
