@@ -6,10 +6,10 @@ import interviewer from "../assets/images/interviewer.png";
 
 const MockDescSection = () => {
   return (
-    <section className="flex flex-col items-center w-full md:px-12 lg:px-20 py-16 max-w-[2014px] space-y-12">
+    <section className="flex flex-col items-center w-full md:px-20 lg:px-10 px-4 py-16 max-w-[2014px] space-y-12 lg:ml-12">
       {/* textLeft----------------------------------------------------------------------------------------------------------------- */}
 
-      <div className="flex flex-col lg:flex-row items-center w-full ml-32">
+      <div className="flex flex-col lg:flex-row items-center w-full lg:ml-32">
         <div className="lg:w-1/2 text-center lg:text-left">
           <h1 className="text-4xl md:text-5xl font-bold text-gray-900 leading-tight">
             AI-Based <span className="text-[#8667F2]">Mock Interviews</span>
@@ -78,12 +78,12 @@ const MockDescSection = () => {
 
       {/* TextRight----------------------------------------------------------------------------------------------------------------- */}
 
-      <div className="flex flex-col lg:flex-row-reverse items-center justify-stretch w-full mr-60">
+      <div className="flex flex-col lg:flex-row-reverse items-center justify-stretch w-full lg:mr-60">
         <div className="lg:w-1/2 text-center lg:text-left">
           <h1 className="text-4xl md:text-5xl font-bold text-gray-900 leading-tight">
             <span className="text-[#8667F2]">Expert</span> Mock Interviews
           </h1>
-          <p className="mt-4 text-lg text-grey-600 text-justify">
+          <p className="mt-4 text-lg text-gray-600 text-justify">
             You can book paid mock interviews with industry professionals to get
             practical feedback and improve your skills. A comprehensive
             dashboard tracks your performance with detailed analytics. This
