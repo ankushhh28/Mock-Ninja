@@ -15,10 +15,6 @@ import rustIcon from "../assets/proglangsvgs/rust.svg";
 import typescriptIcon from "../assets/proglangsvgs/typescript.svg";
 import reactIcon from "../assets/proglangsvgs/react.svg";
 
-import gsap from "gsap";
-import ScrollTrigger from "gsap/ScrollTrigger";
-import { useGSAP } from "@gsap/react";
-
 const InfiniteSlider = () => {
 
   const icons = [
@@ -39,27 +35,8 @@ const InfiniteSlider = () => {
     reactIcon,
   ];
 
-// --------------------------- GSAP ANIMATION -----------------------------------
-// --------------------------- GSAP ANIMATION -----------------------------------
-
-  gsap.registerPlugin(ScrollTrigger)
-
-  const infiniteSliderRef = useRef(null)
-  
-  useGSAP(() => {
-    gsap.from(infiniteSliderRef.current, {
-      x:700,
-      opacity:0,
-      duration:2,
-      scrollTrigger:{
-        trigger:infiniteSliderRef.current,
-      }
-    })
-  })
-
   return (
     <div 
-    ref={infiniteSliderRef}
     className="flex justify-center">
     <div className="w-[90%] overflow-hidden relative">
       <div className="flex animate-scroll gap-4 sm:gap-4">

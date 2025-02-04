@@ -26,6 +26,7 @@ export default function Ats() {
   gsap.from(LaptopRef.current, {
     x:20,
     scale:2,
+    delay:1,
     duration:0.5,
     opacity:0,
     scrollTrigger:{
