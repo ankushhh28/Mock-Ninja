@@ -3,7 +3,7 @@ import { FaUserLock, FaSignInAlt, FaUserPlus, FaTimes } from "react-icons/fa";
 import { NavLink } from "react-router-dom";
 import { Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, IconButton, Typography} from "@mui/material";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
-import homeRobot from "../../assets/homeRobot.gif";
+import homeImage from "../../assets/images/homeImage.png";
 import ToggleButton from "../ToggleButton";
 import { DataContext } from "../../Context/DataProvider";
 
@@ -84,7 +84,7 @@ const CandidateBanner = () => {
           <Box className="w-full md:w-1/2 flex justify-center mt-10 md:mt-0">
             <img
             ref={CanBannerImg}
-              src={homeRobot}
+              src={homeImage}
               alt="Illustration"
               className="w-[1000px] h-auto"
             />
