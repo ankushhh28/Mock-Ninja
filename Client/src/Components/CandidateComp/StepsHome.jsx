@@ -1,8 +1,8 @@
 import React, { useRef, useState } from "react";
-import img1 from "../assets/images/oneonone.jpg";
-import img2 from "../assets/images/aiconverse.gif";
-import img3 from "../assets/images/feedback.gif";
-import img5 from "../assets/images/resumeats.gif";
+import img1 from "../../assets/images/oneonone.jpg";
+import img2 from "../../assets/images/aiconverse.gif";
+import img3 from "../../assets/images/feedback.gif";
+import img5 from "../../assets/images/resumeats.gif";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";

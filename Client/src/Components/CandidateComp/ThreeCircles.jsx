@@ -1,6 +1,6 @@
-import domain from "../assets/images/domain.png";
-import resume from "../assets/images/resumesvg.svg";
-import programming from "../assets/images/programming.png";
+import domain from "../../assets/images/domain.png";
+import resume from "../../assets/images/resumesvg.svg";
+import programming from "../../assets/images/programming.png";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";

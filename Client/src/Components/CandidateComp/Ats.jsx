@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { FaCloudUploadAlt } from "react-icons/fa";
-import atsCheck from "../assets/images/atsCheck.png";
+import atsCheck from "../../assets/images/atsCheck.png";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";

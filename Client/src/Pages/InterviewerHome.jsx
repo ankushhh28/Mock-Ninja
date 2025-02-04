@@ -1,6 +1,6 @@
 import React from "react";
 import Layout from "../Layout/Layout";
-import InterviewerBanner from "../Components/InterviewerBanner";
+import InterviewerBanner from "../Components/InterviewComp/InterviewerBanner";
 
 const InterviewerHome = () => {
   return (

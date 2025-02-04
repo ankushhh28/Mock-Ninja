@@ -3,9 +3,9 @@ import { FaUserLock, FaSignInAlt, FaUserPlus, FaTimes } from "react-icons/fa";
 import { NavLink } from "react-router-dom";
 import { Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, IconButton, Typography} from "@mui/material";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
-import homeRobot from "../assets/homeRobot.gif";
-import ToggleButton from "./ToggleButton";
-import { DataContext } from "../Context/DataProvider";
+import homeRobot from "../../assets/homeRobot.gif";
+import ToggleButton from "../ToggleButton";
+import { DataContext } from "../../Context/DataProvider";
 
 import gsap from "gsap"
 import ScrollTrigger from "gsap/ScrollTrigger";

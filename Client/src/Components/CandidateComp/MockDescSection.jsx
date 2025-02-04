@@ -1,10 +1,10 @@
 import React, { useContext, useRef } from "react";
 import { Link } from "react-router-dom";
-import chatbot from "../assets/images/bgremovedbot.gif";
-import longbot from "../assets/images/longbot.gif";
-import interviewer from "../assets/images/interviewer.png";
+import chatbot from "../../assets/images/bgremovedbot.gif";
+import longbot from "../../assets/images/longbot.gif";
+import interviewer from "../../assets/images/interviewer.png";
 import { Button } from "@mui/material";
-import { DataContext } from "../Context/DataProvider";
+import { DataContext } from "../../Context/DataProvider";
 
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
