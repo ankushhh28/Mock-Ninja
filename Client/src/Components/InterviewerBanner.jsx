@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useRef } from "react";
 import { FaUserLock, FaSignInAlt, FaUserPlus, FaTimes } from "react-icons/fa";
 import {
   Box,
@@ -16,10 +16,39 @@ import frame2 from "../assets/images/frame2.svg";
 import { NavLink } from "react-router-dom";
 import ToggleButton from "./ToggleButton";
 import { DataContext } from "../Context/DataProvider";
+import gsap from "gsap";
+import { useGSAP } from "@gsap/react";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 const InterviewerBanner = () => {
   const { account, intBeforeLogin, setintBeforeLogin } =
     useContext(DataContext);
+
+  // --------------------------- GSAP ANIMATION -----------------------------------
+  // --------------------------- GSAP ANIMATION -----------------------------------
+
+  gsap.registerPlugin(ScrollTrigger);
+
+  const BannerText = useRef(null);
+  const BannerImg = useRef(null);
+
+  useGSAP(() => {
+    gsap.from(BannerText.current, {
+      x: -80,
+      duration: 1,
+      opacity: 0,
+      scrollTrigger: BannerText.current,
+    });
+
+    gsap.from(BannerImg.current, {
+      x: 170,
+      opacity: 0,
+      duration: 1,
+      scrollTrigger: {
+        trigger: BannerImg.current,
+      },
+    });
+  });
 
   return (
     <>
@@ -28,9 +57,10 @@ const InterviewerBanner = () => {
 
         <ToggleButton />
 
-        {/* --------------------- Home Content & BannerImage ----------------------- */}
-
-        <Box className="flex flex-col md:flex-row items-center justify-between w-full mt-10">
+        <Box
+          ref={BannerText}
+          className="flex flex-col md:flex-row items-center justify-between w-full mt-10"
+        >
           <Box className="flex flex-col items-start text-left w-full md:w-1/2 space-y-8">
             <Typography className="text-3xl sm:text-5xl font-extrabold tracking-tighter text-black">
               <span className="text-purple-500">Transform Careers with </span>,{" "}
@@ -61,10 +91,10 @@ const InterviewerBanner = () => {
               </Button>
             </Box>
           </Box>
-
-          <Box className="w-full md:w-1/2 flex justify-center mt-10 md:mt-0">
-          <img src={frame1} alt="videoframe1" />
-          <img src={frame2} alt="" />
+          <Box className="w-full md:w-1/2 mt-10 md:mt-0">
+            <img ref={BannerImg} src={frame1} alt="frame1" />
+            <img src={frame2} alt="frame2" />
+            
           </Box>
         </Box>
       </Box>

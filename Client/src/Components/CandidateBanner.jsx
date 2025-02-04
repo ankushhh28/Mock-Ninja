@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useRef, useState } from "react";
 import { FaUserLock, FaSignInAlt, FaUserPlus, FaTimes } from "react-icons/fa";
 import { NavLink } from "react-router-dom";
 import { Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, IconButton, Typography} from "@mui/material";
@@ -7,9 +7,39 @@ import homeRobot from "../assets/homeRobot.gif";
 import ToggleButton from "./ToggleButton";
 import { DataContext } from "../Context/DataProvider";
 
+import gsap from "gsap"
+import ScrollTrigger from "gsap/ScrollTrigger";
+import { useGSAP } from "@gsap/react"
+
 const CandidateBanner = () => {
 
   const { account, beforeLogin, setBeforeLogin } = useContext(DataContext);
+
+// --------------------------- GSAP ANIMATION -----------------------------------
+// --------------------------- GSAP ANIMATION -----------------------------------
+
+  gsap.registerPlugin(ScrollTrigger)
+
+  const CanBannerText = useRef(null)
+  const CanBannerImg = useRef(null)
+
+  useGSAP(() => {
+    gsap.from(CanBannerText.current, {
+      x:-80,
+      duration:1,
+      opacity:0,
+      scrollTrigger:CanBannerText.current
+    })
+
+    gsap.from(CanBannerImg.current, {
+      x:80,
+      duration:1,
+      opacity:0,
+      scrollTrigger:{
+        trigger:CanBannerImg.current,
+      }
+    })
+  })
 
   return (
     <>
@@ -17,7 +47,11 @@ const CandidateBanner = () => {
         <ToggleButton />
 
         <Box className="flex flex-col md:flex-row items-center justify-between w-full mt-10">
-          <Box className="flex flex-col  w-full md:w-1/2 space-y-8 ">
+
+          <Box 
+          ref={CanBannerText}
+          className="flex flex-col items-start text-left w-full md:w-1/2 space-y-8">
+
             <Typography className="text-3xl sm:text-5xl font-extrabold tracking-tighter text-black">
               <span className="text-[#0d0d0d]">Master Your Interviews</span>,{" "}
               <span className="text-purple-500">Secure Your Future</span>
@@ -49,6 +83,7 @@ const CandidateBanner = () => {
 
           <Box className="w-full md:w-1/2 flex justify-center mt-10 md:mt-0">
             <img
+            ref={CanBannerImg}
               src={homeRobot}
               alt="Illustration"
               className="w-[1000px] h-auto"
@@ -61,7 +96,7 @@ const CandidateBanner = () => {
       {/* --------------------- MODAL BEFORE LOGIN AT HOME ----------------------- */}
 
       <Dialog
-      open={beforeLogin && !account.name}
+      open={beforeLogin && account.name === ""}
       onClose={() => setBeforeLogin(false)}
       className="backdrop-blur-[1px] flex items-center justify-center"
     >

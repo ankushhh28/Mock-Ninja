@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef } from "react";
 import bashIcon from "../assets/proglangsvgs/bash.svg";
 import cIcon from "../assets/proglangsvgs/c.svg";
 import csharpIcon from "../assets/proglangsvgs/csharp.svg";
@@ -16,6 +16,7 @@ import typescriptIcon from "../assets/proglangsvgs/typescript.svg";
 import reactIcon from "../assets/proglangsvgs/react.svg";
 
 const InfiniteSlider = () => {
+
   const icons = [
     bashIcon,
     cIcon,
@@ -35,9 +36,10 @@ const InfiniteSlider = () => {
   ];
 
   return (
-    <div className="flex justify-center items-center">
-    <div className="w-[95%] overflow-hidden relative">
-      <div className="flex animate-scroll gap-6">
+    <div 
+    className="flex justify-center">
+    <div className="w-[90%] overflow-hidden relative">
+      <div className="flex animate-scroll gap-4 sm:gap-4">
         {[...icons, ...icons].map((icon, index) => (
           <img
             key={index}
