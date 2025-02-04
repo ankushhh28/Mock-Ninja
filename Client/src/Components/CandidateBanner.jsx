@@ -17,7 +17,7 @@ const CandidateBanner = () => {
         <ToggleButton />
 
         <Box className="flex flex-col md:flex-row items-center justify-between w-full mt-10">
-          <Box className="flex flex-col items-start text-left w-full md:w-1/2 space-y-8">
+          <Box className="flex flex-col  w-full md:w-1/2 space-y-8 ">
             <Typography className="text-3xl sm:text-5xl font-extrabold tracking-tighter text-black">
               <span className="text-[#0d0d0d]">Master Your Interviews</span>,{" "}
               <span className="text-purple-500">Secure Your Future</span>

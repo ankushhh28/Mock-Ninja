@@ -20,13 +20,13 @@ const MockDescSection = () => {
             language to provide detailed feedback. Get an ATS resume score with
             improvement tips to pass automated screenings.
           </p>
-          <Link 
+          <Link
             to="/Register"
             className="mt-6 text-lg font-semibold text-black italic flex space-x-2 transition-all ease-in-out duration-1000"
           >
             <span>Try AI Mock Interviews</span>
             <span>🤖</span>
-          </Link>  
+          </Link>
         </div>
 
         {/* rightSideCard------------------------------------------------------------------------------------------ */}
