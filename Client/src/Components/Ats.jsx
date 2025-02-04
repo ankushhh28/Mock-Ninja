@@ -1,6 +1,9 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { FaCloudUploadAlt } from "react-icons/fa";
 import atsCheck from "../assets/images/atsCheck.png";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import gsap from "gsap";
+import { useGSAP } from "@gsap/react";
 
 export default function Ats() {
   const [uploadedFile, setUploadedFile] = useState(null);
@@ -11,6 +14,25 @@ export default function Ats() {
       setUploadedFile(file.name);
     }
   };
+
+// ------------------------ GSAP ANIMATIN ------------------
+// ------------------------ GSAP ANIMATIN ------------------
+
+  gsap.registerPlugin(ScrollTrigger)
+
+  const LaptopRef = useRef(null)
+
+  useGSAP(() => {
+  gsap.from(LaptopRef.current, {
+    x:20,
+    scale:2,
+    duration:0.5,
+    opacity:0,
+    scrollTrigger:{
+      trigger:LaptopRef.current,
+      start:"top 40%",
+    }
+  })})
 
   return (
     <div className="flex flex-col lg:flex-row bg-gradient-to-b from-[#c28ceb] to-[#8667F2] text-white rounded-3xl lg:m-8 w-full lg:mb-20">
@@ -67,6 +89,7 @@ export default function Ats() {
     {/* Image Section---------------------------------------------------------------------------- */}
     <div className="flex w-full rounded-lg z-10 sm: mt-7 mb-7 justify-center lg:justify-end">
         <img
+        ref={LaptopRef}
           src={atsCheck}
           alt="atsCheck"
           className="max-w-full lg:max-w-2xl h-48 lg:h-auto rounded-lg"

@@ -1,8 +1,11 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import img1 from "../assets/images/oneonone.jpg";
 import img2 from "../assets/images/aiconverse.gif";
 import img3 from "../assets/images/feedback.gif";
 import img5 from "../assets/images/resumeats.gif";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useGSAP } from "@gsap/react";
 
 const steps = [
   {
@@ -39,12 +42,45 @@ const steps = [
 ];
 
 export default function StepsHome() {
+
   const [activeStep, setActiveStep] = useState(1);
+
+// ----------------------- GSAP ANIMATION -------------------
+// ----------------------- GSAP ANIMATION -------------------
+
+  gsap.registerPlugin(ScrollTrigger)
+
+  const ImgBoxRef = useRef(null)
+  const ImgContentRef = useRef(null)
+
+  useGSAP(() => {
+    gsap.from(ImgBoxRef.current,{
+      x:-90,
+      duration:1,
+      opacity:0,
+      scrollTrigger:{
+        trigger:ImgBoxRef.current,
+        start:"top 80%"
+      }
+    })
+
+    gsap.from(ImgContentRef.current,{
+      x:90,
+      duration:1,
+      opacity:0,
+      scrollTrigger:{
+        trigger:ImgContentRef.current,
+        start:"top 80%"
+      }
+    })
+  })
 
   return (
     <div className="flex flex-col lg:flex-row items-center w-full px-4 py-6 sm:px-6 lg:px-10">
       
-      <div className="hidden lg:block lg:w-1/2 bg-[#c28ceb] p-6 rounded-3xl">
+      <div 
+      ref={ImgBoxRef}
+      className="hidden lg:block lg:w-1/2 bg-[#c28ceb] p-6 rounded-3xl">
         <img
           src={steps.find((step) => step.id === activeStep)?.image}
           alt="Step view"
@@ -53,7 +89,9 @@ export default function StepsHome() {
       </div>
 
       {/* Steps Section */}
-      <div className="w-full lg:w-1/2 space-y-4 px-4 sm:px-6">
+      <div 
+      ref={ImgContentRef}
+      className="w-full lg:w-1/2 space-y-4 px-4 sm:px-6">
         {steps.map((step) => (
           <div key={step.id} className="border-b pb-2">
             <button
