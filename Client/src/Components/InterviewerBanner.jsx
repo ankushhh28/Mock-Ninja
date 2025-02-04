@@ -13,6 +13,9 @@ import {
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import frame1 from "../assets/images/frame1.svg";
 import frame2 from "../assets/images/frame2.svg";
+import man from "../assets/man.mp4";
+import women from "../assets/women.mp4";
+
 import { NavLink } from "react-router-dom";
 import ToggleButton from "./ToggleButton";
 import { DataContext } from "../Context/DataProvider";
@@ -59,9 +62,9 @@ const InterviewerBanner = () => {
 
         <Box
           ref={BannerText}
-          className="flex flex-col md:flex-row items-center justify-between w-full mt-10"
+          className="flex flex-col md:flex-row  items-center justify-between w-full mt-10"
         >
-          <Box className="flex flex-col items-start text-left w-full md:w-1/2 space-y-8">
+          <Box className="flex flex-col items-start  w-full md:w-1/2 space-y-8">
             <Typography className="text-3xl sm:text-5xl font-extrabold tracking-tighter text-black">
               <span className="text-purple-500">Transform Careers with </span>,{" "}
               <span className="text-[#0d0d0d]">Your Expertise</span>
@@ -91,11 +94,42 @@ const InterviewerBanner = () => {
               </Button>
             </Box>
           </Box>
-          <Box className="w-full md:w-1/2 mt-10 md:mt-0">
-            <img ref={BannerImg} src={frame1} alt="frame1" />
-            <img src={frame2} alt="frame2" />
-            
-          </Box>
+
+          <Box className="flex flex-col w-full md:w-1/2 mt-10 md:mt-0 md:items-end">
+  {/* First Image + Video */}
+  <div className="flex flex-col items-center relative left-8 sm:left-14 md:left-16 lg:left-6 xl:left-18">
+    <img
+      ref={BannerImg}
+      src={frame1}
+      alt="frame1"
+      className="w-[280px] sm:w-[400px] md:w-[320px] lg:w-[330px] xl:w-[400px]"
+    />
+    <video
+      src={women}
+      autoPlay
+      muted
+      loop
+      className="w-[280px] sm:w-[400px] md:w-[320px] lg:w-[330px] xl:w-[400px]"
+    ></video>
+  </div>
+
+  {/* Second Image + Video */}
+  <div className="relative right-8 sm:right-14 md:right-16 lg:right-8 xl:right-20 flex flex-col items-center md:items-end">
+    <img
+      src={frame2}
+      alt="frame2"
+      className="w-[280px] sm:w-[400px] md:w-[320px] lg:w-[330px] xl:w-[400px]"
+    />
+    <video
+      src={man}
+      autoPlay
+      muted
+      loop
+      className="w-[280px] sm:w-[400px] md:w-[320px] lg:w-[330px] xl:w-[400px]"
+    ></video>
+  </div>
+</Box>
+
         </Box>
       </Box>
 
