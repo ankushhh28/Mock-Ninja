@@ -33,7 +33,7 @@ const today = new Date().toLocaleDateString("en-IN", {
 
   const [drawerOpen, SetDrawerOpen] = useState(false)
   const [candidateData, SetCandidateData] = useState("")
-  const [profilePhoto, setProfilePhoto] = useState(sessionStorage.getItem("profilePhoto"));
+  const [profilePhoto, setProfilePhoto] = useState(localStorage.getItem("profilePhoto"));
 
 // --------------------------------------------------------------------
 
@@ -55,7 +55,7 @@ const today = new Date().toLocaleDateString("en-IN", {
         }
       )
       SetCandidateData(response.data)
-      sessionStorage.setItem("profilePhoto",response.data.candidatePicture)
+      localStorage.setItem("profilePhoto",response.data.candidatePicture)
     } catch (error) {
       console.log(error.response?.data?.message || "An error occurred");
     }
@@ -139,7 +139,7 @@ const today = new Date().toLocaleDateString("en-IN", {
   <NavLink to={"/Candidate/Profile"}>
   <Avatar
   className='h-14 w-14'
-  src={`${profilePhoto}`}
+  src={profilePhoto ? `${profilePhoto}`: `${Logo}`}
   alt='Profile Photo'
   />
   </NavLink> 

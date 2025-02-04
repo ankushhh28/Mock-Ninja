@@ -14,8 +14,8 @@ const Home = () => {
       <Layout>
         <div>
           <CandidateBanner />
-          <InfiniteSlider />
           <MockDescSection />
+          <InfiniteSlider />
           <StepsHome />
           <ThreeCircles />
           <Ats />

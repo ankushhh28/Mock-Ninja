@@ -24,10 +24,8 @@ export default function Ats() {
 
   useGSAP(() => {
   gsap.from(LaptopRef.current, {
-    x:20,
-    scale:2,
+    x:100,
     delay:1,
-    duration:0.5,
     opacity:0,
     scrollTrigger:{
       trigger:LaptopRef.current,
