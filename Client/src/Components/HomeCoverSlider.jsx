@@ -33,7 +33,7 @@ const [currentSlide, setCurrentSlide] = useState(0);
 
   return (
     <div className="relative w-full h-full mt-4">
-      <div className="w-full h-full l-1/2 flex justify-center mb-10">
+      <div className="w-full h-full  flex justify-center mb-10">
         <img
           src={slides[currentSlide].img}
           alt={`Slide ${currentSlide + 1}`}
