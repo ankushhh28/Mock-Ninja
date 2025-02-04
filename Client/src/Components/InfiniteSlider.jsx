@@ -53,8 +53,6 @@ const InfiniteSlider = () => {
       duration:2,
       scrollTrigger:{
         trigger:infiniteSliderRef.current,
-        start:"top 80%",
-        // markers:true,
       }
     })
   })

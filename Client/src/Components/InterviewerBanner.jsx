@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useRef } from "react";
 import { FaUserLock, FaSignInAlt, FaUserPlus, FaTimes } from "react-icons/fa";
 import {
   Box,
@@ -15,17 +15,52 @@ import homeRobot from "../assets/homeRobot.gif";
 import { NavLink } from "react-router-dom";
 import ToggleButton from "./ToggleButton";
 import { DataContext } from "../Context/DataProvider";
+import gsap from "gsap";
+import { useGSAP } from "@gsap/react";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 const InterviewerBanner = () => {
   const { account , intBeforeLogin, setintBeforeLogin } = useContext(DataContext);
+
+// --------------------------- GSAP ANIMATION -----------------------------------
+// --------------------------- GSAP ANIMATION -----------------------------------
+
+gsap.registerPlugin(ScrollTrigger)
+
+const BannerText = useRef(null)
+const BannerImg = useRef(null)
+
+useGSAP(() => {
+  gsap.from(BannerText.current, {
+    x:-80,
+    duration:1,
+    opacity:0,
+    scrollTrigger:BannerText.current
+  })
+
+  gsap.from(BannerImg.current, {
+    x:170,
+    opacity:0,
+    duration:1,
+    scrollTrigger:{
+      trigger:BannerImg.current,
+    }
+  })
+})
+
 
   return (
     <>
       <Box className="flex flex-col sm:gap-12 items-center min-h-screen w-full bg-[#f5f3ff] px-12 md:px-20  pt-6">
         <ToggleButton />
 
-        <Box className="flex flex-col md:flex-row items-center justify-between w-full mt-10">
-          <Box className="flex flex-col items-start text-left w-full md:w-1/2 space-y-8">
+        <Box 
+        ref={BannerText}
+        className="flex flex-col md:flex-row items-center justify-between w-full mt-10">
+
+          <Box 
+          className="flex flex-col items-start text-left w-full md:w-1/2 space-y-8">
+
             <Typography className="text-3xl sm:text-5xl font-extrabold tracking-tighter text-black">
               <span className="text-purple-500">Transform Careers with </span>,{" "}
               <span className="text-[#0d0d0d]">Your Expertise</span>
@@ -55,8 +90,10 @@ const InterviewerBanner = () => {
               </Button>
             </Box>
           </Box>
-          <Box className="w-full md:w-1/2 flex justify-center mt-10 md:mt-0">
+          <Box 
+          className="w-full md:w-1/2 mt-10 md:mt-0">
             <img
+            ref={BannerImg}
               src={homeRobot}
               alt="Illustration"
               className="w-[1000px] h-auto"

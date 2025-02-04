@@ -60,7 +60,6 @@ export default function StepsHome() {
       opacity:0,
       scrollTrigger:{
         trigger:ImgBoxRef.current,
-        start:"top 80%"
       }
     })
 
@@ -70,7 +69,6 @@ export default function StepsHome() {
       opacity:0,
       scrollTrigger:{
         trigger:ImgContentRef.current,
-        start:"top 80%"
       }
     })
   })

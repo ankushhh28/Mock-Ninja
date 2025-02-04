@@ -37,7 +37,6 @@ const CandidateBanner = () => {
       opacity:0,
       scrollTrigger:{
         trigger:CanBannerImg.current,
-        start:"top 60%",
       }
     })
   })

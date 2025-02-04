@@ -30,7 +30,6 @@ export default function Ats() {
     opacity:0,
     scrollTrigger:{
       trigger:LaptopRef.current,
-      start:"top 40%",
     }
   })})
 

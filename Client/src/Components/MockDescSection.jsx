@@ -31,7 +31,6 @@ const MockDescSection = () => {
       opacity:0,
       scrollTrigger:{
         trigger:text1Ref.current,
-        start:"top 90%"
       }
     })
 
@@ -41,7 +40,6 @@ const MockDescSection = () => {
       opacity:0,
       scrollTrigger:{
         trigger:text2Ref.current,
-        start:"top 80%"
       }
     })
 
@@ -51,7 +49,6 @@ const MockDescSection = () => {
       opacity:0,
       scrollTrigger:{
         trigger:text1ImgRef.current,
-        start:"top 90%"
       }
     })
 
@@ -61,7 +58,6 @@ const MockDescSection = () => {
       opacity:0,
       scrollTrigger:{
         trigger:text2ImgRef.current,
-        start:"top 80%"
       }
     })
   })

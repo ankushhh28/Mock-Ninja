@@ -28,7 +28,6 @@ export default function ThreeCircles() {
     opacity:0,
     scrollTrigger:{
       trigger:imgRefs[0].current,
-      start:"top 90%",
     }
     })
 
@@ -38,7 +37,6 @@ export default function ThreeCircles() {
     opacity:0,
     scrollTrigger:{
       trigger:imgRefs[1].current,
-      start:"top 90%",
     }
     })
 
@@ -48,7 +46,6 @@ export default function ThreeCircles() {
     opacity:0,
     scrollTrigger:{
       trigger:imgRefs[2].current,
-      start:"top 90%",
     }
     })
   })
