@@ -1,5 +1,6 @@
 import React from 'react'
 import Can_Layout from './CanLayout/Can_Layout'
+import Home from '../Pages/Home'
 
 const CanHome = () => {
   return (

@@ -69,7 +69,7 @@ const InterviewerBanner = () => {
               <span className="text-purple-500">Transform Careers with </span>  
               <span className="text-[#0d0d0d]">Your Expertise</span>
             </Typography>
-            <Typography className="text-gray-700 font-semibold text-xl md:text-2xl">
+            <Typography className="text-gray-700 font-semibold text-xl md:text-2xl text-justify">
               Join a community of industry professionals who help job seekers
               gain real-world interview experience. Conduct mock interviews,
               assess their strengths and weaknesses, and provide actionable
