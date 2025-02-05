@@ -9,7 +9,7 @@ const WhyMockNinja = () => {
         <Typography className="text-3xl sm:text-4xl font-bold tracking-wide text-primary">
           Why Mock Ninja?
         </Typography>
-        <Typography className="text-gray-700 font-medium text-xl md:text-xl">
+        <Typography className="text-gray-700 font-medium text-xl md:text-xl text-justify">
           <Typography className="text-2xl sm:text-3xl font-semibold mb-1">
             Skyrocket Your Earnings
           </Typography>
@@ -17,7 +17,7 @@ const WhyMockNinja = () => {
           The more interviews you conduct, the more you earn whether you're
           looking for a flexible side income or a full-time opportunity.
         </Typography>
-        <Typography className="text-gray-700 font-medium text-xl md:text-xl">
+        <Typography className="text-gray-700 font-medium text-xl md:text-xl text-justify">
           <Typography className="text-2xl sm:text-3xl font-semibold mb-1">
             {" "}
             Flexible Time Slot Selection{" "}
@@ -26,7 +26,7 @@ const WhyMockNinja = () => {
           accordingly. Your schedule will be based on these chosen slots, giving
           you the flexibility to plan ahead while maintaining consistency.
         </Typography>
-        <Typography className="text-gray-700 font-medium text-xl md:text-xl">
+        <Typography className="text-gray-700 font-medium text-xl md:text-xl text-justify">
           <Typography className="text-2xl sm:text-3xl font-semibold mb-1">
             Become a Domain Expert
           </Typography>

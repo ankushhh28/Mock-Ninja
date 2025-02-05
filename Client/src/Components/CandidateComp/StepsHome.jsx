@@ -11,9 +11,8 @@ import { useGSAP } from "@gsap/react";
 const steps = [
   {
     id: 1,
-    title: "Offer 1:1 sessions",
-    description:
-      "Mentorship sessions, consultations, discovery calls - do what you do best. We take care of everything else.",
+    title: "Comprehensive Mock Performance Insights",
+    description: "View detailed analytics on your past mock interviews to monitor consistency and growth.",
     image: img1,
   },
   {
