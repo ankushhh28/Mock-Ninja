@@ -4,7 +4,7 @@ import { BrowserRouter, Navigate, Outlet, Route, Routes } from "react-router-dom
 import { Box, CircularProgress } from "@mui/material";
 import DataProvider, { DataContext } from "./Context/DataProvider";
 
-//---------------------- PUBLIC IMPORTS ONLY --------------------------
+//-------------------------------- PUBLIC IMPORTS ONLY --------------------------
 
 const Home = lazy(() => import("./Pages/Home"));
 const About = lazy(() => import("./Pages/About"));
@@ -14,7 +14,7 @@ const Login = lazy(() => import("./Pages/Login"));
 const ForgotPass = lazy(() => import("./Pages/ForgotPass"));
 const InterviewerHome = lazy(() => import("./Pages/InterviewerHome"));
 
-//---------------------- CANDIDATES IMPORTS ONLY -----------------------
+//------------------------------- CANDIDATES IMPORTS ONLY -----------------------
 
 const CanHome = lazy(() => import("./Candidate/Can_Home"));
 const CanAiMock = lazy(() => import("./Candidate/Can_AiMock"));
@@ -22,18 +22,18 @@ const CanMock = lazy(() => import("./Candidate/Can_Mock"));
 const CanATS = lazy(() => import("./Candidate/Can_ATS"));
 const CanProfile = lazy(() => import("./Candidate/Can_Profile"));
 
-//---------------------- SELECTOR IMPORTS ONLY -------------------------
+//------------------------------- SELECTOR IMPORTS ONLY -------------------------
 
 const SelectorHome = lazy(() => import("./Selector/SelectorHome"));
 
-// ---------------- CANDIDATE PROTECTED --------------------------
+// ------------------------------ CANDIDATE PROTECTED ---------------------------
 
 const CandidatePrivate = () => {
   const { account } = useContext(DataContext)
   return account.role === "Candidate" ? <Outlet/> : <Navigate to = {"/Login"}/>
 }
 
-// ---------------- INTERVIEWER PROTECTED --------------------------
+// ------------------------------ INTERVIEWER PROTECTED --------------------------
 
 const InterviewerPrivate = () => {
   const { account } = useContext(DataContext)
@@ -55,7 +55,7 @@ const InterviewerPrivate = () => {
 
         <Routes>
 
-{/*---------------- PUBLIC ROUTES (WITHOUT LOGIN) ----------------*/}
+{/*-------------------------- PUBLIC ROUTES (WITHOUT LOGIN) ----------------*/}
 
         <Route path="/" element={<Home />} />
         <Route path="/About" element={<About />} />
@@ -65,7 +65,7 @@ const InterviewerPrivate = () => {
         <Route path="/Forgot-password" element={<ForgotPass />} />
         <Route path="/Interviewer-Home" element={<InterviewerHome />} />
 
-{/*---------------- STUDENT ROUTES (WITH LOGIN) ----------------*/}
+{/*-------------------------- STUDENT ROUTES (WITH LOGIN) ----------------*/}
 
       <Route element={<CandidatePrivate/>}>
         <Route path="/Candidate/Home" element={<CanHome />} />
@@ -75,7 +75,7 @@ const InterviewerPrivate = () => {
         <Route path="/Candidate/Profile" element={<CanProfile />} />
       </Route>
 
-{/*---------------- SELECTOR ROUTES (WITH LOGIN) ----------------*/}
+{/*-------------------------- SELECTOR ROUTES (WITH LOGIN) ----------------*/}
       
       <Route element={<InterviewerPrivate/>}>
         <Route path="/Interviewer/Home" element={<SelectorHome />} />

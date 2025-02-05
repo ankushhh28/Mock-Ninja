@@ -21,6 +21,7 @@ import ScrollTrigger from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
 
 const CandidateBanner = () => {
+  
   const { account, beforeLogin, setBeforeLogin } = useContext(DataContext);
 
   // --------------------------- GSAP ANIMATION -----------------------------------

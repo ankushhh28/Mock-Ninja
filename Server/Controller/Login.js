@@ -52,7 +52,7 @@ export const Login = async(req, res) => {
   }
 }
 
-// ----------------------- LOGIN FROM GOOGLE -------------------------
+// -------------------------- LOGIN FROM GOOGLE ----------------------------
 
 export const GoogleLogin = async(req,res) => {
   const {email, name} = req.body

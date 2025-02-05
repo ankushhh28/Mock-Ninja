@@ -70,7 +70,8 @@ const NavBar = () =>  {
   <NavLink to={"/"}>
   <Box 
   variant="outlined"
-  className={`text-white text-nowrap text-[17px] font-bold border-none transition-all btn-line-animation ${activePage === "/" ? "text-gray-800" : ""}`}>
+  className={`text-nowrap text-[17px] font-bold border-none transition-all btn-line-animation 
+  ${activePage === "/" || activePage === "/Interviewer-Home" ? "text-gray-800" : "text-white"}`}>
   Home
   </Box>
   </NavLink>
@@ -78,7 +79,8 @@ const NavBar = () =>  {
   <NavLink to={"/About"}>
   <Box 
   variant="outlined"
-  className={`text-white text-nowrap text-[17px] font-bold border-none transition-all btn-line-animation ${activePage === "/About" ? "text-gray-800" : ""}`}>
+  className={` text-nowrap text-[17px] font-bold border-none transition-all btn-line-animation 
+  ${activePage === "/About" ? "text-gray-800" : "text-white"}`}>
   About
   </Box>
   </NavLink>
@@ -86,7 +88,7 @@ const NavBar = () =>  {
   <NavLink to={"/Contact-us"}>
   <Box 
   variant="outlined"
-  className={`text-white text-nowrap text-[17px] font-bold border-none transition-all btn-line-animation ${activePage === "/Contact-us" ? "text-gray-800" : ""}`}>
+  className={` text-nowrap text-[17px] font-bold border-none transition-all btn-line-animation ${activePage === "/Contact-us" ? "text-gray-800" : "text-white"}`}>
   Contact Us
   </Box>
   </NavLink>

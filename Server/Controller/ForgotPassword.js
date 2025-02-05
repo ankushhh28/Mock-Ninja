@@ -79,7 +79,7 @@ export const ForgotPasswordEmailSend = async(req, res) => {
   }
 }
 
-// -------------- FOR OTP VERIFYING (POST REQUEST) --------------
+// ------------------ FOR OTP VERIFYING (POST REQUEST) --------------
 
 export const OTPverification = async(req, res) => {
   const {email, code} = req.body
@@ -104,7 +104,7 @@ export const OTPverification = async(req, res) => {
   }
 }
 
-// -------------- FOR PASSWORD CHANGE (POST REQUEST) --------------
+// ------------------ FOR PASSWORD CHANGE (POST REQUEST) --------------
 
 export const PasswordChange = async(req, res) => {
 
@@ -138,5 +138,4 @@ export const PasswordChange = async(req, res) => {
   } catch (error) {
     return res.status(500).json({ message: "Something went wrong! Please try again later" });
   }
-
 }
