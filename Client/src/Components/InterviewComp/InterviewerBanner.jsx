@@ -66,7 +66,7 @@ const InterviewerBanner = () => {
         >
           <Box className="flex flex-col items-start  w-full md:w-1/2 space-y-8">
             <Typography className="text-3xl sm:text-5xl font-extrabold tracking-tighter text-black">
-              <span className="text-purple-500">Transform Careers with </span>,{" "}
+              <span className="text-purple-500">Transform Careers with </span>  
               <span className="text-[#0d0d0d]">Your Expertise</span>
             </Typography>
             <Typography className="text-gray-700 font-semibold text-xl md:text-2xl">

@@ -1,58 +1,65 @@
 import React, { useContext, useRef, useState } from "react";
 import { FaUserLock, FaSignInAlt, FaUserPlus, FaTimes } from "react-icons/fa";
 import { NavLink } from "react-router-dom";
-import { Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, IconButton, Typography} from "@mui/material";
+import {
+  Box,
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  IconButton,
+  Typography,
+} from "@mui/material";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import homeImage from "../../assets/images/homeImage.png";
 import ToggleButton from "../ToggleButton";
 import { DataContext } from "../../Context/DataProvider";
 
-import gsap from "gsap"
+import gsap from "gsap";
 import ScrollTrigger from "gsap/ScrollTrigger";
-import { useGSAP } from "@gsap/react"
+import { useGSAP } from "@gsap/react";
 
 const CandidateBanner = () => {
-
   const { account, beforeLogin, setBeforeLogin } = useContext(DataContext);
 
-// --------------------------- GSAP ANIMATION -----------------------------------
-// --------------------------- GSAP ANIMATION -----------------------------------
+  // --------------------------- GSAP ANIMATION -----------------------------------
+  // --------------------------- GSAP ANIMATION -----------------------------------
 
-  gsap.registerPlugin(ScrollTrigger)
+  gsap.registerPlugin(ScrollTrigger);
 
-  const CanBannerText = useRef(null)
-  const CanBannerImg = useRef(null)
+  const CanBannerText = useRef(null);
+  const CanBannerImg = useRef(null);
 
   useGSAP(() => {
     gsap.from(CanBannerText.current, {
-      x:-80,
-      duration:1,
-      opacity:0,
-      scrollTrigger:CanBannerText.current
-    })
+      x: -80,
+      duration: 1,
+      opacity: 0,
+      scrollTrigger: CanBannerText.current,
+    });
 
     gsap.from(CanBannerImg.current, {
-      x:80,
-      duration:1,
-      opacity:0,
-      scrollTrigger:{
-        trigger:CanBannerImg.current,
-      }
-    })
-  })
+      x: 80,
+      duration: 1,
+      opacity: 0,
+      scrollTrigger: {
+        trigger: CanBannerImg.current,
+      },
+    });
+  });
 
   return (
     <>
-      <Box className="flex flex-col sm:gap-12 items-center min-h-screen w-full bg-[#f5f3ff] px-12 md:px-20  pt-6">
+      <Box className="flex flex-col  items-center min-h-screen w-full bg-[#f5f3ff] px-12 md:px-16  pt-6">
         <ToggleButton />
 
-        <Box className="flex flex-col md:flex-row items-center justify-between w-full mt-10">
-
-          <Box 
-          ref={CanBannerText}
-          className="flex flex-col items-start text-left w-full md:w-1/2 space-y-8">
-
-            <Typography className="text-3xl sm:text-5xl font-extrabold tracking-tighter text-black">
+        <Box className="flex flex-col md:flex-row items-center justify-between w-full mt-8">
+          <Box
+            ref={CanBannerText}
+            className="flex flex-col items-start text-left w-full md:w-1/2 space-y-10"
+          >
+            <Typography className="text-3xl sm:text-5xl font-extrabold tracking-tighter leading-relaxed text-black">
               <span className="text-[#0d0d0d]">Master Your Interviews</span>,{" "}
               <span className="text-purple-500">Secure Your Future</span>
             </Typography>
@@ -63,7 +70,7 @@ const CandidateBanner = () => {
               platform.
             </Typography>
 
-            <Box className="flex flex-col md:flex-row gap-4">
+            <Box className="flex flex-col md:flex-row gap-6">
               <Button
                 onClick={() => setBeforeLogin(true)}
                 className="normal-case text-white bg-gradient-to-r from-gray-800 via-gray-700 to-gray-950 px-6 py-4 font-bold text-xl rounded-xl flex items-center transition-all duration-300 shadow-md hover:shadow-lg text-nowrap"
@@ -83,7 +90,7 @@ const CandidateBanner = () => {
 
           <Box className="w-full md:w-1/2 flex justify-center mt-10 md:mt-0">
             <img
-            ref={CanBannerImg}
+              ref={CanBannerImg}
               src={homeImage}
               alt="Illustration"
               className="w-[1000px] h-auto"
@@ -96,44 +103,40 @@ const CandidateBanner = () => {
       {/* --------------------- MODAL BEFORE LOGIN AT HOME ----------------------- */}
 
       <Dialog
-      open={beforeLogin && account.name === ""}
-      onClose={() => setBeforeLogin(false)}
-      className="backdrop-blur-[1px] flex items-center justify-center"
-    >
-      <div className="bg-gradient-to-br from-[#9870e9] to-[#8E2DE2] shadow-2xl max-w-lg w-full p-8 text-center text-white">
-
-      <IconButton
-          className="absolute top-4 right-4 text-white hover:text-gray-200"
-          onClick={() => setBeforeLogin(false)}
-        >
-          <FaTimes className="text-2xl" />
-        </IconButton>
-        <DialogTitle className="text-4xl font-extrabold flex items-center justify-center gap-3">
-          <FaUserLock className="text-5xl" /> Access Required
-        </DialogTitle>
-
-        <DialogContent className="mt-4 px-6 text-lg sm:text-xl leading-relaxed">
-          Unlock AI-powered interviews, resume analysis, and expert mock sessions by signing in or creating an account.
-        </DialogContent>
-
-        <DialogActions className="flex flex-col sm:flex-row justify-center gap-4 mt-6 px-4">
-          <NavLink to={"/Login"}>
-          <button
-            className="bg-white text-[#4A00E0] text-lg sm:text-xl px-6 py-3 rounded-xl font-semibold hover:bg-gray-200 transition-all shadow-lg text-nowrap flex items-center gap-2 justify-center w-full sm:w-auto"
+        open={beforeLogin && account.name === ""}
+        onClose={() => setBeforeLogin(false)}
+        className="backdrop-blur-[1px] flex items-center justify-center"
+      >
+        <div className="bg-gradient-to-br from-[#9870e9] to-[#8E2DE2] shadow-2xl max-w-lg w-full p-8 text-center text-white">
+          <IconButton
+            className="absolute top-4 right-4 text-white hover:text-gray-200"
+            onClick={() => setBeforeLogin(false)}
           >
-            <FaSignInAlt className="text-xl sm:text-2xl" /> Sign In
-          </button>
-          </NavLink>
-          <NavLink to={"/Register"}>
-          <button
-            className="bg-white text-[#8E2DE2] text-lg sm:text-xl px-6 py-3 rounded-xl font-semibold hover:bg-gray-200 transition-all shadow-lg flex items-center gap-2 justify-center w-full sm:w-auto"
-          >
-            <FaUserPlus className="text-xl" /> Register
-          </button>
-          </NavLink>
-        </DialogActions>
-      </div>
-    </Dialog>
+            <FaTimes className="text-2xl " />
+          </IconButton>
+          <DialogTitle className="text-3xl font-extrabold flex   items-center justify-center gap-4">
+            <FaUserLock className="text-3xl" /> Access Required
+          </DialogTitle>
+
+          <DialogContent className="mt-4 px-6 text-lg sm:text-xl leading-relaxed">
+            Unlock AI-powered interviews, resume analysis, and expert mock
+            sessions by signing in or creating an account.
+          </DialogContent>
+
+          <DialogActions className="flex flex-col sm:flex-row justify-center gap-6 mt-6 px-4">
+            <NavLink to={"/Login"}>
+              <button className="bg-white text-[#4A00E0] text-lg sm:text-xl px-6 py-3 rounded-2xl font-semibold hover:bg-gray-200 transition-all shadow-lg text-nowrap flex items-center gap-2 justify-center w-full sm:w-auto">
+                <FaSignInAlt className="text-xl sm:text-2xl" /> Sign In
+              </button>
+            </NavLink>
+            <NavLink to={"/Register"}>
+              <button className="bg-white text-[#8E2DE2] text-lg sm:text-xl px-6 py-3 rounded-2xl font-semibold hover:bg-gray-200 transition-all shadow-lg flex items-center gap-2 justify-center w-full sm:w-auto">
+                <FaUserPlus className="text-xl" /> Register
+              </button>
+            </NavLink>
+          </DialogActions>
+        </div>
+      </Dialog>
     </>
   );
 };
