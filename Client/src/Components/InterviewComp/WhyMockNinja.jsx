@@ -1,5 +1,5 @@
 import { Box, Typography } from "@mui/material";
-import paydashboard from "../../assets/images/paydashboard.png";
+import interview from "../../assets/images/interview.png";
 
 const WhyMockNinja = () => {
   return (
@@ -39,7 +39,7 @@ const WhyMockNinja = () => {
       {/* ------------------IMAGE-SECTION--------------------------------------------------------- */}
       <Box className="w-full md:w-1/2 flex justify-center  mt-6 md:mt-0 ">
         <img
-          src={paydashboard}
+          src={interview}
           alt="Illustration"
           className="w-[1000px] h-auto rounded-xl"
         />
