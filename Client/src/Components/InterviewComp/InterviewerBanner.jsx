@@ -153,6 +153,10 @@ const InterviewerBanner = () => {
             <FaUserLock className="text-5xl" /> Access Required
           </DialogTitle>
 
+          <DialogContent className="mt-4 px-6 text-lg sm:text-xl leading-relaxed">
+          To get started and become an interviewer, sign in or create an account.
+          </DialogContent>
+
           <DialogActions className="flex flex-col sm:flex-row justify-center gap-4 mt-6 px-4">
             <NavLink to={"/Login"}>
               <button className="bg-white text-[#4A00E0] text-lg sm:text-xl px-6 py-3 rounded-xl font-semibold hover:bg-gray-200 transition-all shadow-lg text-nowrap flex items-center gap-2 justify-center w-full sm:w-auto">

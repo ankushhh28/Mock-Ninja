@@ -12,7 +12,7 @@ import {
   Typography,
 } from "@mui/material";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
-import homeImage from "../../assets/images/homeImage.png";
+import homeImage from "../../assets/images/home.jpeg";
 import ToggleButton from "../ToggleButton";
 import { DataContext } from "../../Context/DataProvider";
 
@@ -88,12 +88,12 @@ const CandidateBanner = () => {
             </Box>
           </Box>
 
-          <Box className="w-full md:w-1/2 flex justify-center mt-10 md:mt-0">
+          <Box className="w-full md:w-1/2 flex justify-center mt-10 md:mt-0 ">
             <img
               ref={CanBannerImg}
               src={homeImage}
               alt="Illustration"
-              className="w-[1000px] h-auto"
+              className="w-[530px] h-auto rounded-full"
             />
           </Box>
         </Box>
