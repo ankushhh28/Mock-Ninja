@@ -24,14 +24,14 @@ const LoginSlider = () => {
   useEffect(() => {
     const timer = setInterval(() => {
       setCurrentSlide((prevSlide) => (prevSlide + 1) % slides.length);
-    }, 5000);
+    }, 3000);
 
     return () => clearInterval(timer);
   }, [slides.length]);
 
   return (
     <div className="relative w-auto h-[616px] rounded-2xl shadow-lg bg-[#E0E7FF]">
-      <div className="w-full h-full">
+      <div className="w-full h-full pt-20">
         <img
           src={slides[currentSlide].img}
           alt={`Slide ${currentSlide + 1}`}

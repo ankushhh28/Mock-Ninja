@@ -1,8 +1,9 @@
 import React, { useRef, useState } from "react";
-import img1 from "../../assets/images/oneonone.jpg";
-import img2 from "../../assets/images/aiconverse.gif";
-import img3 from "../../assets/images/feedback.gif";
-import img5 from "../../assets/images/resumeats.gif";
+import img1 from "../../assets/images/side1.png";
+import img2 from "../../assets/images/side2.png";
+import img3 from "../../assets/images/side3.png";
+import img4 from "../../assets/images/side4.png";
+import img5 from "../../assets/images/side5.png";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
@@ -31,7 +32,7 @@ const steps = [
     id: 4,
     title: "Mock Interviews with Industry Experts",
     description: "Book real-time mock interviews with professionals and get valuable feedback on your skills.",
-    image: img1,
+    image: img4,
   },
   {
     id: 5,
@@ -74,7 +75,7 @@ export default function StepsHome() {
   })
 
   return (
-    <div className="flex flex-col lg:flex-row items-center w-full px-4 py-6 sm:px-6 lg:px-10">
+    <div className="flex flex-col lg:flex-row items-center w-full px-4 py-6 sm:px-6 lg:px-10 bg-[#f5f3ff]">
       
       <div 
       ref={ImgBoxRef}

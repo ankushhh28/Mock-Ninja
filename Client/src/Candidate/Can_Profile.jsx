@@ -53,7 +53,13 @@ const CanProfile = () => {
     </DialogTitle>
     <DialogActions>
       <Button onClick={() => setOpen(false)}>Cancel</Button>
-      <Button onClick={() => setAccount("")} className='text-red-500'>Confirm</Button>
+      <Button onClick={() => setAccount({
+      accessToken:"",
+      name:"",
+      email:"",
+      refreshToken:"",
+      role:""
+    })} className='text-red-500'>Confirm</Button>
     </DialogActions>
   </Dialog>
 

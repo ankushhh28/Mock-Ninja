@@ -62,10 +62,10 @@ const MockDescSection = () => {
   });
 
   return (
-    <section className="flex flex-col items-center w-full md:px-20 lg:px-10 px-4 py-16 max-w-[2014px] space-y-20 lg:ml-12">
+    <section className="flex flex-col items-center w-full md:px-2 px-4 py-16 max-w-[2014px] space-y-20 md:ml-8">
       {/* textLeft----------------------------------------------------------------------------------------------------------------- */}
 
-      <div className="flex flex-col lg:flex-row items-center w-full lg:ml-32">
+      <div className="flex flex-col lg:flex-row items-center w-full justify-center md:justify-around pr-20 ml-[65px] sm:ml-0">
         <div
           ref={text1Ref}
           className="lg:w-1/2 text-center lg:text-left space-y-10"
@@ -84,7 +84,7 @@ const MockDescSection = () => {
             variant="contained"
             className="normal-case text-white bg-gradient-to-r from-purple-600 to-[#8667f2] hover:from-purple-700 hover:to-[#764de8] px-6 py-4 font-bold text-xl rounded-xl flex items-center transition-all duration-300 shadow-md hover:shadow-lg text-nowrap"
           >
-            Try AI Mock Interviews &nbsp; 🤖
+            Try AI Mock Interview
           </Button>
         </div>
 
@@ -92,9 +92,9 @@ const MockDescSection = () => {
 
         <div
           ref={text1ImgRef}
-          className="mt-10 lg:mt-0 lg:w-1/2 flex justify-center"
+          className="mt-10 flex justify-center md:w-[450px]"
         >
-          <div className="bg-[#c28ceb] p-6 rounded-3xl shadow-lg w-full max-w-sm">
+          <div className="bg-[#c28ceb] p-6 rounded-3xl shadow-lg w-full">
             <div className="bg-white p-4 rounded-xl flex items-center space-x-3">
               <img
                 src={chatbot}
@@ -140,7 +140,7 @@ const MockDescSection = () => {
 
       {/* TextRight----------------------------------------------------------------------------------------------------------------- */}
 
-      <div className="flex flex-col lg:flex-row-reverse items-center justify-stretch w-full lg:mr-60 ">
+      <div className="flex flex-col lg:flex-row-reverse items-center justify-between w-full md:justify-around pr-20 ml-[65px] sm:ml-0 ">
         <div
           ref={text2Ref}
           className="lg:w-1/2 text-center lg:text-left space-y-10"
@@ -161,16 +161,16 @@ const MockDescSection = () => {
             onClick={() => setBeforeLogin(true)}
             className=" text-white  bg-gradient-to-r from-purple-600 to-[#8667f2] hover:from-purple-700 hover:to-[#764de8]  px-6 py-4 normal-case font-bold text-xl transition-all duration-300 shadow-md hover:shadow-lg text-nowrap rounded-xl"
           >
-            Book a Session &nbsp; 💼
+            Schedule an Interview
           </Button>
         </div>
 
         {/* leftSideCard--------------------------------------------------------------------------------------------------------- */}
         <div
           ref={text2ImgRef}
-          className="mt-10 lg:mt-0 lg:w-1/2 flex justify-center"
+          className="mt-10 lg:mt-0 flex justify-center md:w-[450px]"
         >
-          <div className="bg-[#c28ceb] p-6 rounded-3xl shadow-lg w-full max-w-sm">
+          <div className="bg-[#c28ceb] p-6 rounded-3xl shadow-lg w-full">
             <div className="bg-white p-4 rounded-xl flex items-center space-x-3">
               <img
                 src={interviewer}
