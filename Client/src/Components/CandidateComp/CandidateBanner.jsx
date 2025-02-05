@@ -53,7 +53,8 @@ const CandidateBanner = () => {
   return (
     <>
       <Box className="flex flex-col  items-center min-h-screen w-full bg-[#f5f3ff] px-12 md:px-16  pt-6">
-        <ToggleButton />
+
+        {account.accessToken === "" ? (<ToggleButton />): (<></>)}
 
         <Box className="flex flex-col md:flex-row items-center justify-between w-full mt-8">
           <Box

@@ -1,14 +1,24 @@
 import React from 'react'
 import Can_Layout from './CanLayout/Can_Layout'
 import Home from '../Pages/Home'
+import CandidateBanner from '../Components/CandidateComp/CandidateBanner'
+import MockDescSection from '../Components/CandidateComp/MockDescSection'
+import InfiniteSlider from '../Components/CandidateComp/InfiniteSlider'
+import StepsHome from '../Components/CandidateComp/StepsHome'
+import ThreeCircles from '../Components/CandidateComp/ThreeCircles'
+import Ats from '../Components/CandidateComp/Ats'
 
 const CanHome = () => {
   return (
     <>
     
     <Can_Layout>
-    <h1 className='text-5xl text-center h-[40vh]'>Candidate Home</h1>
-    {/* <Home/> */}
+      <CandidateBanner/>
+      <MockDescSection />
+      <InfiniteSlider />
+      <StepsHome />
+      <ThreeCircles />    
+      <Ats />
     </Can_Layout>
     </>
   )

@@ -65,13 +65,13 @@ rounded-3xl lg:ml-8 w-full">
     <div className="rounded-lg border-dashed border-2 border-white mt-8 p-6 flex justify-center">
 
       {account.name === "" ? (
-              <Button
-              onClick={() => setBeforeLogin(true)}
-              variant="contained"
-              className="normal-case text-primary bg-white px-6 py-4 font-bold text-xl rounded-xl flex items-center transition-all duration-300 shadow-md hover:shadow-lg text-nowrap"
-            >
-              Upload your resume
-            </Button>
+        <Button
+        onClick={() => setBeforeLogin(true)}
+        variant="contained"
+        className="normal-case bg-transparent text-white shadow-none px-6 py-4 font-bold text-xl rounded-xl flex items-center transition-all duration-300 text-nowrap hover:shadow-none"
+        >
+        Check your ATS
+        </Button>
       ): (
         <>
         <label

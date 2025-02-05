@@ -132,10 +132,10 @@ const InterviewerBanner = () => {
         </Box>
       </Box>
 
-      {/* --------------------- MODAL BEFORE LOGIN AT HOME ----------------------- */}
-      {/* --------------------- MODAL BEFORE LOGIN AT HOME ----------------------- */}
-      {/* --------------------- MODAL BEFORE LOGIN AT HOME ----------------------- */}
-      {/* --------------------- MODAL BEFORE LOGIN AT HOME ----------------------- */}
+{/* --------------------- MODAL BEFORE LOGIN AT HOME ----------------------- */}
+{/* --------------------- MODAL BEFORE LOGIN AT HOME ----------------------- */}
+{/* --------------------- MODAL BEFORE LOGIN AT HOME ----------------------- */}
+{/* --------------------- MODAL BEFORE LOGIN AT HOME ----------------------- */}
 
       <Dialog
         open={intBeforeLogin && !account.name}
