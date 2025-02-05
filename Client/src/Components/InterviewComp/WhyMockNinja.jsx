@@ -3,7 +3,7 @@ import paydashboard from "../../assets/images/paydashboard.png";
 
 const WhyMockNinja = () => {
   return (
-    <Box className="flex flex-col-reverse gap-10 md:gap-16 md:flex-row items-center justify-between bg-[#f5f3ff] w-full px-12 md:px-20  pt-6 pt-10 pb-10">
+    <Box className="flex flex-col-reverse gap-10 md:gap-16 md:flex-row items-center justify-between bg-[#f5f3ff] w-full px-12 md:px-20 pt-10 pb-10">
       {/* ------------------LEFT-TEXT SECTION--------------------------------------------------------- */}
       <Box className="flex flex-col items-start text-left w-full md:w-1/2 space-y-8">
         <Typography className="text-3xl sm:text-4xl font-bold tracking-wide text-primary">
