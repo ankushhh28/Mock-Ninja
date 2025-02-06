@@ -1,4 +1,5 @@
-import React, { useContext, useState, useRef } from "react";
+import axios from "axios";
+import React, { useContext, useState, useRef, useEffect } from "react";
 import Can_Layout from "./CanLayout/Can_Layout";
 import {
   Box,
@@ -19,7 +20,7 @@ import { DataContext } from "../Context/DataProvider";
 import { useNavigate } from "react-router-dom";
 
 const CanProfile = () => {
-  const { setAccount } = useContext(DataContext);
+  const { account, setAccount, backendUrl } = useContext(DataContext);
   const navigate = useNavigate();
 
   const [open, setOpen] = useState(false);
@@ -47,6 +48,33 @@ const CanProfile = () => {
   const handleEditClick = () => {
     setIsEditing(!isEditing);
   };
+
+  // ---------------------------------------------------------------------------------------------------//
+  useEffect(() => {
+    const fetchCandidateDetails = async () => {
+      const serverResponse = {
+        role: account.role,
+        email: account.email,
+        accessToken: account.accessToken,
+      };
+      try {
+        const response = await axios.get(
+          `${backendUrl}/Can/Fetching-Candidate-Details`,
+          {
+            params: { email: serverResponse.email, role: serverResponse.role },
+            headers: {
+              Authorization: `Bearer ${serverResponse.accessToken}`,
+            },
+          }
+        );
+        console.log(response.data)
+      } catch (error) {
+        console.log(error.response?.data?.message || "An error occurred");
+      }
+    };
+
+    fetchCandidateDetails();
+  }, [account]);
 
   //---------------------------------------------------------------------------------------------------//
 
@@ -79,28 +107,31 @@ const CanProfile = () => {
           <Box className="flex flex-col gap-8 w-[90%] md-w-[75%] h-auto bg-gray-100  py-6   mx-auto  my-9 ">
             {/* -----------------------Buttons--------------------- */}
 
-            <Box className="flex gap-6 justify-between  md:justify-end px-2">
-              <Button
-                type="submit"
-                variant="outlined"
-                className="flex items-center justify-center normal-case font-bold text-[12px] sm:text-[18px] text-white rounded-[30px] bg-gradient-to-r from-blue-400 to-blue-700 border-blue-600"
-              >
-                <span>
-                  <TurnedInIcon className="text-[20px] mr-2 font-extrabold" />
-                </span>
-                Save Changes
-              </Button>
-
-              <Button
-                onClick={handleEditClick}
-                variant="outlined"
-                className="flex items-center justify-center normal-case font-bold text-[12px] sm:text-[18px] text-white rounded-[30px] bg-gradient-to-r from-blue-400 to-blue-700 border-blue-600"
-              >
-                <span>
-                  <EditIcon className="text-[20px] mr-2 font-extrabold" />
-                </span>
-                Edit Profile
-              </Button>
+            <Box className="flex gap-6 justify-end px-2">
+              {!isEditing ? (
+                <Button
+                  type="submit"
+                  variant="outlined"
+                  className="flex items-center justify-center normal-case font-bold text-[12px] sm:text-[18px] text-white rounded-[30px] bg-gradient-to-r from-blue-400 to-blue-700 border-blue-600"
+                  onClick={handleEditClick}
+                >
+                  <span>
+                    <TurnedInIcon className="text-[20px] mr-2 font-extrabold" />
+                  </span>
+                  Save Changes
+                </Button>
+              ) : (
+                <Button
+                  onClick={handleEditClick}
+                  variant="outlined"
+                  className="flex items-center justify-center normal-case font-bold text-[12px] sm:text-[18px] text-white rounded-[30px] bg-gradient-to-r from-blue-400 to-blue-700 border-blue-600"
+                >
+                  <span>
+                    <EditIcon className="text-[20px] mr-2 font-extrabold" />
+                  </span>
+                  Edit Profile
+                </Button>
+              )}
             </Box>
 
             {/* -----------------Form Section----------------------------- */}
@@ -121,7 +152,7 @@ const CanProfile = () => {
                     {
                       <Avatar
                         src={profileImage}
-                        className="w-28 h-28 cursor-pointer"
+                        className="w-28 md:w-32 h-28 md:h-32 cursor-pointer"
                       />
                     }
                   </Badge>
