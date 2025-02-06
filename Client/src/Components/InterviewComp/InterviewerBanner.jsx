@@ -55,7 +55,7 @@ const InterviewerBanner = () => {
 
   return (
     <>
-      <Box className="flex flex-col sm:gap-12 md:gap-10 items-center min-h-screen w-full bg-[#f5f3ff] px-12 md:px-20  pt-6">
+      <Box className="flex flex-col sm:gap-12 md:gap-10 items-center h-auto w-full bg-[#f5f3ff] px-12 md:px-20  py-6">
         {/* ---------------------Toggle Button ----------------------- */}
 
         <ToggleButton />

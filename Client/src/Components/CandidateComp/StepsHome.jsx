@@ -75,7 +75,6 @@ export default function StepsHome() {
 
   return (
     <div className="flex flex-col lg:flex-row items-center w-full px-4 py-6 sm:px-6 lg:px-10 bg-[#f5f3ff]">
-      
       <div 
       ref={ImgBoxRef}
       className="hidden lg:block lg:w-1/2 bg-[#c28ceb] p-6 rounded-3xl">
@@ -86,7 +85,6 @@ export default function StepsHome() {
         />
       </div>
 
-      {/* Steps Section */}
       <div 
       ref={ImgContentRef}
       className="w-full lg:w-1/2 space-y-4 px-4 sm:px-6">
