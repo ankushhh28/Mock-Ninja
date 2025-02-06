@@ -64,8 +64,7 @@ const CanProfile = () => {
             <Button
               onClick={() => setOpen(true)}
               variant="outlined"
-              className="normal-case font-bold text-[13px] sm:text-[18px] text-white rounded-[30px] bg-gradient-to-r from-red-400
-  to-red-700 border-red-600"
+              className="normal-case font-bold text-[13px] sm:text-[18px] text-white rounded-[30px] bg-gradient-to-r from-red-400 to-red-700 border-red-600"
             >
               <span>
                 <LogoutIcon className="text-[20px] mr-2 font-extrabold" />
@@ -289,9 +288,9 @@ const CanProfile = () => {
         </Box>
       </Can_Layout>
 
-      {/* --------------------------- LOGOUT MODAL -------------------------- */}
-      {/* --------------------------- LOGOUT MODAL -------------------------- */}
-      {/* --------------------------- LOGOUT MODAL -------------------------- */}
+{/* ------------------------------- LOGOUT MODAL -------------------------- */}
+{/* ------------------------------- LOGOUT MODAL -------------------------- */}
+{/* ------------------------------- LOGOUT MODAL -------------------------- */}
 
       <Dialog open={open} onClose={() => setOpen(false)}>
         <DialogTitle className="mt-2">
