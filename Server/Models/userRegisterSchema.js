@@ -28,6 +28,21 @@ const useregisterschema = mongoose.Schema({
   expertPicture:{
     type:String
   },
+  candidateNumber:{
+    type:String
+  },
+  candidateCollege:{
+    type:String
+  },
+  candidateCourse:{
+    type:String
+  },
+  candidateBranch:{
+    type:String
+  },
+  candidateCity:{
+    type:String
+  },
 }) 
 
 const UserRegisterSchema = mongoose.model("userdetails", useregisterschema)

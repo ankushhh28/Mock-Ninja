@@ -12,10 +12,12 @@ import SmartToyIcon from '@mui/icons-material/SmartToy';
 import ComputerIcon from '@mui/icons-material/Computer';
 import StickyNote2Icon from '@mui/icons-material/StickyNote2';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import { CanDataContext } from '../../Context/CanDataProvider';
 
 const Can_NavBar = () => {
 
   const {account, backendUrl} = useContext(DataContext)
+  const {setCanAccount} = useContext(CanDataContext)
 
   const location = useLocation()
   const activePage = location.pathname
@@ -54,7 +56,7 @@ const today = new Date().toLocaleDateString("en-IN", {
           },
         }
       )
-      SetCandidateData(response.data)
+      setCanAccount(response.data)
       localStorage.setItem("profilePhoto",response.data.candidatePicture)
     } catch (error) {
       console.log(error.response?.data?.message || "An error occurred");
@@ -62,7 +64,7 @@ const today = new Date().toLocaleDateString("en-IN", {
   };
 
   fetchCandidateDetails();
-}, [account]);
+}, [backendUrl]);
 
   return (
     <>
@@ -139,8 +141,8 @@ const today = new Date().toLocaleDateString("en-IN", {
   <NavLink to={"/Candidate/Profile"}>
   <Avatar
   className='h-14 w-14'
-  src={profilePhoto ? `${profilePhoto}`: `${Logo}`}
-  alt='Profile Photo'
+  src={`${profilePhoto}`}
+  alt="M"
   />
   </NavLink> 
     
