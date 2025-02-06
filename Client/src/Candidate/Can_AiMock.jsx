@@ -1,14 +1,15 @@
 import React from 'react'
 import Can_Layout from './CanLayout/Can_Layout'
+import Can_Card from './Component/Can_Card'
+import StepsForInt from './Component/StepsForInt'
 
 const CanAiMock = () => {
   return (
     <>
-
     <Can_Layout>
-      <h1 className='h-[40vh] text-5xl text-center'>AI MOCK</h1>
+      <StepsForInt />
+      <Can_Card /> 
     </Can_Layout>
-      
     </>
   )
 }
