@@ -38,14 +38,14 @@ const ProfileComplete = () => {
 
   return (
     <>
-      {!profileCompleted && (
+{/*       {!profileCompleted && (
         <Box className="bg-red-200 h-12 sm:h-16 w-full flex justify-center items-center">
           <Typography className="text-black font-bold text-[13px] sm:text-lg flex items-center gap-2">
             <FaExclamationCircle className="text-red-600 text-[18px] sm:text-[22px]" />
             To unlock AI practice mock, first complete your profile.
           </Typography>
         </Box>
-      )}
+      )} */}
     </>
   );
 };
