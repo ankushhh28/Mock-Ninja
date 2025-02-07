@@ -5,20 +5,32 @@ import { CanDataContext } from '../../Context/CanDataProvider';
 
 const ProfileComplete = () => {
   
-  const { canAccount } = useContext(CanDataContext);
+  const { canAccount } = useContext(CanDataContext) || {}; // Ensure canAccount is never null/undefined
 
   const [profileCompleted, setProfileCompleted] = useState(
     JSON.parse(localStorage.getItem("ProfileCompleted")) || false
   );
 
   useEffect(() => {
-    const isProfileComplete = 
-      canAccount.candidateBranch !== "" &&
-      canAccount.candidateCity !== "" &&
-      canAccount.candidateCollege !== "" &&
-      canAccount.candidateCourse !== "" &&
-      canAccount.candidateNumber !== "" &&
-      canAccount.candidatePicture !== "";
+    if (!canAccount) return; // Avoid running if canAccount is undefined
+
+    // Provide default values if any property is missing
+    const {
+      candidateBranch = "",
+      candidateCity = "",
+      candidateCollege = "",
+      candidateCourse = "",
+      candidateNumber = "",
+      candidatePicture = ""
+    } = canAccount || {};
+
+    const isProfileComplete =
+      candidateBranch !== "" &&
+      candidateCity !== "" &&
+      candidateCollege !== "" &&
+      candidateCourse !== "" &&
+      candidateNumber !== "" &&
+      candidatePicture !== "";
 
     setProfileCompleted(isProfileComplete);
     localStorage.setItem("ProfileCompleted", JSON.stringify(isProfileComplete));
