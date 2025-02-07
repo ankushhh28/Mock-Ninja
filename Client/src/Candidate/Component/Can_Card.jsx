@@ -9,7 +9,7 @@ const Can_Card = () => {
   const [intType, setIntType] = useState("Resume")
 
   return (
-    <>
+<>
 <Box className="flex flex-col sm:flex-row items-center gap-14 md:gap-6 bg-[#f5f3ff] px-8 pt-6 pb-12 md:pr-16  md:py-12">
 
 <Box className="w-full md:w-1/2 flex justify-center">
@@ -44,7 +44,6 @@ const Can_Card = () => {
   </Button>
 </Box>  
 </Box>
-
 
 {/* -------------------------- INTERVIEW FORM ----------------------- */}
 {/* -------------------------- INTERVIEW FORM ----------------------- */}
@@ -162,7 +161,7 @@ PaperProps={{
     </DialogActions>
   )}
 
-  </Dialog>
+</Dialog>
 </>
   )
 }

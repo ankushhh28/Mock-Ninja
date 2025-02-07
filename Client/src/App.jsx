@@ -5,6 +5,7 @@ import { Box, CircularProgress } from "@mui/material";
 import DataProvider, { DataContext } from "./Context/DataProvider";
 import CanDataProvider from "./Context/CanDataProvider";
 import Test from "./Candidate/Component/test";
+import Resume from "./Candidate/Component/Resume";
 
 //-------------------------------- PUBLIC IMPORTS ONLY --------------------------
 
@@ -68,6 +69,7 @@ const InterviewerPrivate = () => {
         <Route path="/Forgot-password" element={<ForgotPass />} />
         <Route path="/Interviewer-Home" element={<InterviewerHome />} />
         <Route path="/test" element={<Test />} />
+        <Route path="/Resume" element={<Resume />} />
 
 {/*-------------------------- STUDENT ROUTES (WITH LOGIN) ----------------*/}
 
