@@ -153,7 +153,7 @@ export const resumeQuesGeneration = async (req, res) => {
 
     const resumeText = await extractTextFromPDF(req.file.buffer);
     if (!resumeText) {
-      return res.status(500).json({ error: 'Unable to extract text from PDF.' });
+      return res.status(500).json({ error: 'Unable to read resume! Try again later' });
     }
 
     const questions = await generateQuestionsWithGeminis(resumeText);
@@ -162,7 +162,7 @@ export const resumeQuesGeneration = async (req, res) => {
     res.json({ questions });
 
   } catch (error) {
-    console.error('Detailed Error:', error);
+    // console.error('Detailed Error:', error);
     res.status(500).json({ error: 'Failed to process the file.' });
   }
 };

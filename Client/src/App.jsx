@@ -3,7 +3,7 @@ import { BrowserRouter, Navigate, Outlet, Route, Routes } from "react-router-dom
 
 import { Box, CircularProgress } from "@mui/material";
 import DataProvider, { DataContext } from "./Context/DataProvider";
-import CanDataProvider from "./Context/CanDataProvider";
+import CanDataProvider, { CanDataContext } from "./Context/CanDataProvider";
 import Test from "./Candidate/Component/test";
 import Resume from "./Candidate/Component/Resume";
 
@@ -24,6 +24,7 @@ const CanAiMock = lazy(() => import("./Candidate/Can_AiMock"));
 const CanMock = lazy(() => import("./Candidate/Can_Mock"));
 const CanATS = lazy(() => import("./Candidate/Can_ATS"));
 const CanProfile = lazy(() => import("./Candidate/Can_Profile"));
+const CanAiIntPage = lazy(() => import("./Candidate/Can_AiIntPage"));
 
 //------------------------------- SELECTOR IMPORTS ONLY -------------------------
 
@@ -34,6 +35,11 @@ const SelectorHome = lazy(() => import("./Selector/SelectorHome"));
 const CandidatePrivate = () => {
   const { account } = useContext(DataContext)
   return account.role === "Candidate" ? <Outlet/> : <Navigate to = {"/Login"}/>
+}
+
+const CandidateAiInterviewHomePrivate = () => {
+  const { questionGenerated } = useContext(CanDataContext)
+  return questionGenerated ? <Outlet/> : <Navigate to = {"/Candidate/AI/Mock"}/>
 }
 
 // ------------------------------ INTERVIEWER PROTECTED --------------------------
@@ -79,6 +85,9 @@ const InterviewerPrivate = () => {
         <Route path="/Candidate/Mock" element={<CanMock />} />
         <Route path="/Candidate/ATS" element={<CanATS />} />
         <Route path="/Candidate/Profile" element={<CanProfile />} />
+        <Route element={<CandidateAiInterviewHomePrivate/>}>
+          <Route path="/Candidate/Ai/Interview-Room" element={<CanAiIntPage />} />
+        </Route>
       </Route>
 
 {/*-------------------------- SELECTOR ROUTES (WITH LOGIN) ----------------*/}

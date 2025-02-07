@@ -19,10 +19,27 @@ const CanDataProvider = ({ children }) => {
 
 // --------------------------------------------------------------------------
 
+  const [questionGenerated, setQuestionGenerated] = useState(() => {
+    const savedQuestion = sessionStorage.getItem("questionGenerated");
+    return savedQuestion
+      ? JSON.parse(savedQuestion)
+      : null
+  });
+
+  console.log(questionGenerated);
+
+  useEffect(() => {
+    sessionStorage.setItem("questionGenerated", JSON.stringify(questionGenerated));
+  }, [questionGenerated]);
+
+// --------------------------------------------------------------------------
+
   return (
     <CanDataContext.Provider value={{
       canAccount,
-      setCanAccount
+      setCanAccount,
+      questionGenerated,
+      setQuestionGenerated
     }}
     >
       {children}

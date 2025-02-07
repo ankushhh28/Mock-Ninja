@@ -11,16 +11,34 @@ import {
   Radio,
   TextField,
   DialogActions,
-  MenuItem,
+  CircularProgress,
 } from "@mui/material";
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import aiImg from "../../assets/images/CardAIImage.png";
 import CloseIcon from "@mui/icons-material/Close";
+import { DataContext } from "../../Context/DataProvider"
+import axios from "axios";
+import {useNavigate} from "react-router-dom"
+import { CanDataContext } from "../../Context/CanDataProvider";
 
 const Can_Card = () => {
+
+  const { backendUrl, account } = useContext(DataContext)
+  const { setQuestionGenerated } = useContext(CanDataContext)
+
+// -------------------------------------------------------------------
+
+  const navigate = useNavigate()
+
+// -------------------------------------------------------------------
+
   const [open, setOpen] = useState(false);
   const [intType, setIntType] = useState("Resume");
   const [intLevel, setIntLevel] = useState("Beginner");
+  const [selectedDomain, setSelectedDomain] = useState("MERN Stack")
+  const [file, setFile] = useState("")
+  const [error, setError] = useState({open:false, msg:"", severity:""})
+  const [loading, setLoading] = useState(false)
 
   const Domains = [
     {
@@ -40,6 +58,43 @@ const Can_Card = () => {
       label: "BlockChain Development",
     },
   ];
+
+// ------------------ HANDLE RESUME SUBMIT ---------------------------
+
+  const handleResumeSubmit = async() => {
+    setLoading(true)
+    if(file === ""){
+      setLoading(false)
+      setError({open:true, msg:"Please upload your resume first", severity:"error"})
+      return
+    }
+
+    const formData = new FormData();
+    formData.append('resume', file);
+
+    try {
+      const response = await axios.post(`${backendUrl}/Can/Resume-Generate-Questions`, formData, {
+        headers: { 'Content-Type': 'multipart/form-data' },
+      })
+      setQuestionGenerated(response.data.questions.split('\n'))
+      navigate("/Candidate/Ai/Interview-Room")
+    } catch (error) {
+      setError({open:true, msg: error.response.data.message, severity:"error"})
+    } finally {
+      setLoading(false)
+      setFile("")
+    }
+  }
+
+// -------------------------------------------------------------------
+
+// /Can/Domain-Skill-Generate-Questions
+
+// domain, level
+
+// -------------------------------------------------------------------
+
+  
 
   return (
     <>
@@ -108,7 +163,7 @@ const Can_Card = () => {
       borderRadius: 3,
       padding: 2,
       position: "relative",
-      minWidth: { xs: 350, sm: 500 },
+      minWidth: { xs: 360, sm: 500 },
     },
   }}
 >
@@ -164,20 +219,23 @@ const Can_Card = () => {
     </FormControl>
   </Box>
 
-{/* ------------------------ IF RESUME SELECTED ----------------- */}
+{/* ----------------------  IF RESUME SELECTED ----------------- */}
 
   {intType === "Resume" && (
   <Box className="ml-4">
-    <TextField
-      id="outlined-basic"
-      variant="outlined"
-      className="w-[90%]"
-      type="file"
-    />
+  <TextField
+    id="outlined-basic"
+    variant="outlined"
+    className="w-[90%]"
+    type="file"
+    inputProps={{ accept: 'application/pdf' }} 
+    helperText="Choose only PDF file" 
+    onChange={(e) => setFile(e.target.files[0])}
+  />
   </Box>
 )}
 
-{/* ------------------------ IF DOMAIN SELECTED ----------------- */}
+{/* ----------------------- IF DOMAIN SELECTED ----------------- */}
 
   {intType === "Domain" && (
   <Box
@@ -191,6 +249,8 @@ const Can_Card = () => {
         id="outlined-select-currency-native"
         select
         label="Choose Domain"
+        value={selectedDomain}
+        onChange={(e) => setSelectedDomain(e.target.value)}
         slotProps={{
           select: {
             native: true,
@@ -208,13 +268,13 @@ const Can_Card = () => {
   </Box>
   )}
 
-{/* ------------------------ IF SKILLS SELECTED ----------------- */}
+{/* ----------------------- IF SKILLS SELECTED ----------------- */}
 
   {intType === "Skills" && (
   <Box className="ml-4">
     <TextField
       id="outlined-basic"
-      label="Enter Skills"
+      label="Skills"
       placeholder="e.g. Javascript, Python, Java etc"
       variant="outlined"
       className="w-[90%]"
@@ -222,7 +282,7 @@ const Can_Card = () => {
   </Box>
 )}
 
-{/* ---------------------CHOOSE DIFFICULTY LEVEL -------------------------- */}
+{/* -------------------- CHOOSE DIFFICULTY LEVEL -------------------------- */}
 
   {(intType === "Domain" || intType === "Skills") && (
     <Box className="ml-4 mt-6">
@@ -261,14 +321,21 @@ const Can_Card = () => {
 
   {intType === "Resume" && (
   <DialogActions>
-    <Box className="mx-auto absoulte mt-5 sm:mt-6">
+    {loading ? (
+      <Box className="mx-auto">
+      <CircularProgress/>
+      </Box>
+    ) : (
+      <Box className="mx-auto absoulte mt-5 sm:mt-6">
       <Button
+        onClick={handleResumeSubmit}
         variant="contained"
         className="bg-blue-500 font-semibold hover:bg-blue-600 "
       >
         Start interview
       </Button>{" "}
     </Box>
+    )}
   </DialogActions>
   )}
 
