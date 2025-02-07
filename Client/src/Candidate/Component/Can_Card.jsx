@@ -21,7 +21,7 @@ const Can_Card = () => {
   const [open, setOpen] = useState(false);
   const [intType, setIntType] = useState("Resume");
   const [intLevel, setIntLevel] = useState("Beginner");
-
+  
   const Domains = [
     {
       value: "MERN Stack",
