@@ -11,30 +11,30 @@ const ProfileComplete = () => {
     JSON.parse(localStorage.getItem("ProfileCompleted")) || false
   );
 
-  useEffect(() => {
-    if (!canAccount) return; // Avoid running if canAccount is undefined
+  // useEffect(() => {
+  //   if (!canAccount) return; // Avoid running if canAccount is undefined
 
-    // Provide default values if any property is missing
-    const {
-      candidateBranch = "",
-      candidateCity = "",
-      candidateCollege = "",
-      candidateCourse = "",
-      candidateNumber = "",
-      candidatePicture = ""
-    } = canAccount || {};
+  //   // Provide default values if any property is missing
+  //   const {
+  //     candidateBranch = "",
+  //     candidateCity = "",
+  //     candidateCollege = "",
+  //     candidateCourse = "",
+  //     candidateNumber = "",
+  //     candidatePicture = ""
+  //   } = canAccount || {};
 
-    const isProfileComplete =
-      candidateBranch !== "" &&
-      candidateCity !== "" &&
-      candidateCollege !== "" &&
-      candidateCourse !== "" &&
-      candidateNumber !== "" &&
-      candidatePicture !== "";
+  //   const isProfileComplete =
+  //     candidateBranch !== "" &&
+  //     candidateCity !== "" &&
+  //     candidateCollege !== "" &&
+  //     candidateCourse !== "" &&
+  //     candidateNumber !== "" &&
+  //     candidatePicture !== "";
 
-    setProfileCompleted(isProfileComplete);
-    localStorage.setItem("ProfileCompleted", JSON.stringify(isProfileComplete));
-  }, [canAccount]); 
+  //   setProfileCompleted(isProfileComplete);
+  //   localStorage.setItem("ProfileCompleted", JSON.stringify(isProfileComplete));
+  // }, [canAccount]); 
 
   return (
     <>
