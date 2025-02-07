@@ -1,6 +1,6 @@
 import React, { useContext, useRef, useState } from "react";
 import { FaUserLock, FaSignInAlt, FaUserPlus, FaTimes } from "react-icons/fa";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import {
   Box,
   Button,
@@ -23,6 +23,7 @@ import { useGSAP } from "@gsap/react";
 const CandidateBanner = () => {
   
   const { account, beforeLogin, setBeforeLogin } = useContext(DataContext);
+  const navigate = useNavigate(); 
 
   // --------------------------- GSAP ANIMATION -----------------------------------
   // --------------------------- GSAP ANIMATION -----------------------------------
@@ -73,15 +74,25 @@ const CandidateBanner = () => {
             </Typography>
 
             <Box className="flex flex-col md:flex-row gap-6">
-              <Button
-                onClick={() => setBeforeLogin(true)}
+
+           <Button
+                onClick={() =>{ if (account.name ==="" && account.accessToken === ""){
+                  setBeforeLogin(true);
+                }else{
+                  navigate("/Candidate/AI/Mock"); 
+                }
+                }}
                 className="normal-case text-white bg-gradient-to-r from-gray-800 via-gray-700 to-gray-950 px-6 py-4 font-bold text-xl rounded-xl flex items-center transition-all duration-300 shadow-md hover:shadow-lg text-nowrap"
                 endIcon={<ArrowForwardIcon />}
               >
                 Interview with AI
               </Button>
               <Button
-                onClick={() => setBeforeLogin(true)}
+                onClick={() => { if (account.name ==="" && account.accessToken === ""){
+                  setBeforeLogin(true);
+                }else{navigate("/Candidate/Mock"); 
+                }
+                }}
                 className="normal-case text-white bg-gradient-to-r from-purple-600 to-[#8667f2] hover:from-purple-700 hover:to-[#764de8] px-6 py-4 font-bold text-xl rounded-xl flex items-center transition-all duration-300 shadow-md hover:shadow-lg text-nowrap"
                 endIcon={<ArrowForwardIcon />}
               >
