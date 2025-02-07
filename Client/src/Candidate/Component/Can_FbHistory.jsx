@@ -4,11 +4,11 @@ import { Box, Button } from '@mui/material'
 const Can_FbHistory = () => {
 
   return (
-    <div className="w-full min-h-screen flex flex-col items-center justify-start bg-gray-100">
-      <h1 className="px-16 py-3 text-4xl font-bold text-[#8667F2] w-full bg-[#f3f5ff] text-left">
-        Previous Interviews' History:
+    <div className="w-full h-auto flex flex-col items-center justify-start bg-gray-100">
+      <h1 className="px-16 pt-6 sm:pt-14 text-3xl md:text-4xl font-bold text-primary w-full bg-[#f5f3ff] text-center">
+        Previous Interview's History
       </h1>
-      <div className="w-full max-w-[1400px] mt-4">
+      <div className="flex flex-col gap-4 w-full px-8 py-10">
         
         <div className="flex items-center justify-between w-full p-4 mb-2 rounded-lg shadow-md border bg-[#e9dcff] hover:bg-[#d6b3ff] transition duration-300">
           <span className="text-gray-800 font-semibold w-1/6 text-center">1</span>
