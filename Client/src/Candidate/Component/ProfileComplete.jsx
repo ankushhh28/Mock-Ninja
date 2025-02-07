@@ -13,8 +13,6 @@ const ProfileComplete = () => {
 
   useEffect(() => {
     const isProfileComplete = 
-      canAccount.candidateName !== "" &&
-      canAccount.candidateEmail !== "" &&
       canAccount.candidateBranch !== "" &&
       canAccount.candidateCity !== "" &&
       canAccount.candidateCollege !== "" &&
