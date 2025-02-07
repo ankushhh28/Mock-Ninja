@@ -4,6 +4,7 @@ import { BrowserRouter, Navigate, Outlet, Route, Routes } from "react-router-dom
 import { Box, CircularProgress } from "@mui/material";
 import DataProvider, { DataContext } from "./Context/DataProvider";
 import CanDataProvider from "./Context/CanDataProvider";
+import Test from "./Candidate/Component/test";
 
 //-------------------------------- PUBLIC IMPORTS ONLY --------------------------
 
@@ -66,6 +67,7 @@ const InterviewerPrivate = () => {
         <Route path="/Login" element={<Login />} />
         <Route path="/Forgot-password" element={<ForgotPass />} />
         <Route path="/Interviewer-Home" element={<InterviewerHome />} />
+        <Route path="/test" element={<Test />} />
 
 {/*-------------------------- STUDENT ROUTES (WITH LOGIN) ----------------*/}
 

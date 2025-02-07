@@ -6,7 +6,6 @@ import MockDescSection from '../Components/CandidateComp/MockDescSection'
 import InfiniteSlider from '../Components/CandidateComp/InfiniteSlider'
 import StepsHome from '../Components/CandidateComp/StepsHome'
 import ThreeCircles from '../Components/CandidateComp/ThreeCircles'
-import Ats from '../Components/CandidateComp/Ats'
 import ProfileComplete from './Component/ProfileComplete'
 
 const CanHome = () => {
@@ -20,7 +19,6 @@ const CanHome = () => {
       <InfiniteSlider />
       <StepsHome />
       <ThreeCircles />    
-      <Ats />
     </Can_Layout>
     </>
   )
