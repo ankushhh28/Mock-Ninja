@@ -12,33 +12,35 @@ import {
   TextField,
   DialogActions,
   CircularProgress,
+  Snackbar,
+  Alert,
 } from "@mui/material";
 import React, { useContext, useState } from "react";
 import aiImg from "../../assets/images/CardAIImage.png";
 import CloseIcon from "@mui/icons-material/Close";
-import { DataContext } from "../../Context/DataProvider"
+import { DataContext } from "../../Context/DataProvider";
 import axios from "axios";
-import {useNavigate} from "react-router-dom"
+import { useNavigate } from "react-router-dom";
 import { CanDataContext } from "../../Context/CanDataProvider";
 
 const Can_Card = () => {
+  const { backendUrl, account } = useContext(DataContext);
+  const { setQuestionGenerated } = useContext(CanDataContext);
 
-  const { backendUrl, account } = useContext(DataContext)
-  const { setQuestionGenerated } = useContext(CanDataContext)
+  // -------------------------------------------------------------------
 
-// -------------------------------------------------------------------
+  const navigate = useNavigate();
 
-  const navigate = useNavigate()
-
-// -------------------------------------------------------------------
+  // -------------------------------------------------------------------
 
   const [open, setOpen] = useState(false);
   const [intType, setIntType] = useState("Resume");
   const [intLevel, setIntLevel] = useState("Beginner");
-  const [selectedDomain, setSelectedDomain] = useState("MERN Stack")
-  const [file, setFile] = useState("")
-  const [error, setError] = useState({open:false, msg:"", severity:""})
-  const [loading, setLoading] = useState(false)
+  const [skill, setSkill] = useState("");
+  const [selectedDomain, setSelectedDomain] = useState("MERN Stack");
+  const [file, setFile] = useState("");
+  const [error, setError] = useState({ open: false, msg: "", severity: "" });
+  const [loading, setLoading] = useState(false);
 
   const Domains = [
     {
@@ -59,42 +61,122 @@ const Can_Card = () => {
     },
   ];
 
-// ------------------ HANDLE RESUME SUBMIT ---------------------------
+  // ------------------ HANDLE RESUME SUBMIT ---------------------------
 
-  const handleResumeSubmit = async() => {
-    setLoading(true)
-    if(file === ""){
-      setLoading(false)
-      setError({open:true, msg:"Please upload your resume first", severity:"error"})
-      return
+  const handleResumeSubmit = async () => {
+    setLoading(true);
+    if (file === "") {
+      setLoading(false);
+      setError({
+        open: true,
+        msg: "Please upload your resume first",
+        severity: "error",
+      });
+      return;
     }
 
     const formData = new FormData();
-    formData.append('resume', file);
+    formData.append("resume", file);
 
     try {
-      const response = await axios.post(`${backendUrl}/Can/Resume-Generate-Questions`, formData, {
-        headers: { 'Content-Type': 'multipart/form-data' },
-      })
-      setQuestionGenerated(response.data.questions.split('\n'))
-      navigate("/Candidate/Ai/Interview-Room")
+      const response = await axios.post(
+        `${backendUrl}/Can/Resume-Generate-Questions`,
+        formData,
+        {
+          headers: { "Content-Type": "multipart/form-data" },
+        }
+      );
+      setQuestionGenerated(response.data.questions.split("\n"));
+      navigate("/Candidate/Ai/Interview-Room");
     } catch (error) {
-      setError({open:true, msg: error.response.data.message, severity:"error"})
+      setError({
+        open: true,
+        msg:
+          error.response?.data?.message ||
+          "Check your Connection! try again later",
+        severity: "error",
+      });
     } finally {
-      setLoading(false)
-      setFile("")
+      setLoading(false);
+      setFile("");
     }
-  }
+  };
 
-// -------------------------------------------------------------------
+  // ----------------- HANDLE DOMAIN SUBMIT ----------------------------
 
-// /Can/Domain-Skill-Generate-Questions
+  const handleDomainSubmit = async () => {
+    setLoading(true);
+    const serverData = {
+      domain: selectedDomain,
+      level: intLevel,
+      role: account.role,
+      accessToken: account.accessToken,
+    };
+    try {
+      const response = await axios.post(
+        `${backendUrl}/Can/Domain-Skill-Generate-Questions`,
+        serverData,
+        {
+          headers: {
+            Authorization: `Bearer ${serverData.accessToken}`,
+          },
+        }
+      );
+      const cleanedData = response.data.replace(/```json|```/g, "");
+      const parsedData = JSON.parse(cleanedData);
+      setQuestionGenerated(parsedData);
+      navigate("/Candidate/Ai/Interview-Room");
+    } catch (error) {
+      setError({
+        open: true,
+        msg:
+          error.response?.data?.message ||
+          "Check your Connection! try again later",
+        severity: "error",
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
 
-// domain, level
+  // -------------------- HANDLE SKILL SUBMIT -----------------------------
 
-// -------------------------------------------------------------------
+  const handleSkillSubmit = async () => {
+    setLoading(true);
+    const serverData = {
+      domain: skill,
+      level: intLevel,
+      role: account.role,
+      accessToken: account.accessToken,
+    };
+    try {
+      const response = await axios.post(
+        `${backendUrl}/Can/Domain-Skill-Generate-Questions`,
+        serverData,
+        {
+          headers: {
+            Authorization: `Bearer ${serverData.accessToken}`,
+          },
+        }
+      );
+      const cleanedData = response.data.replace(/```json|```/g, "");
+      const parsedData = JSON.parse(cleanedData);
+      setQuestionGenerated(parsedData);
+      navigate("/Candidate/Ai/Interview-Room");
+    } catch (error) {
+      setError({
+        open: true,
+        msg:
+          error.response?.data?.message ||
+          "Check your Connection! try again later",
+        severity: "error",
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
 
-  
+  // -------------------------------------------------------------------
 
   return (
     <>
@@ -150,226 +232,261 @@ const Can_Card = () => {
         </Box>
       </Box>
 
-{/* -------------------------- INTERVIEW FORM ----------------------- */}
-{/* -------------------------- INTERVIEW FORM ----------------------- */}
-{/* -------------------------- INTERVIEW FORM ----------------------- */}
+      {/* -------------------------- INTERVIEW FORM ----------------------- */}
+      {/* -------------------------- INTERVIEW FORM ----------------------- */}
+      {/* -------------------------- INTERVIEW FORM ----------------------- */}
 
-<Dialog
-  open={open}
-  onClose={() => setOpen(false)}
-  PaperProps={{
-    sx: {
-      backgroundColor: "white",
-      borderRadius: 3,
-      padding: 2,
-      position: "relative",
-      minWidth: { xs: 360, sm: 500 },
-    },
-  }}
->
-{/* ----------------------- TOP RIGHT Close Button ---------------------- */}
-<DialogTitle
-  sx={{ position: "absolute", top: 8, right: 8, padding: 0 }}
->
-  <IconButton
-    aria-label="close"
-    onClick={() => setOpen(false)}
-    sx={{
-      color: (theme) => theme.palette.grey[800],
-      "&:hover": {
-        backgroundColor: (theme) => theme.palette.grey[200],
-      },
-    }}
-    className="text-3xl"
-  >
-    <CloseIcon />
-  </IconButton>
-</DialogTitle>
-
-{/* ----------------------- TYPE OF INTERVIEW ------------------ */}
-
-  <Box className="ml-4 mt-10">
-    <Typography variant="h6" fontWeight="bold" gutterBottom>
-      Select Your Interview Type
-    </Typography>
-
-    <FormControl component="fieldset" sx={{ marginBottom: "20px" }}>
-      <RadioGroup
-        value={intType}
-        onChange={(e) => setIntType(e.target.value)}
-        name="interviewType"
-        className="flex flex-row gap-2 sm:gap-10"
-      >
-        <FormControlLabel
-          value="Resume"
-          control={<Radio />}
-          label="Resume"
-        />
-        <FormControlLabel
-          value="Domain"
-          control={<Radio />}
-          label="Domain"
-        />
-        <FormControlLabel
-          value="Skills"
-          control={<Radio />}
-          label="Skills"
-        />
-      </RadioGroup>
-    </FormControl>
-  </Box>
-
-{/* ----------------------  IF RESUME SELECTED ----------------- */}
-
-  {intType === "Resume" && (
-  <Box className="ml-4">
-  <TextField
-    id="outlined-basic"
-    variant="outlined"
-    className="w-[90%]"
-    type="file"
-    inputProps={{ accept: 'application/pdf' }} 
-    helperText="Choose only PDF file" 
-    onChange={(e) => setFile(e.target.files[0])}
-  />
-  </Box>
-)}
-
-{/* ----------------------- IF DOMAIN SELECTED ----------------- */}
-
-  {intType === "Domain" && (
-  <Box
-    component="form"
-    sx={{ "& .MuiTextField-root": { m: 1, width: "90%" } }}
-    noValidate
-    autoComplete="off"
-  >
-    <div>
-      <TextField
-        id="outlined-select-currency-native"
-        select
-        label="Choose Domain"
-        value={selectedDomain}
-        onChange={(e) => setSelectedDomain(e.target.value)}
-        slotProps={{
-          select: {
-            native: true,
+      <Dialog
+        open={open}
+        onClose={() => setOpen(false)}
+        PaperProps={{
+          sx: {
+            backgroundColor: "white",
+            borderRadius: 3,
+            padding: 2,
+            position: "relative",
+            minWidth: { xs: 360, sm: 500 },
           },
         }}
-        helperText="Please select your domain"
       >
-        {Domains.map((option) => (
-          <option key={option.value} value={option.value}>
-            {option.label}
-          </option>
-        ))}
-      </TextField>
-    </div>
-  </Box>
-  )}
-
-{/* ----------------------- IF SKILLS SELECTED ----------------- */}
-
-  {intType === "Skills" && (
-  <Box className="ml-4">
-    <TextField
-      id="outlined-basic"
-      label="Skills"
-      placeholder="e.g. Javascript, Python, Java etc"
-      variant="outlined"
-      className="w-[90%]"
-    />
-  </Box>
-)}
-
-{/* -------------------- CHOOSE DIFFICULTY LEVEL -------------------------- */}
-
-  {(intType === "Domain" || intType === "Skills") && (
-    <Box className="ml-4 mt-6">
-      <Typography variant="h6" fontWeight="bold" gutterBottom>
-        Choose difficulty level
-      </Typography>
-
-      <FormControl component="fieldset" sx={{ marginBottom: "20px" }}>
-        <RadioGroup
-          value={intLevel}
-          onChange={(e) => setIntLevel(e.target.value)}
-          name="difficultyLevel"
-          className="flex sm:flex-row sm:gap-10"
+        {/* ----------------------- TOP RIGHT Close Button ---------------------- */}
+        <DialogTitle
+          sx={{ position: "absolute", top: 8, right: 8, padding: 0 }}
         >
-          <FormControlLabel
-            value="Beginner"
-            control={<Radio />}
-            label="Beginner"
-          />
-          <FormControlLabel
-            value="Intermediate"
-            control={<Radio />}
-            label="Intermediate"
-          />
-          <FormControlLabel
-            value="Hard"
-            control={<Radio />}
-            label="Hard"
-          />
-        </RadioGroup>
-      </FormControl>
-    </Box>
-  )}
+          <IconButton
+            aria-label="close"
+            onClick={() => setOpen(false)}
+            sx={{
+              color: (theme) => theme.palette.grey[800],
+              "&:hover": {
+                backgroundColor: (theme) => theme.palette.grey[200],
+              },
+            }}
+            className="text-3xl"
+          >
+            <CloseIcon />
+          </IconButton>
+        </DialogTitle>
 
-{/* ----------------------- RESUME SUBMIT BUTTON ----------------- */}
+        {/* ----------------------- TYPE OF INTERVIEW ------------------ */}
 
-  {intType === "Resume" && (
-  <DialogActions>
-    {loading ? (
-      <Box className="mx-auto">
-      <CircularProgress/>
-      </Box>
-    ) : (
-      <Box className="mx-auto absoulte mt-5 sm:mt-6">
-      <Button
-        onClick={handleResumeSubmit}
-        variant="contained"
-        className="bg-blue-500 font-semibold hover:bg-blue-600 "
+        <Box className="ml-4 mt-10">
+          <Typography variant="h6" fontWeight="bold" gutterBottom>
+            Select Your Interview Type
+          </Typography>
+
+          <FormControl component="fieldset" sx={{ marginBottom: "20px" }}>
+            <RadioGroup
+              value={intType}
+              onChange={(e) => setIntType(e.target.value)}
+              name="interviewType"
+              className="flex flex-row gap-2 sm:gap-10"
+            >
+              <FormControlLabel
+                value="Resume"
+                control={<Radio />}
+                label="Resume"
+              />
+              <FormControlLabel
+                value="Domain"
+                control={<Radio />}
+                label="Domain"
+              />
+              <FormControlLabel
+                value="Skills"
+                control={<Radio />}
+                label="Skills"
+              />
+            </RadioGroup>
+          </FormControl>
+        </Box>
+
+        {/* ----------------------  IF RESUME SELECTED ----------------- */}
+
+        {intType === "Resume" && (
+          <Box className="ml-4">
+            <TextField
+              id="outlined-basic"
+              variant="outlined"
+              className="w-[90%]"
+              type="file"
+              inputProps={{ accept: "application/pdf" }}
+              helperText="Choose only PDF file"
+              onChange={(e) => setFile(e.target.files[0])}
+            />
+          </Box>
+        )}
+
+        {/* ----------------------- IF DOMAIN SELECTED ----------------- */}
+
+        {intType === "Domain" && (
+          <Box
+            component="form"
+            sx={{ "& .MuiTextField-root": { m: 1, width: "90%" } }}
+            noValidate
+            autoComplete="off"
+          >
+            <div>
+              <TextField
+                id="outlined-select-currency-native"
+                select
+                label="Choose Domain"
+                value={selectedDomain}
+                onChange={(e) => setSelectedDomain(e.target.value)}
+                slotProps={{
+                  select: {
+                    native: true,
+                  },
+                }}
+                helperText="Please select your domain"
+              >
+                {Domains.map((option) => (
+                  <option key={option.value} value={option.value}>
+                    {option.label}
+                  </option>
+                ))}
+              </TextField>
+            </div>
+          </Box>
+        )}
+
+        {/* ----------------------- IF SKILLS SELECTED ----------------- */}
+
+        {intType === "Skills" && (
+          <Box className="ml-4">
+            <TextField
+              onChange={(e) => setSkill(e.target.value)}
+              value={skill}
+              id="outlined-basic"
+              label="Skills"
+              placeholder="e.g. Javascript, Python, Java etc"
+              variant="outlined"
+              className="w-[90%]"
+            />
+          </Box>
+        )}
+
+        {/* -------------------- CHOOSE DIFFICULTY LEVEL -------------------------- */}
+
+        {(intType === "Domain" || intType === "Skills") && (
+          <Box className="ml-4 mt-6">
+            <Typography variant="h6" fontWeight="bold" gutterBottom>
+              Choose difficulty level
+            </Typography>
+
+            <FormControl component="fieldset" sx={{ marginBottom: "20px" }}>
+              <RadioGroup
+                value={intLevel}
+                onChange={(e) => setIntLevel(e.target.value)}
+                name="difficultyLevel"
+                className="flex sm:flex-row sm:gap-10"
+              >
+                <FormControlLabel
+                  value="Beginner"
+                  control={<Radio />}
+                  label="Beginner"
+                />
+                <FormControlLabel
+                  value="Intermediate"
+                  control={<Radio />}
+                  label="Intermediate"
+                />
+                <FormControlLabel
+                  value="Hard"
+                  control={<Radio />}
+                  label="Hard"
+                />
+              </RadioGroup>
+            </FormControl>
+          </Box>
+        )}
+
+        {/* ----------------------- RESUME SUBMIT BUTTON ----------------- */}
+
+        {intType === "Resume" && (
+          <DialogActions>
+            {loading ? (
+              <Box className="mx-auto">
+                <CircularProgress />
+              </Box>
+            ) : (
+              <Box className="mx-auto absoulte mt-5 sm:mt-6">
+                <Button
+                  onClick={handleResumeSubmit}
+                  variant="contained"
+                  className="bg-blue-500 font-semibold hover:bg-blue-600 "
+                >
+                  Start interview
+                </Button>{" "}
+              </Box>
+            )}
+          </DialogActions>
+        )}
+
+        {/* ----------------------- DOMAIN SUBMIT BUTTON ----------------- */}
+
+        {intType === "Domain" && (
+          <DialogActions>
+            <Box className="mx-auto absoulte mt-3 sm:mt-6">
+              {loading ? (
+                <Box className="mx-auto">
+                  <CircularProgress />
+                </Box>
+              ) : (
+                <Button
+                  onClick={handleDomainSubmit}
+                  variant="contained"
+                  className="bg-blue-500 font-semibold hover:bg-blue-600 "
+                >
+                  Start interview
+                </Button>
+              )}
+            </Box>
+          </DialogActions>
+        )}
+
+        {/* ---------------------- SKILLS SUBMIT BUTTON ----------------- */}
+
+        {intType === "Skills" && (
+          <DialogActions>
+            <Box className="mx-auto absoulte sm:mt-3 mt-6">
+              {loading ? (
+                <Box className="mx-auto">
+                  <CircularProgress />
+                </Box>
+              ) : (
+                <Button
+                  onClick={handleSkillSubmit}
+                  variant="contained"
+                  className="bg-blue-500 font-semibold hover:bg-blue-600 "
+                >
+                  Start interview
+                </Button>
+              )}
+            </Box>
+          </DialogActions>
+        )}
+      </Dialog>
+
+      {/* --------------------------------- SNACKBAR --------------------------- */}
+      {/* --------------------------------- SNACKBAR --------------------------- */}
+      {/* --------------------------------- SNACKBAR --------------------------- */}
+
+      <Snackbar
+        open={error.open}
+        autoHideDuration={3000}
+        onClose={() => setError({ ...error, open: false })}
+        anchorOrigin={{ vertical: "top", horizontal: "center" }}
       >
-        Start interview
-      </Button>{" "}
-    </Box>
-    )}
-  </DialogActions>
-  )}
-
-{/* ----------------------- DOMAIN SUBMIT BUTTON ----------------- */}
-
-  {intType === "Domain" && (
-  <DialogActions>
-    <Box className="mx-auto absoulte mt-3 sm:mt-6">
-      <Button
-        variant="contained"
-        className="bg-blue-500 font-semibold hover:bg-blue-600 "
-      >
-        Start interview
-      </Button>{" "}
-    </Box>
-  </DialogActions>
-  )}
-
-{/* ---------------------- SKILLS SUBMIT BUTTON ----------------- */}
-
-  {intType === "Skills" && (
-  <DialogActions>
-    <Box className="mx-auto absoulte sm:mt-3 mt-6">
-      <Button
-        variant="contained"
-        className="bg-blue-500 font-semibold hover:bg-blue-600 "
-      >
-        Start interview
-      </Button>{" "}
-    </Box>
-  </DialogActions>
-  )}
-  </Dialog>
-</>
+        <Alert
+          onClose={() => setError({ ...error, open: false })}
+          severity={error.severity}
+          sx={{ width: "100%" }}
+        >
+          <b>{error.msg}</b>
+        </Alert>
+      </Snackbar>
+    </>
   );
 };
 
