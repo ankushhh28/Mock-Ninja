@@ -17,7 +17,17 @@ const numCPUs = os.cpus().length;
 
 const StartServer = () => {
 
-  app.use(cors())
+  app.use(cors({
+    origin: ["https://mock-ninja-client.onrender.com", "http://localhost:5173", "http://localhost:5174"], 
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    credentials: true 
+  }));
+
+  app.use((req, res, next) => {
+    res.setHeader("Cross-Origin-Opener-Policy", "same-origin-allow-popups"); 
+    res.setHeader("Cross-Origin-Embedder-Policy", "require-corp");
+    next();
+  });
 
   app.use("/", Router)
   app.use("/Can", CandidateRouter)
@@ -30,15 +40,15 @@ const StartServer = () => {
   ConnectionDB()
 }
 
-// if (cluster.isMaster) {
+if (cluster.isMaster) {
 
-//   for (let i = 0; i < numCPUs; i++) {
-//     cluster.fork();
-//   }
+  for (let i = 0; i < numCPUs; i++) {
+    cluster.fork();
+  }
 
-//   cluster.on('exit', (worker, code, signal) => {
-//     console.log(`Worker ${worker.process.pid} died`);
-//   });
-// } else {
+  cluster.on('exit', (worker, code, signal) => {
+    console.log(`Worker ${worker.process.pid} died`);
+  });
+} else {
   StartServer();
-// }
+}
