@@ -20,6 +20,7 @@ import CloseIcon from "@mui/icons-material/Close";
 const Can_Card = () => {
   const [open, setOpen] = useState(false);
   const [intType, setIntType] = useState("Resume");
+  const [intLevel, setIntLevel] = useState("Beginner");
 
   const Domains = [
     {
@@ -222,38 +223,38 @@ const Can_Card = () => {
         )}
 
         {/* ---------------------CHOOSE DIFFICULTY LEVEL -------------------------- */}
-        {(intType === "Domain" ||
-          intType === "Skills") && (
-            <Box className="ml-4 mt-6">
-              <Typography variant="h6" fontWeight="bold" gutterBottom>
-                Choose difficulty level
-              </Typography>
+        {(intType === "Domain" || intType === "Skills") && (
+          <Box className="ml-4 mt-6">
+            <Typography variant="h6" fontWeight="bold" gutterBottom>
+              Choose difficulty level
+            </Typography>
 
-              <FormControl component="fieldset" sx={{ marginBottom: "20px" }}>
-                <RadioGroup
-                  value={intType}
-                  name="difficultyLevel"
-                  className="flex sm:flex-row sm:gap-10"
-                >
-                  <FormControlLabel
-                    value="Beginner"
-                    control={<Radio />}
-                    label="Beginner"
-                  />
-                  <FormControlLabel
-                    value="Intermediate"
-                    control={<Radio />}
-                    label="Intermediate"
-                  />
-                  <FormControlLabel
-                    value="Hard"
-                    control={<Radio />}
-                    label="Hard"
-                  />
-                </RadioGroup>
-              </FormControl>
-            </Box>
-          )}
+            <FormControl component="fieldset" sx={{ marginBottom: "20px" }}>
+              <RadioGroup
+                value={intLevel}
+                onChange={(e) => setIntLevel(e.target.value)}
+                name="difficultyLevel"
+                className="flex sm:flex-row sm:gap-10"
+              >
+                <FormControlLabel
+                  value="Beginner"
+                  control={<Radio />}
+                  label="Beginner"
+                />
+                <FormControlLabel
+                  value="Intermediate"
+                  control={<Radio />}
+                  label="Intermediate"
+                />
+                <FormControlLabel
+                  value="Hard"
+                  control={<Radio />}
+                  label="Hard"
+                />
+              </RadioGroup>
+            </FormControl>
+          </Box>
+        )}
 
         {/* ----------------------- RESUME SUBMIT BUTTON ----------------- */}
 
