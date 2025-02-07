@@ -31,7 +31,7 @@ const DataProvider = ({ children }) => {
         };
   });
 
-  console.log(account);
+  // console.log(account);
 
   useEffect(() => {
     sessionStorage.setItem("account", JSON.stringify(account));

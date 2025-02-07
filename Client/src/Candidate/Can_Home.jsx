@@ -7,12 +7,14 @@ import InfiniteSlider from '../Components/CandidateComp/InfiniteSlider'
 import StepsHome from '../Components/CandidateComp/StepsHome'
 import ThreeCircles from '../Components/CandidateComp/ThreeCircles'
 import Ats from '../Components/CandidateComp/Ats'
+import ProfileComplete from './Component/ProfileComplete'
 
 const CanHome = () => {
   return (
     <>
     
     <Can_Layout>
+      <ProfileComplete/>
       <CandidateBanner/>
       <MockDescSection />
       <InfiniteSlider />

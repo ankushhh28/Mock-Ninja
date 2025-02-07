@@ -1,9 +1,13 @@
 import express from "express";
+import cors from "cors"
+
 import { candidateRegister, interviewerRegister } from "../Controller/Register.js";
 import { GoogleLogin, Login } from "../Controller/Login.js";
 import { ForgotPasswordEmailSend, OTPverification, PasswordChange } from "../Controller/ForgotPassword.js";
 
 const Router = express.Router()
+
+Router.use(cors())
 
 Router.use(express.urlencoded({ extended:true }))
 Router.use(express.json())

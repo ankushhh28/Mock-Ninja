@@ -2,7 +2,7 @@ import jwt from "jsonwebtoken";
 
 export const verifyCandidateToken = (req, res, next) => {
   const token = req.header("Authorization");
-  const {role} = req.query
+  const role = req.body.role || req.query.role 
 
   if (!token) {
     return res.status(401).json({ message: "Access Denied! No Token Provided" });

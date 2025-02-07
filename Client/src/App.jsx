@@ -3,6 +3,7 @@ import { BrowserRouter, Navigate, Outlet, Route, Routes } from "react-router-dom
 
 import { Box, CircularProgress } from "@mui/material";
 import DataProvider, { DataContext } from "./Context/DataProvider";
+import CanDataProvider from "./Context/CanDataProvider";
 
 //-------------------------------- PUBLIC IMPORTS ONLY --------------------------
 
@@ -45,6 +46,7 @@ const InterviewerPrivate = () => {
   return (
     <>
     <DataProvider>
+      <CanDataProvider>
       <BrowserRouter>
 
         <Suspense fallback={
@@ -85,6 +87,7 @@ const InterviewerPrivate = () => {
         </Routes>
         </Suspense>
       </BrowserRouter>
+      </CanDataProvider>
     </DataProvider>
     </>
   );

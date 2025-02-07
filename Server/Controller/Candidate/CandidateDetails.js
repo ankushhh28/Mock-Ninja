@@ -14,3 +14,27 @@ export const fetchCandidateDetails = async(req, res) => {
     return res.status(500).json({message:"Error while fetching Candidate details"})
   }
 }
+
+export const updateCandidateDetails = async(req, res) => {
+
+  const {candidateName, candidateEmail, candidatePicture, candidateNumber, candidateCollege, candidateCourse, candidateBranch, candidateCity} = req.body
+
+  try {
+    const user = await UserRegisterSchema.findOne({candidateEmail})
+
+    user.candidateName = candidateName
+    user.candidateEmail = candidateEmail
+    user.candidatePicture = candidatePicture
+    user.candidateNumber = candidateNumber
+    user.candidateCollege = candidateCollege
+    user.candidateCourse = candidateCourse
+    user.candidateBranch = candidateBranch
+    user.candidateCity = candidateCity
+
+    await user.save()
+    return res.status(200).json({message:"Profile Updated Successfully"})
+  } catch (error) {
+    console.log(error)
+    return res.status(500).json({message:"Error while updating profile"})
+  }
+}
