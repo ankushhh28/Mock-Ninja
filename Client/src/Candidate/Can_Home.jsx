@@ -20,7 +20,7 @@ const CanHome = () => {
       <InfiniteSlider />
       <StepsHome />
       <ThreeCircles />    
-      <Ats />
+      {/* <Ats /> */}
     </Can_Layout>
     </>
   )
