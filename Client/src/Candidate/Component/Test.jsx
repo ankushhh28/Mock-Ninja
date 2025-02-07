@@ -10,28 +10,19 @@ const Test = () => {
   const [questions, setQuestions] = useState([]);
   const [error, setError] = useState('');
 
-  const serverResponse = { domain: 'Express.js', level: 'Hard' };
+  const serverResponse = { domain: 'App Development', level: 'Hard' };
 
   const fetchQuestions = async () => {
     try {
       const response = await axios.post(`${backendUrl}/generate-questions`, serverResponse);
-      console.log('Raw Server Response:', response.data);
-  
-      // Check if response.data is a string and parse it
-      const parsedData = typeof response.data === 'string' ? JSON.parse(response.data) : response.data;
-  
-      if (Array.isArray(parsedData)) {
-        setQuestions(parsedData);
-      } else {
-        setError('Invalid data format received.');
-      }
+      const cleanedData = response.data.replace(/```json|```/g, "");
+      const parsedData = JSON.parse(cleanedData);
+      setQuestions(parsedData)
     } catch (err) {
       console.error('API Error:', err);
       setError(err.response?.data?.error || 'Error fetching questions.');
     }
   };
-  
-  
   
 
   return (
@@ -46,9 +37,9 @@ const Test = () => {
 
       <ul className="list-disc ml-6 space-y-2">
         {questions.map((questionObj, index) => (
-          <li key={index} className="text-gray-800">
-            {Object.values(questionObj)[0]}
-          </li>
+          <div key={index} className="text-gray-800">
+            {Object.values(questionObj)}
+          </div>
         ))}
       </ul>
     </div>

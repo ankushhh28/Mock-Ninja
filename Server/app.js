@@ -1,4 +1,3 @@
-// server.js
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
@@ -41,7 +40,7 @@ async function generateQuestionsWithGemini(domain, level) {
   
   **Rules:**
   1. Generate exactly 12 questions in the following sequence:
-     - Question 1: A general introductory question.
+     - Question 1: Tell me about yourself (1st interview question).
      - Questions 2-4: Basic Technical questions (non-coding).
      - Questions 5-8: Intermediate Technical questions (non-coding).
      - Questions 9-10: Hard Technical questions (non-coding).
@@ -69,8 +68,6 @@ async function generateQuestionsWithGemini(domain, level) {
   STRICTLY FOLLOW RULE NUMBER 3.
   STRICTLY FOLLOW RULE NUMBER 3.
   `;
-  
-
 
 
   try {
@@ -87,7 +84,8 @@ async function generateQuestionsWithGemini(domain, level) {
       }
     );
 
-    return response.data.candidates[0].content.parts[0].text;
+    // console.log(response.data.candidates[0].content.parts[0].text)
+    return response.data.candidates[0].content.parts[0].text
   } catch (error) {
     console.error("Error generating questions:", error.response ? error.response.data : error.message);
     return "Error generating questions.";
@@ -106,7 +104,7 @@ app.post("/generate-questions", async (req, res) => {
   }
 
   const questions = await generateQuestionsWithGemini(domain, level);
-  res.json({ questions });
+  res.json(questions);
 });
 
 // Start Server

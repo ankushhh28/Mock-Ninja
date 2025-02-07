@@ -1,4 +1,6 @@
 import React, { useRef } from "react";
+import {Typography} from "@mui/material"
+
 import bashIcon from "../../assets/proglangsvgs/bash.svg";
 import cIcon from "../../assets/proglangsvgs/c.svg";
 import csharpIcon from "../../assets/proglangsvgs/csharp.svg";
@@ -36,6 +38,11 @@ const InfiniteSlider = () => {
   ];
 
   return (
+    <>
+    <Typography className="text-3xl text-center md:text-5xl font-bold text-gray-900 leading-tight
+    my-6">
+    Crack Tech Interviews <span className="text-primary">with AI</span>
+    </Typography>
     <div 
     className="flex justify-center">
     <div className="w-[90%] overflow-hidden relative">
@@ -51,6 +58,7 @@ const InfiniteSlider = () => {
       </div>
     </div>
     </div>
+    </>
   );
 };
 

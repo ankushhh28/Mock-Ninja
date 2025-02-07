@@ -71,7 +71,7 @@ const today = new Date().toLocaleDateString("en-IN", {
   <AppBar className='static'>
     <Toolbar className='bg-primary flex justify-between items-center'>
 
-{/* ----------------------------------------------------------------------- */}
+{/* ------------------------- MOCK NINJA LOGO ------------------------------------ */}
 
   <Box 
   className="flex items-center gap-1">
@@ -86,7 +86,7 @@ const today = new Date().toLocaleDateString("en-IN", {
   </Typography>
 
   </Box>
-{/* ----------------------------------------------------------------------- */}
+{/* ----------------------- MOBILE MENU BUTTON ------------------------------------- */}
 
 <Button 
   onClick={() => SetDrawerOpen(true)}
@@ -94,7 +94,7 @@ const today = new Date().toLocaleDateString("en-IN", {
   <MenuIcon className="md:hidden text-[30px] sm:text-[33px] cursor-pointer"/> 
   </Button>
 
-{/* ----------------------------------------------------------------------- */}
+{/* -------------------------- NAVBAR ---------------------------------------- */}
 
 <Box className="hidden gap-8 md:flex">
 
@@ -103,7 +103,7 @@ const today = new Date().toLocaleDateString("en-IN", {
   <NavLink to={"/Candidate/Home"}>
   <Box 
   variant="outlined"
-  className={`text-white text-nowrap text-[17px] font-bold border-none transition-all btn-line-animation ${activePage === "/Candidate/Home" ? "text-gray-800" : ""}`}>
+  className={` text-nowrap text-[17px] font-bold border-none transition-all btn-line-animation ${activePage === "/Candidate/Home" ? "text-gray-800" : "text-white"}`}>
     Home
   </Box>
   </NavLink>
@@ -111,7 +111,7 @@ const today = new Date().toLocaleDateString("en-IN", {
   <NavLink to={"/Candidate/AI/Mock"}>
   <Box 
   variant="outlined"
-  className={`text-white text-nowrap text-[17px] font-bold border-none transition-all btn-line-animation ${activePage === "/Candidate/AI/Mock" ? "text-gray-800" : ""}`}>
+  className={` text-nowrap text-[17px] font-bold border-none transition-all btn-line-animation ${activePage === "/Candidate/AI/Mock" ? "text-gray-800" : "text-white"}`}>
     AI Mock
   </Box>
   </NavLink>
@@ -119,7 +119,7 @@ const today = new Date().toLocaleDateString("en-IN", {
   <NavLink to={"/Candidate/Mock"}>
   <Box 
   variant="outlined"
-  className={`text-white text-nowrap text-[17px] font-bold border-none transition-all btn-line-animation ${activePage === "/Candidate/Mock" ? "text-gray-800" : ""}`}>
+  className={` text-nowrap text-[17px] font-bold border-none transition-all btn-line-animation ${activePage === "/Candidate/Mock" ? "text-gray-800" : "text-white"}`}>
     Mock
   </Box>
   </NavLink>
@@ -127,7 +127,7 @@ const today = new Date().toLocaleDateString("en-IN", {
   <NavLink to={"/Candidate/ATS"}>
   <Box 
     variant="outlined"
-    className={`text-white text-nowrap text-[17px] font-bold border-none transition-all btn-line-animation ${activePage === "/Candidate/ATS" ? "text-gray-800" : ""}`}>
+    className={` text-nowrap text-[17px] font-bold border-none transition-all btn-line-animation ${activePage === "/Candidate/ATS" ? "text-gray-800" : "text-white"}`}>
     ATS
   </Box>
 </NavLink>
@@ -150,15 +150,15 @@ const today = new Date().toLocaleDateString("en-IN", {
 
 </Box>
 
-{/* ----------------------------------------------------------------------- */}
+{/* ------------------------------------------------------------------------- */}
 
     </Toolbar>
   </AppBar>
 
-{/* ----------------------------------------------------------------------- */}
-{/* ----------------------------------------------------------------------- */}
-{/* ----------------------------------------------------------------------- */}
-{/* ----------------------------------------------------------------------- */}
+{/* -------------------------MOBILE NAV BAR ------------------------------------ */}
+{/* -------------------------MOBILE NAV BAR ------------------------------------ */}
+{/* -------------------------MOBILE NAV BAR ------------------------------------ */}
+{/* -------------------------MOBILE NAV BAR ------------------------------------ */}
 
 <Drawer
     anchor="right" 

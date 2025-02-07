@@ -70,7 +70,7 @@ const MockDescSection = () => {
           ref={text1Ref}
           className="lg:w-1/2 text-center lg:text-left space-y-10"
         >
-          <h1 className="text-4xl md:text-5xl font-bold text-gray-900 leading-tight">
+          <h1 className="text-3xl md:text-5xl font-bold text-gray-900 leading-tight">
             AI-Based <span className="text-[#8667F2]">Mock Interviews</span>
           </h1>
           <p className="mt-4 text-lg md:text-2xl text-gray-600 text-justify">
@@ -82,7 +82,7 @@ const MockDescSection = () => {
           <Button
             onClick={() => setBeforeLogin(true)}
             variant="contained"
-            className="normal-case text-white bg-gradient-to-r from-purple-600 to-[#8667f2] hover:from-purple-700 hover:to-[#764de8] px-6 py-4 font-bold text-xl rounded-xl flex items-center transition-all duration-300 shadow-md hover:shadow-lg text-nowrap"
+            className=" normal-case text-white bg-gradient-to-r from-purple-600 to-[#8667f2] hover:from-purple-700 hover:to-[#764de8] px-6 py-4 font-bold text-xl rounded-xl flex items-center transition-all duration-300 shadow-md hover:shadow-lg text-nowrap"
           >
             Try AI Mock Interview
           </Button>
@@ -145,7 +145,7 @@ const MockDescSection = () => {
           ref={text2Ref}
           className="lg:w-1/2 text-center lg:text-left space-y-10"
         >
-          <h1 className="text-4xl md:text-5xl font-bold text-gray-900 leading-tight">
+          <h1 className="text-3xl md:text-5xl font-bold text-gray-900 leading-tight">
             <span className="text-[#8667F2]">Expert</span> Mock Interviews
           </h1>
           <p className="mt-4 text-lg md:text-2xl text-gray-600 text-justify">
