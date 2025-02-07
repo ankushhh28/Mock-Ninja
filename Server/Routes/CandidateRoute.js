@@ -1,10 +1,13 @@
 import express from "express";
+import cors from "cors"
 import { verifyCandidateToken } from "../Utils/CanAuth.js";
 import { fetchCandidateDetails, updateCandidateDetails } from "../Controller/Candidate/CandidateDetails.js";
 import ImageUpload from "../Utils/ImageUpload.js";
 import { CandidateImageupload, UploadImage, getImage } from "../Controller/Candidate/Can_Image.js";
 
 const CandidateRouter = express.Router()
+
+CandidateRouter.use(cors())
 
 CandidateRouter.use(express.urlencoded({ extended:true }))
 CandidateRouter.use(express.json())
