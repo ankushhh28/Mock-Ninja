@@ -38,11 +38,7 @@ const ProfileComplete = () => {
 
   return (
     <>
-<<<<<<< HEAD
-      {/* {!profileCompleted && (
-=======
 {/*       {!profileCompleted && (
->>>>>>> 2219d261c8e0f29070abcc7aff04d6a48eb81715
         <Box className="bg-red-200 h-12 sm:h-16 w-full flex justify-center items-center">
           <Typography className="text-black font-bold text-[13px] sm:text-lg flex items-center gap-2">
             <FaExclamationCircle className="text-red-600 text-[18px] sm:text-[22px]" />
