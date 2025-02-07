@@ -4,13 +4,15 @@ import aiImg from "../../assets/images/CardAIImage.png"
 
 const Can_Card = () => {
   return (
-    <Box className="flex flex-col sm:flex-row items-center gap-8 bg:[#f5f3ff] px-6 py-3">
+    <Box className="flex flex-col sm:flex-row items-center gap-12 bg:[#f5f3ff] px-6 py-14">
+
       <Box className="w-full lg:w-1/2 flex justify-center">
         <img src={ aiImg } alt="rightSideAIImage" className='w-full max-w-sm h-auto rounded-lg min-h-20 filter drop-shadow-[0_8px_6px_rgba(0,0,0,0.5)] hover:drop-shadow-[0_8px_6px_rgba(0,0,0,0.7)]' />
       </Box>
-      <Box className="w-full lg:w-1/2 text-center lg:text-left">
-        <Typography variant="h4" className="text-primary font-extrabold mb-4 whitespace-nowrap">
-          Ace Your Next Interview with AI!
+
+      <Box className="flex flex-col w-full lg:w-1/2 text-center lg:text-left md:mr-6">
+        <Typography className="text-3xl md:text-4xl text-primary font-extrabold mb-4 whitespace-nowrap text-wrap overflow-visible">
+          Ace Your Next Interview with <span className='text-gray-700'>AI!</span> 
         </Typography>
         <Typography variant="body1" className="text-gray-700 mb-4 text-justify">
           Prepare for job interviews with real-time AI-driven mock interviews.
