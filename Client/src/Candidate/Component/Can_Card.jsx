@@ -22,6 +22,7 @@ import { DataContext } from "../../Context/DataProvider";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { CanDataContext } from "../../Context/CanDataProvider";
+import { v4 as uuidv4 } from 'uuid';
 
 const Can_Card = () => {
   const { backendUrl, account } = useContext(DataContext);
@@ -61,6 +62,31 @@ const Can_Card = () => {
     },
   ];
 
+  // ------------------ SAVING DATA TO FUNCTION ---------------------------
+
+    const savingQues = async(questions) => {
+      const serverData = {
+        candidateEmail:account.email,
+        mockID:uuidv4(),
+        questions:JSON.stringify(questions)
+      }
+      // console.log("Questions:", serverData.questions)
+      try {
+        const response = await axios.post(`${backendUrl}/Can/Storing-Generate-Questions`, serverData)
+        if(response.status === 200){
+          navigate(`/Candidate/Interview/${response.data}`);
+        }
+      } catch (error) {
+        setError({
+          open: true,
+          msg:
+            error.response?.data?.message ||
+            "Check your Connection! try again later",
+          severity: "error",
+        });
+      }
+    }
+
   // ------------------ HANDLE RESUME SUBMIT ---------------------------
 
   const handleResumeSubmit = async () => {
@@ -87,7 +113,7 @@ const Can_Card = () => {
         }
       );
       setQuestionGenerated(response.data.questions.split("\n"));
-      navigate("/Candidate/Ai/Interview-Room");
+      savingQues(response.data.questions.split("\n"))
     } catch (error) {
       setError({
         open: true,
@@ -125,7 +151,7 @@ const Can_Card = () => {
       const cleanedData = response.data.replace(/```json|```/g, "");
       const parsedData = JSON.parse(cleanedData);
       setQuestionGenerated(parsedData);
-      navigate("/Candidate/Ai/Interview-Room");
+      savingQues(parsedData)
     } catch (error) {
       setError({
         open: true,
@@ -162,7 +188,7 @@ const Can_Card = () => {
       const cleanedData = response.data.replace(/```json|```/g, "");
       const parsedData = JSON.parse(cleanedData);
       setQuestionGenerated(parsedData);
-      navigate("/Candidate/Ai/Interview-Room");
+      savingQues(parsedData)
     } catch (error) {
       setError({
         open: true,

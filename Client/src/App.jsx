@@ -82,7 +82,7 @@ const InterviewerPrivate = () => {
         <Route path="/Candidate/ATS" element={<CanATS />} />
         <Route path="/Candidate/Profile" element={<CanProfile />} />
         <Route element={<CandidateAiInterviewHomePrivate/>}>
-          <Route path="/Candidate/Ai/Interview-Room" element={<CanAiIntPage />} />
+          <Route path="/Candidate/Interview/:mockID" element={<CanAiIntPage />} />
         </Route>
       </Route>
 

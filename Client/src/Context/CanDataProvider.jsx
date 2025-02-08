@@ -26,7 +26,7 @@ const CanDataProvider = ({ children }) => {
       : null
   });
 
-  console.log(questionGenerated);
+  // console.log(questionGenerated);
 
   useEffect(() => {
     sessionStorage.setItem("questionGenerated", JSON.stringify(questionGenerated));
