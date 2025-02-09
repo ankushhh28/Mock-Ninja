@@ -35,7 +35,7 @@ async function generateQuestionsWithGemini(domain, level) {
   4. **DO NOT** include any category headings like "Introductory", "Basic Technical", or any extra text outside of the JSON array.
   5. **STRICTLY FOLLOW RULE NUMBER 3** — no explanations, no numbering outside the JSON format.
   6. **Exclude any coding-specific questions.**
-  6. **Dont use Comma in a question**
+  6. **Dont use Comma and full stop and brackets in a question**
   
   ❗ IMPORTANT:
   - Only output the JSON array as shown in Rule 3.
@@ -43,13 +43,13 @@ async function generateQuestionsWithGemini(domain, level) {
   - Do NOT include text like "**Intermediate Technical Questions (Non-Coding):**" or "**Hard Technical Questions:**".
   - The output should be clean JSON, ready for parsing.
   
-  STRICTLY FOLLOW RULE NUMBER 6.
-  STRICTLY FOLLOW RULE NUMBER 6.
-  STRICTLY FOLLOW RULE NUMBER 6.
-  
   STRICTLY FOLLOW RULE NUMBER 3.
   STRICTLY FOLLOW RULE NUMBER 3.
   STRICTLY FOLLOW RULE NUMBER 3.
+
+  STRICTLY FOLLOW RULE NUMBER 6.
+  STRICTLY FOLLOW RULE NUMBER 6.
+  STRICTLY FOLLOW RULE NUMBER 6.
   `;
 
   try {

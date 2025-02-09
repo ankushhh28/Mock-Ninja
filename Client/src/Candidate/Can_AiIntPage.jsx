@@ -3,6 +3,8 @@ import { useParams } from "react-router-dom";
 import { DataContext } from "../Context/DataProvider";
 import axios from "axios";
 import { Alert, Box, CircularProgress, Snackbar, Typography } from '@mui/material';
+import Intructions from "./Component/InstructionsAI"
+import CountdownAnimation from './Component/CountDown';
 
 const Can_AiIntPage = () => {
 
@@ -20,6 +22,22 @@ const Can_AiIntPage = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
+  const [next, setNext] = useState(() => {
+    return JSON.parse(sessionStorage.getItem("next")) || false;
+  });
+  
+  const [count, setCount] = useState(() => {
+    return JSON.parse(sessionStorage.getItem("count")) || false;
+  });
+  
+  useEffect(() => {
+    sessionStorage.setItem("next", JSON.stringify(next));
+  }, [next]);
+  
+  useEffect(() => {
+    sessionStorage.setItem("count", JSON.stringify(count));
+  }, [count]);
+  
 // ----------- Fetching Questions from Database -------------------
 
   useEffect(() => {
@@ -61,9 +79,8 @@ const Can_AiIntPage = () => {
   return (
     <>
       {error ? (
-        <>
-        </>
-      ) : loading ? (
+        <></>
+      ) : !next ? <Intructions setNext={setNext}/> : !count  ? <CountdownAnimation setCount={setCount}/> : loading ? (
         <Box className="h-screen w-screen flex items-center justify-center">
           <CircularProgress />
         </Box>

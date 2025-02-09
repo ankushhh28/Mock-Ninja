@@ -4,7 +4,6 @@ import { BrowserRouter, Navigate, Outlet, Route, Routes } from "react-router-dom
 import { Box, CircularProgress } from "@mui/material";
 import DataProvider, { DataContext } from "./Context/DataProvider";
 import CanDataProvider, { CanDataContext } from "./Context/CanDataProvider";
-import CountdownAnimation from "./Candidate/Component/CountDown";
 
 //-------------------------------- PUBLIC IMPORTS ONLY --------------------------
 
@@ -24,6 +23,7 @@ const CanMock = lazy(() => import("./Candidate/Can_Mock"));
 const CanATS = lazy(() => import("./Candidate/Can_ATS"));
 const CanProfile = lazy(() => import("./Candidate/Can_Profile"));
 const CanAiIntPage = lazy(() => import("./Candidate/Can_AiIntPage"));
+// const InstructionsAI = lazy(() => import("./Candidate/Component/InstructionsAI"));
 
 //------------------------------- SELECTOR IMPORTS ONLY -------------------------
 
@@ -73,6 +73,7 @@ const InterviewerPrivate = () => {
         <Route path="/Login" element={<Login />} />
         <Route path="/Forgot-password" element={<ForgotPass />} />
         <Route path="/Interviewer-Home" element={<InterviewerHome />} />
+        {/* <Route path="/Candidate/InstructionsAI" element={<InstructionsAI />} /> */}
 
 {/*-------------------------- STUDENT ROUTES (WITH LOGIN) ----------------*/}
 
