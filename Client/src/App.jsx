@@ -4,6 +4,7 @@ import { BrowserRouter, Navigate, Outlet, Route, Routes } from "react-router-dom
 import { Box, CircularProgress } from "@mui/material";
 import DataProvider, { DataContext } from "./Context/DataProvider";
 import CanDataProvider, { CanDataContext } from "./Context/CanDataProvider";
+import CountdownAnimation from "./Candidate/Component/CountDown";
 
 //-------------------------------- PUBLIC IMPORTS ONLY --------------------------
 

@@ -14,6 +14,8 @@ import {
   CircularProgress,
   Snackbar,
   Alert,
+  Chip,
+  Autocomplete,
 } from "@mui/material";
 import React, { useContext, useState } from "react";
 import aiImg from "../../assets/images/CardAIImage.png";
@@ -23,6 +25,43 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { CanDataContext } from "../../Context/CanDataProvider";
 import { v4 as uuidv4 } from 'uuid';
+
+const skillsss = [
+  "HTML", "CSS", "JavaScript", "React", "Angular", "Vue.js", "TypeScript", "SASS", "Bootstrap", "Tailwind CSS", "jQuery",
+  "Node.js", "Express.js", "Django", "Flask", "Ruby on Rails", "PHP", "Laravel", "Spring Boot", "ASP.NET",
+  "MySQL", "PostgreSQL", "MongoDB", "SQLite", "Firebase", "Redis",
+  "Git", "GitHub", "GitLab", "Bitbucket",
+  "Docker", "Kubernetes", "Jenkins", "CI/CD", "AWS", "Azure", "Google Cloud Platform",
+  "REST", "WebSockets", "JSON", "XML",
+  "HTTPS", "OAuth", "JWT", "SSL/TLS", "CORS",
+  "Python", "R", "SQL", "SAS",
+  "Pandas", "NumPy", "Excel", "Power Query",
+  "Matplotlib", "Seaborn", "Tableau", "Power BI", "Plotly", "D3.js",
+  "Hypothesis Testing", "ANOVA", "Regression Analysis", "Time Series Analysis",
+  "Apache Spark", "Hadoop", "Kafka",
+  "Scikit-learn", "TensorFlow", "Keras", "XGBoost",
+  "NoSQL",
+  "Supervised Learning", "Unsupervised Learning", "Reinforcement Learning",
+  "Neural Networks", "Convolutional Neural Networks", "Recurrent Neural Networks",
+  "PyTorch",
+  "Natural Language Processing", "NLTK", "spaCy", "BERT", "Transformers", "GPT",
+  "Computer Vision", "OpenCV", "YOLO", "face-api.js", "Dlib",
+  "Model Deployment", "FastAPI", "Streamlit", "AWS SageMaker",
+  "Hugging Face", "AutoML", "MLflow", "Gemini API",
+  "React Native", "Flutter", "Swift", "Kotlin", "Java", "Objective-C",
+  "Xamarin", "Ionic", "Cordova",
+  "GraphQL", "REST APIs",
+  "Figma", "Sketch", "Adobe XD",
+  "Wireframing", "Mockups", "Interactive Prototypes",
+  "Media Queries", "Flexbox", "Grid Layout",
+  "Design Thinking", "User Research", "Accessibility", "Typography", "Color Theory",
+  "CSS Animations", "Lottie", "Framer Motion",
+  "Adobe Photoshop", "Adobe Illustrator", "CorelDRAW", "GIMP", "Canva",
+  "Font Design", "Kerning", "Tracking",
+  "Color Schemes", "Gradient Design", "Contrast Balance",
+  "Vector Art", "Digital Painting", "Character Design",
+  "Logo Design", "Business Cards", "Posters", "Social Media Graphics"
+];
 
 const Can_Card = () => {
   const { backendUrl, account } = useContext(DataContext);
@@ -37,7 +76,7 @@ const Can_Card = () => {
   const [open, setOpen] = useState(false);
   const [intType, setIntType] = useState("Resume");
   const [intLevel, setIntLevel] = useState("Beginner");
-  const [skill, setSkill] = useState("");
+  const [skill, setSkill] = useState([]);
   const [selectedDomain, setSelectedDomain] = useState("MERN Stack");
   const [file, setFile] = useState("");
   const [error, setError] = useState({ open: false, msg: "", severity: "" });
@@ -64,28 +103,28 @@ const Can_Card = () => {
 
   // ------------------ SAVING DATA TO FUNCTION ---------------------------
 
-    const savingQues = async(questions) => {
-      const serverData = {
-        candidateEmail:account.email,
-        mockID:uuidv4(),
-        questions:JSON.stringify(questions)
-      }
-      // console.log("Questions:", serverData.questions)
-      try {
-        const response = await axios.post(`${backendUrl}/Can/Storing-Generate-Questions`, serverData)
-        if(response.status === 200){
-          navigate(`/Candidate/Interview/${response.data}`);
-        }
-      } catch (error) {
-        setError({
-          open: true,
-          msg:
-            error.response?.data?.message ||
-            "Check your Connection! try again later",
-          severity: "error",
-        });
-      }
+  const savingQues = async(questions) => {
+    const serverData = {
+      candidateEmail:account.email,
+      mockID:uuidv4(),
+      questions:JSON.stringify(questions)
     }
+    // console.log("Questions:", serverData.questions)
+    try {
+      const response = await axios.post(`${backendUrl}/Can/Storing-Generate-Questions`, serverData)
+      if(response.status === 200){
+        navigate(`/Candidate/Interview/${response.data}`);
+      }
+    } catch (error) {
+      setError({
+        open: true,
+        msg:
+          error.response?.data?.message ||
+          "Check your Connection! try again later",
+        severity: "error",
+      });
+    }
+  }
 
   // ------------------ HANDLE RESUME SUBMIT ---------------------------
 
@@ -348,8 +387,9 @@ const Can_Card = () => {
         {intType === "Domain" && (
           <Box
             component="form"
-            sx={{ "& .MuiTextField-root": { m: 1, width: "90%" } }}
+            sx={{ "& .MuiTextField-root": { m: 1, width: "100%" } }}
             noValidate
+            className="pr-4"
             autoComplete="off"
           >
             <div>
@@ -379,16 +419,20 @@ const Can_Card = () => {
         {/* ----------------------- IF SKILLS SELECTED ----------------- */}
 
         {intType === "Skills" && (
-          <Box className="ml-4">
-            <TextField
-              onChange={(e) => setSkill(e.target.value)}
-              value={skill}
-              id="outlined-basic"
-              label="Skills"
-              placeholder="e.g. Javascript, Python, Java etc"
-              variant="outlined"
-              className="w-[90%]"
-            />
+          <Box className="ml-4 mr-4">
+          <Autocomplete
+            multiple
+            options={skillsss}
+            value={skill}
+            onChange={(event, value) => setSkill(value)}
+            sx={{ width: "fullWidth" }}
+            renderTags={(value, getTagProps) =>
+              value.map((option, index) => (
+                <Chip key={option} label={option} {...getTagProps({ index })} />
+              ))
+            }
+            renderInput={(params) => <TextField {...params} label="Select Skills" placeholder="Search Skills" />}
+          />
           </Box>
         )}
 
