@@ -8,6 +8,7 @@ import { fetchCandidateDetails, updateCandidateDetails } from "../Controller/Can
 import ImageUpload from "../Utils/ImageUpload.js";
 import { CandidateImageupload, UploadImage, getImage } from "../Controller/Candidate/Can_Image.js";
 import { domainSkillQuesGeneration, resumeQuesGeneration } from "../Controller/Candidate/QuesGeneration.js";
+import { GeneratedQuesStore, fetchingQues } from "../Controller/Candidate/QuesGen.js";
 
 const upload = multer({ storage: multer.memoryStorage() });
 
@@ -27,6 +28,9 @@ CandidateRouter.get("/file/:filename" , getImage)
 
 CandidateRouter.post("/Domain-Skill-Generate-Questions", domainSkillQuesGeneration)
 CandidateRouter.post("/Resume-Generate-Questions", upload.single('resume'), resumeQuesGeneration)
+
+CandidateRouter.post("/Storing-Generate-Questions", GeneratedQuesStore)
+CandidateRouter.get("/fetching-Generate-Questions", fetchingQues)
 
 
 export default CandidateRouter
