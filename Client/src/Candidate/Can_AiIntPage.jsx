@@ -118,17 +118,17 @@ const Can_AiIntPage = () => {
       ) : (
         // ---------------------- MOCK SCREEN -----------------------------------------------------
         <>
-          <Box className="flex flex-col w-full h-screen py-10 px-12 md:px-3 gap-12 md:py-10 md:gap-8 bg-[#202124]">
+          <Box className="flex flex-col w-full h-screen py-10 px-12 md:px-3 gap-4 sm:gap-6 md:gap-8 md:py-10 bg-[#202124]">
             {/* ---------------- Question Section --------------------------- */}
             <Box className="flex flex-col items-center text-white gap-4">
-              <h2 className="text-sm md:text-2xl font-semibold tracking-wide animate-pulse text-gray-300">
+              <h2 className="text-sm md:text-2xl font-semibold tracking-wide text-gray-300">
                 QUESTION
               </h2>
               <p
                 id="question"
                 className="text-lg md:text-3xl font-bold tracking-wide text-center"
               >
-                What is JavaScript What is JavaScript What is JavaScript What is JavaScript What is JavaScript What is JavaScript?
+                What is JavaScript What is JavaScript What is JavaScript What is JavaScript What is JavaScript What is JavaScript? 
               </p>
             </Box>
 
@@ -136,7 +136,7 @@ const Can_AiIntPage = () => {
 
             <Box
               id="video-frames"
-              className="flex flex-col md:flex-row justify-center gap-8 md:gap-6 flex-wrap"
+              className="flex flex-col md:flex-row justify-center gap-8 md:gap-6 flex-wrap sm:mb-12"
             >
               {/* ---------------- AI ------------------------------  */}
 
@@ -145,14 +145,14 @@ const Can_AiIntPage = () => {
                 className="w-full md:w-[40%] h-64 md:h-96 bg-[#3c4043] rounded-2xl flex items-end justify-center"
               >
                 <Button fullWidth >
-                  <span className="text-xl mr-2">Repeat</span> 
+                  <span className="text-xl mr-2 normal-case tracking-wide">Repeat</span> 
                   <VolumeUpIcon className="text-3xl" />
                 </Button>
               </Box>
 
               {/* ---------------- Timer ------------------ */}
-              <Box className="flex items-center justify-center text-red-500 text-3xl md:text-2xl font-bold mx-6 ">
-                03:00
+              <Box className="flex animate-pulse items-center justify-center text-red-500 text-3xl md:text-2xl font-bold mx-6 ">
+                02:00
               </Box>
 
               {/* ------------------- Webcam ---------------- */}
@@ -161,7 +161,7 @@ const Can_AiIntPage = () => {
                 className="w-full md:w-[40%] h-64 md:h-96 bg-[#3c4043] rounded-2xl flex items-end justify-center"
               >
                 <Button fullWidth>
-                <span className="text-xl mr-2">Answer</span> 
+                <span className="text-xl mr-2 normal-case tracking-wide">Answer</span> 
                   <MicIcon className="text-3xl" />
                 </Button>
               </Box>
@@ -170,13 +170,13 @@ const Can_AiIntPage = () => {
             {/* --------------------------------- Buttons Section --------------------------- */}
             <Box className="flex justify-center gap-4 md:gap-8">
               <Button
-                className=" text-white bg-gradient-to-r from-blue-500 to-blue-700 hover:from-blue-400 hover:to-blue-600 px-3 md:px-5 py-2 md:py-3 font-bold text-lg rounded-lg flex items-center transition-all duration-300 shadow-md hover:shadow-lg text-nowrap"
+                className=" text-white bg-gradient-to-r from-blue-500 to-blue-700 hover:from-blue-600 hover:to-blue-700 px-3 md:px-5 py-2 md:py-3 font-bold text-lg rounded-lg flex items-center transition-all duration-300 shadow-md hover:shadow-lg text-nowrap"
                 endIcon={<SkipNextIcon />}
               >
                 Skip
               </Button>
               <Button
-                className="text-white bg-gradient-to-r from-blue-500 to-blue-700 hover:from-blue-400 hover:to-blue-600 px-3 md:px-5 py-2 md:py-3 font-bold text-lg rounded-lg flex items-center transition-all duration-300 shadow-md hover:shadow-lg text-nowrap"
+                className="text-white bg-gradient-to-r from-blue-500 to-blue-700 hover:from-blue-600 hover:to-blue-700 px-3 md:px-5 py-2 md:py-3 font-bold text-lg rounded-lg flex items-center transition-all duration-300 shadow-md hover:shadow-lg text-nowrap"
                 endIcon={<NextIcon />}
               >
                 Next
