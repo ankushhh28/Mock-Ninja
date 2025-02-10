@@ -37,6 +37,8 @@ const Can_AiIntPage = () => {
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
+
 
   // ------------- NEXT BUTTON -- COUNT DOWN BUTTON -----------------
 
@@ -102,6 +104,21 @@ const Can_AiIntPage = () => {
     fetchingQuestions();
   }, [mockId]);
 
+  // ------------------- Showing Questions(Timer Logic)-------------------------------
+
+
+  useEffect(() => {
+    if (currentQuestionIndex >= questions.length - 1) {
+      return; 
+    }
+
+    const interval = setInterval(() => {
+      setCurrentQuestionIndex((prevIndex) => prevIndex + 1);
+    }, 1000); 
+
+    return () => clearInterval(interval);
+  }, [currentQuestionIndex, questions]); 
+
   return (
     <>
       {error ? (
@@ -123,11 +140,14 @@ const Can_AiIntPage = () => {
               <h2 className="text-sm md:text-2xl font-semibold tracking-wide text-gray-300">
                 QUESTION
               </h2>
+
               <p
                 id="question"
                 className="text-lg md:text-3xl font-bold tracking-wide text-center"
               >
-                What is JavaScript What is JavaScript What is JavaScript What is JavaScript What is JavaScript What is JavaScript? 
+                {questions.length > 0
+                  ? questions[currentQuestionIndex]
+                  : "Loading questions..."}
               </p>
             </Box>
 
@@ -143,8 +163,10 @@ const Can_AiIntPage = () => {
                 id="Ai"
                 className="w-full md:w-[40%] h-64 md:h-96 bg-[#3c4043] rounded-2xl flex items-end justify-center"
               >
-                <Button fullWidth >
-                  <span className="text-xl mr-2 normal-case tracking-wide">Repeat</span> 
+                <Button fullWidth>
+                  <span className="text-xl mr-2 normal-case tracking-wide">
+                    Repeat
+                  </span>
                   <VolumeUpIcon className="text-3xl" />
                 </Button>
               </Box>
@@ -160,7 +182,9 @@ const Can_AiIntPage = () => {
                 className="w-full md:w-[40%] h-64 md:h-96 bg-[#3c4043] rounded-2xl flex items-end justify-center"
               >
                 <Button fullWidth>
-                <span className="text-xl mr-2 normal-case tracking-wide">Answer</span> 
+                  <span className="text-xl mr-2 normal-case tracking-wide">
+                    Answer
+                  </span>
                   <MicIcon className="text-3xl" />
                 </Button>
               </Box>
