@@ -1,11 +1,47 @@
 import { Box, Typography } from "@mui/material";
 import interview from "../../assets/images/interview.png";
+import { useRef } from "react";
+import { useGSAP } from "@gsap/react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 const WhyMockNinja = () => {
+
+  // --------------------------- GSAP ANIMATION -----------------------------------
+  // --------------------------- GSAP ANIMATION -----------------------------------
+
+  gsap.registerPlugin(ScrollTrigger)
+
+  const Lefttext = useRef(null)
+  const RightImage = useRef(null)
+
+  useGSAP(() => {
+
+    gsap.from(Lefttext.current, {
+      x:-80,
+      duration:1,
+      opacity:0,
+      scrollTrigger:Lefttext.current
+    })
+
+    gsap.from(RightImage.current, {
+      x:170,
+      duration:1,
+      opacity:0,
+      scrollTrigger:RightImage.current
+    })
+
+  })
+
   return (
     <Box className="flex flex-col-reverse gap-10 md:gap-16 md:flex-row items-center justify-between bg-[#f5f3ff] w-full px-12 md:px-20 pt-10 pb-10">
+
       {/* ------------------LEFT-TEXT SECTION--------------------------------------------------------- */}
-      <Box className="flex flex-col items-start text-left w-full md:w-1/2 space-y-8">
+
+      <Box 
+      ref={Lefttext}
+      className="flex flex-col items-start text-left w-full md:w-1/2 space-y-8">
+
         <Typography className="text-3xl sm:text-4xl font-bold tracking-wide text-primary">
           Why Mock Ninja?
         </Typography>
@@ -37,8 +73,10 @@ const WhyMockNinja = () => {
       </Box>
 
       {/* ------------------IMAGE-SECTION--------------------------------------------------------- */}
-      <Box className="w-full md:w-1/2 flex justify-center  mt-6 md:mt-0 ">
+      <Box 
+      className="w-full md:w-1/2 flex justify-center  mt-6 md:mt-0 ">
         <img
+        ref={RightImage}
           src={interview}
           alt="Illustration"
           className="w-[1000px] h-auto rounded-xl"

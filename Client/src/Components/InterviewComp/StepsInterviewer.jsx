@@ -1,12 +1,15 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import img1 from "../../assets/images/oneonone.jpg";
 import img2 from "../../assets/images/aiconverse.gif";
 import img3 from "../../assets/images/feedback.gif";
+import { useGSAP } from "@gsap/react";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import gsap from "gsap";
 
 const steps = [
   {
     id: 1,
-    title: "Sign Up and set up your profile in minutes",
+    title: "Sign Up and set up your profile in seconds",
     image: img1,
   },
   {
@@ -22,46 +25,88 @@ const steps = [
 ];
 
 export default function StepsInterviewer() {
+
+  // --------------------------- GSAP ANIMATION -----------------------------------
+  // --------------------------- GSAP ANIMATION -----------------------------------
+
+  gsap.registerPlugin(ScrollTrigger)
+
+  const leftText = useRef(null)
+  const leftSteps = useRef(null)
+  const RightImages = useRef(null)
+
+  useGSAP(() => {
+    gsap.from(leftText.current, {
+      x:-80,
+      opacity:0,
+      duration:1,
+      scrollTrigger:leftText.current
+    })
+
+    gsap.from(leftSteps.current, {
+      x:-80,
+      opacity:0,
+      delay:0.5,
+      duration:1,
+      scrollTrigger:leftText.current
+    })
+
+    gsap.from(RightImages.current, {
+      x:170,
+      opacity:0,
+      delay:0.5,
+      duration:1,
+      scrollTrigger:leftText.current
+    })
+  })
+
   const [activeStep, setActiveStep] = useState(0);
   const [progress, setProgress] = useState(0);
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setProgress((prev) => prev + 10);
-    }, 300);
-
+      setProgress((prev) => (prev < 100 ? prev + 2 : prev)); 
+    }, 50); 
+  
     if (progress >= 100) {
-      setActiveStep((prev) => (prev + 1) % steps.length);
-      setProgress(0);
+      setTimeout(() => {
+        setActiveStep((prev) => (prev + 1) % steps.length); 
+        setProgress(0); 
+      }, 300);
     }
-
+  
     return () => clearInterval(interval);
   }, [progress]);
+  
 
   return (
     <>
-      <h1 className="px-16 py-6 gap-16 text-4xl font-bold text-[#8667F2] w-full p-2 bg-[#f3f5ff] ">
+      <h1 
+      ref={leftText}
+      className="px-16 py-6 gap-16 text-4xl font-bold text-[#8667F2] w-full p-2 bg-[#f3f5ff] ">
         How to become an interviewer?
       </h1>
 
       <div className="flex px-16 py-6 gap-16 items-center bg-[#f5f3ff] ">
       {/* steps------------------------------------------------------------------------------------------- */}
-        <div className="space-y-2 lg:w-1/2 gap-3">
+        <div 
+        ref={leftSteps}
+        className="space-y-2 lg:w-1/2 gap-3">
           {steps.map((step, index) => (
             <div
               key={step.id}
-              className={`relative rounded-lg p-6 text-xl transition-all duration-300 ${
+              className={`relative rounded-lg p-3 sm:p-5 text-xl transition-all duration-300 ${
                 activeStep === index ? "bg-[#c28ceb] text-white" : "bg-[#e0c3fc] text-gray-700"
               }`}
             >
-              <button className="w-full text-left font-medium">
+              <button className="w-full text-lg sm:text-xl lg:text-2xl text-left font-medium">
                 {step.id}. {step.title}
               </button>
 
                {/* Progress Bar ----------------------------------------------------------------------------------- */}
               {activeStep === index && (
                 <div
-                  className="absolute bottom-0 left-0 h-1 bg-gray-500 transition-all duration-400 ease-in"
+                  className="absolute bottom-0 left-0 h-1 bg-gray-600 transition-all duration-400 ease-in-out"
                   style={{ width: `${progress}%` }}
                 />
               )}
@@ -69,7 +114,9 @@ export default function StepsInterviewer() {
           ))}
         </div>
 
-        <div className="hidden md:inline-block lg:w-1/2 items-start bg-[#c28ceb] p-5 rounded-2xl">
+        <div 
+          ref={RightImages}
+        className="hidden md:inline-block lg:w-1/2 items-start bg-[#c28ceb] p-5 rounded-2xl">
           <img
             src={steps[activeStep].image}
             alt="Step"
