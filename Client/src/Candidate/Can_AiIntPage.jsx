@@ -38,8 +38,7 @@ const Can_AiIntPage = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
-
-// ------------- NEXT BUTTON -- COUNT DOWN BUTTON -----------------
+  // ------------- NEXT BUTTON -- COUNT DOWN BUTTON -----------------
 
   const [next, setNext] = useState(() => {
     return JSON.parse(sessionStorage.getItem("next")) || false;
@@ -80,10 +79,10 @@ const Can_AiIntPage = () => {
           const questionsArray = Array.isArray(response.data.questions)
             ? response.data.questions
             : response.data.questions
-            .replace(/[\[\]{}":.\b]|question|\b\d+\b/g, "")
-            .split(/,(?=[A-Z])/)
-            .map(item => item.trim())
-            .filter(item => item !== "");
+                .replace(/[\[\]{}":.\b]|question|\b\d+\b/g, "")
+                .split(/,(?=[A-Z])/)
+                .map((item) => item.trim())
+                .filter((item) => item !== "");
           setQuestions(questionsArray);
         }
       } catch (error) {
@@ -128,7 +127,8 @@ const Can_AiIntPage = () => {
                 id="question"
                 className="text-lg md:text-3xl font-bold tracking-wide text-center"
               >
-                What is JavaScript What is JavaScript What is JavaScript What is JavaScript What is JavaScript What is JavaScript?
+                What is the difference between map(), forEach(), and filter() in
+                JavaScript?
               </p>
             </Box>
 
@@ -144,8 +144,8 @@ const Can_AiIntPage = () => {
                 id="Ai"
                 className="w-full md:w-[40%] h-64 md:h-96 bg-[#3c4043] rounded-2xl flex items-end justify-center"
               >
-                <Button fullWidth >
-                  <span className="text-xl mr-2">Repeat</span> 
+                <Button fullWidth>
+                  <span className="text-xl mr-2">Repeat</span>
                   <VolumeUpIcon className="text-3xl" />
                 </Button>
               </Box>
@@ -161,7 +161,7 @@ const Can_AiIntPage = () => {
                 className="w-full md:w-[40%] h-64 md:h-96 bg-[#3c4043] rounded-2xl flex items-end justify-center"
               >
                 <Button fullWidth>
-                <span className="text-xl mr-2">Answer</span> 
+                  <span className="text-xl mr-2">Answer</span>
                   <MicIcon className="text-3xl" />
                 </Button>
               </Box>
