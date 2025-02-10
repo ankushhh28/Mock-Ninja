@@ -17,7 +17,7 @@ import {
   Chip,
   Autocomplete,
 } from "@mui/material";
-import React, { useContext, useState } from "react";
+import React, { useContext, useRef, useState } from "react";
 import aiImg from "../../assets/images/CardAIImage.png";
 import CloseIcon from "@mui/icons-material/Close";
 import { DataContext } from "../../Context/DataProvider";
@@ -25,6 +25,9 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { CanDataContext } from "../../Context/CanDataProvider";
 import { v4 as uuidv4 } from 'uuid';
+import {useGSAP} from "@gsap/react"
+import gsap from "gsap"
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 const skillsss = [
   "HTML", "CSS", "JavaScript", "React", "Angular", "Vue.js", "TypeScript", "SASS", "Bootstrap", "Tailwind CSS", "jQuery",
@@ -60,10 +63,40 @@ const skillsss = [
   "Font Design", "Kerning", "Tracking",
   "Color Schemes", "Gradient Design", "Contrast Balance",
   "Vector Art", "Digital Painting", "Character Design",
-  "Logo Design", "Business Cards", "Posters", "Social Media Graphics"
+  "Logo Design", "Business Cards", "Posters", "Social Media Graphics",
+  "DBMS", "Computer Networks", "System Design", "Operating Systems",
+  "Object-Oriented Programming", "Data Structures", "Algorithms",
+  "Software Development Life Cycle", "Agile Methodologies", "Microservices",
+  "Load Balancing", "Caching", "API Gateway", "Networking Protocols",
+  "Concurrency", "Multithreading", "Cloud Computing", "DevOps",
+  "IT Security", "Authentication", "Authorization", "Encryption",
+  "Problem-Solving Techniques", "Big-O Notation", "Design Patterns",
+  "Version Control Systems", "Code Optimization", "Debugging Techniques"
 ];
 
 const Can_Card = () => {
+
+  gsap.registerPlugin(ScrollTrigger)
+
+  const leftImage = useRef(null)
+  const rightText = useRef(null)
+
+  useGSAP(() => {
+    gsap.from(leftImage.current,{
+      x:-80,
+      opacity:0,
+      duration:1,
+      scrollTrigger:leftImage.current
+    })
+
+    gsap.from(rightText.current,{
+      x:170,
+      opacity:0,
+      duration:1,
+      scrollTrigger:rightText.current
+    })
+  })
+
   const { backendUrl, account } = useContext(DataContext);
   const { setQuestionGenerated } = useContext(CanDataContext);
 
@@ -103,11 +136,12 @@ const Can_Card = () => {
 
   // ------------------ SAVING DATA TO FUNCTION ---------------------------
 
-  const savingQues = async(questions) => {
+  const savingQues = async(questions, details) => {
     const serverData = {
       candidateEmail:account.email,
       mockID:uuidv4(),
-      questions:JSON.stringify(questions)
+      questions:JSON.stringify(questions),
+      details
     }
     // console.log("Questions:", serverData.questions)
     try {
@@ -190,7 +224,7 @@ const Can_Card = () => {
       const cleanedData = response.data.replace(/```json|```/g, "");
       const parsedData = JSON.parse(cleanedData);
       setQuestionGenerated(parsedData);
-      savingQues(parsedData)
+      savingQues(parsedData, selectedDomain)
     } catch (error) {
       setError({
         open: true,
@@ -227,7 +261,7 @@ const Can_Card = () => {
       const cleanedData = response.data.replace(/```json|```/g, "");
       const parsedData = JSON.parse(cleanedData);
       setQuestionGenerated(parsedData);
-      savingQues(parsedData)
+      savingQues(parsedData, skill)
     } catch (error) {
       setError({
         open: true,
@@ -246,15 +280,19 @@ const Can_Card = () => {
   return (
     <>
       <Box className="flex flex-col sm:flex-row items-center gap-14 md:gap-6 bg-[#f5f3ff] px-8 pt-6 pb-12 md:pr-16  md:py-12">
-        <Box className="w-full md:w-1/2 flex justify-center">
+        <Box 
+        ref={leftImage}
+        className="w-full md:w-1/2 flex justify-center">
           <img
             src={aiImg}
             alt="leftsideImage"
-            className="w-full max-w-sm h-auto rounded-lg min-h-20 filter drop-shadow-[0_8px_6px_rgba(0,0,0,0.5)] "
+            className="w-full max-w-sm h-auto rounded-lg min-h-20 filter drop-shadow-[0_8px_6px_rgba(0,0,0,0.3)] "
           />
         </Box>
 
-        <Box className="flex flex-col w-full lg:w-1/2 gap-4  md:gap-8 text-center md:text-left ">
+        <Box 
+        ref={rightText}
+        className="flex flex-col w-full lg:w-1/2 gap-4  md:gap-8 text-center md:text-left ">
           <Typography className="text-3xl md:text-4xl text-primary font-extrabold mb-4 whitespace-nowrap text-wrap overflow-visible">
             Ace Your Next Interview with{" "}
             <span className="text-gray-700">AI!</span>

@@ -3,7 +3,7 @@ import QuesGenSchema from "../../Models/QuesGenSchema.js"
 // ----------------- SAVING DATA TO THE DATABASE ---------------------
 
 export const GeneratedQuesStore = async(req, res) => {
-  const {candidateEmail, mockID, questions} = req.body
+  const {candidateEmail, mockID, questions, details} = req.body
 
   try {
     const QuesData = await QuesGenSchema.findOne({mockID})
@@ -11,10 +11,21 @@ export const GeneratedQuesStore = async(req, res) => {
       return res.status(400).json({message:"Interview Failed! Try again later"})
     }
 
+    let cleanedData 
+    if(Array.isArray(details)){
+      cleanedData = details.join(", ").replace(/'/g, "").trim()
+    } 
+    else if (details){
+      cleanedData = details;
+    } else {
+      cleanedData = "Resume"
+    }
+
     const Ques = new QuesGenSchema({
       email:candidateEmail,
       mockID,
-      questions
+      questions,
+      details: cleanedData
     })
 
     await Ques.save()
