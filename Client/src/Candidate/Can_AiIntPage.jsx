@@ -38,6 +38,9 @@ const Can_AiIntPage = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
+
+// ------------- NEXT BUTTON -- COUNT DOWN BUTTON -----------------
+
   const [next, setNext] = useState(() => {
     return JSON.parse(sessionStorage.getItem("next")) || false;
   });
@@ -77,10 +80,10 @@ const Can_AiIntPage = () => {
           const questionsArray = Array.isArray(response.data.questions)
             ? response.data.questions
             : response.data.questions
-                .replace(/[\[\]{}":.\b]|question|\b\d+\b/g, "")
-                .split(",")
-                .map((item) => item.trim())
-                .filter((item) => item !== "");
+            .replace(/[\[\]{}":.\b]|question|\b\d+\b/g, "")
+            .split(/,(?=[A-Z])/)
+            .map(item => item.trim())
+            .filter(item => item !== "");
           setQuestions(questionsArray);
         }
       } catch (error) {

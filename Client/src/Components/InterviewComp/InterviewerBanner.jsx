@@ -95,11 +95,12 @@ const InterviewerBanner = () => {
             </Box>
           </Box>
 
-          <Box className="flex flex-col w-full md:w-1/2 mt-10 md:mt-0 md:items-end">
+          <Box 
+          ref={BannerImg}
+          className="flex flex-col w-full md:w-1/2 mt-10 md:mt-0 md:items-end">
             {/* First Image + Video */}
             <div className="flex flex-col items-center relative left-8 sm:left-14 md:left-16 lg:left-6 xl:left-18">
               <img
-                ref={BannerImg}
                 src={frame1}
                 alt="frame1"
                 className="w-[280px] sm:w-[400px] md:w-[320px] lg:w-[330px] xl:w-[400px]"

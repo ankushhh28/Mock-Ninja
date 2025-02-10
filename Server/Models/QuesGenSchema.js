@@ -9,6 +9,9 @@ const quesschema = new mongoose.Schema({
   },
   questions:{
     type:String
+  },
+  details:{
+    type:String
   }
 },{
   timestamps:true

@@ -18,7 +18,7 @@ async function generateQuestionsWithGemini(domain, level) {
   
   **Rules:**
   1. Generate exactly 12 questions in the following sequence:
-     - Question 1: Tell me about yourself (1st interview question).
+     - Question 1: Tell me about yourself or Introcude your self (Type Question).
      - Questions 2-4: Basic Technical questions (non-coding).
      - Questions 5-8: Intermediate Technical questions (non-coding).
      - Questions 9-10: Hard Technical questions (non-coding).
@@ -118,7 +118,7 @@ const generateQuestionsWithGeminis = async (resumeText) => {
 
     Rules:
     1. Generate exactly 12 questions in the following sequence:
-       - Question 1: A general self introductory question.
+       - Question 1: Tell me about yourself or Introcude your self (Type Question).
        - Questions 2-4: Basic Technical questions (non-coding).
        - Questions 5-7: Intermediate Technical questions (non-coding).
        - Questions 8-10: Project-related questions.

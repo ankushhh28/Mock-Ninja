@@ -39,7 +39,7 @@ const InfiniteSlider = () => {
 
   return (
     <>
-    <Typography className="text-3xl text-center md:text-5xl font-bold text-gray-900 leading-tight
+    <Typography className="text-xl text-center md:text-3xl font-bold text-gray-900 leading-tight
     my-6">
     Crack Tech Interviews <span className="text-primary">with AI</span>
     </Typography>

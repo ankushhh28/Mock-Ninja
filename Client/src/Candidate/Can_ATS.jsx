@@ -8,7 +8,7 @@ const CanATS = () => {
     <>
     <Can_Layout>
     <ProfileComplete/>
-    <h1 className='text-5xl text-center h-[40vh]'>ATS CHECK</h1>
+    <h1 className='text-5xl text-center h-[100vh]'>ATS CHECK</h1>
     <Ats/>
     </Can_Layout>
       
