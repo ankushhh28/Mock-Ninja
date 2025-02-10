@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
 import { DataContext } from "../Context/DataProvider";
 import axios from "axios";
@@ -7,7 +7,6 @@ import {
   Box,
   CircularProgress,
   Snackbar,
-  Typography,
   Button,
 } from "@mui/material";
 
@@ -20,6 +19,7 @@ import Intructions from "./Component/InstructionsAI";
 import CountdownAnimation from "./Component/CountDown";
 
 const Can_AiIntPage = () => {
+
   const { backendUrl, account } = useContext(DataContext);
 
   // -------------- Fetching Mock ID in URL -------------------------
@@ -37,8 +37,21 @@ const Can_AiIntPage = () => {
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+
+  // ---CURRENT_QUESTION_INDEX -- SECONDS COUNT INDEX  (SESSION STORAGE) --------
+
+  const savedQuestions = parseInt(sessionStorage.getItem("currentQuestionIndex")) || 0
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
 
+  const savedCount = parseInt(sessionStorage.getItem("timer") || 5)
+  const [timer, setTimer] = useState(120)
+
+  // console.log(timer, currentQuestionIndex);
+
+  // useEffect(() => {
+  //   sessionStorage.setItem('currentQuestionIndex', currentQuestionIndex);
+  //   sessionStorage.setItem('timer', timer);
+  // }, [currentQuestionIndex, timer]);
 
   // ------------- NEXT BUTTON -- COUNT DOWN BUTTON -----------------
 
@@ -81,7 +94,7 @@ const Can_AiIntPage = () => {
           const questionsArray = Array.isArray(response.data.questions)
             ? response.data.questions
             : response.data.questions
-                .replace(/[\[\]{}":.\b]|question|\b\d+\b/g, "")
+                .replace(/[\[\]{}":.\?]|question|\b\d+\b/g, "")
                 .split(/,(?=[A-Z])/)
                 .map((item) => item.trim())
                 .filter((item) => item !== "");
@@ -104,21 +117,43 @@ const Can_AiIntPage = () => {
     fetchingQuestions();
   }, [mockId]);
 
-  // ------------------- Showing Questions(Timer Logic)-------------------------------
+  // ------------------- HANDLING NEXT QUESTION ---------------
 
+  const handleNextQuestion = () => {
+    setCurrentQuestionIndex((prevIndex) => {
+      if (prevIndex < questions.length - 1) {
+        return prevIndex + 1;
+      } else {
+        sessionStorage.removeItem("currentQuestionIndex")
+        sessionStorage.removeItem("timer")
+        return 
+      }
+    });
+    setTimer(120);
+  };
 
+  // ------------------- Showing Questions (Timer Logic) ---------------
+  
   useEffect(() => {
-    if (currentQuestionIndex >= questions.length - 1) {
-      return; 
+    if(next === true && count === true){
+      if (currentQuestionIndex >= questions.length) {
+        return;
+      }
+      const interval = setInterval(() => {
+        setTimer((prevTime) => {
+          if (prevTime === 1) {
+            clearInterval(interval);
+            handleNextQuestion();
+            return 1;
+          }
+          return prevTime - 1;
+        });
+      }, 1000);
+    
+      return () => clearInterval(interval);
     }
-
-    const interval = setInterval(() => {
-      setCurrentQuestionIndex((prevIndex) => prevIndex + 1);
-    }, 1000); 
-
-    return () => clearInterval(interval);
-  }, [currentQuestionIndex, questions]); 
-
+  }, [currentQuestionIndex, questions, next, count]);
+  
   return (
     <>
       {error ? (
@@ -136,6 +171,7 @@ const Can_AiIntPage = () => {
         <>
           <Box className="flex flex-col w-full h-screen py-10 px-12 md:px-3 gap-4 sm:gap-6 md:gap-8 md:py-10 bg-[#202124]">
             {/* ---------------- Question Section --------------------------- */}
+
             <Box className="flex flex-col items-center text-white gap-4">
               <h2 className="text-sm md:text-2xl font-semibold tracking-wide text-gray-300">
                 QUESTION
@@ -145,9 +181,7 @@ const Can_AiIntPage = () => {
                 id="question"
                 className="text-lg md:text-3xl font-bold tracking-wide text-center"
               >
-                {questions.length > 0
-                  ? questions[currentQuestionIndex]
-                  : "Loading questions..."}
+                {questions[currentQuestionIndex]}
               </p>
             </Box>
 
@@ -173,7 +207,8 @@ const Can_AiIntPage = () => {
 
               {/* ---------------- Timer ------------------ */}
               <Box className="flex animate-pulse items-center justify-center text-red-500 text-3xl md:text-2xl font-bold mx-6 ">
-                02:00
+              {Math.floor(timer / 60)}:
+              {(timer % 60).toString().padStart(2, '0')}
               </Box>
 
               {/* ------------------- Webcam ---------------- */}
@@ -193,12 +228,14 @@ const Can_AiIntPage = () => {
             {/* --------------------------------- Buttons Section --------------------------- */}
             <Box className="flex justify-center gap-4 md:gap-8">
               <Button
+              onClick={handleNextQuestion}
                 className=" text-white bg-gradient-to-r from-blue-500 to-blue-700 hover:from-blue-600 hover:to-blue-700 px-3 md:px-5 py-2 md:py-3 font-bold text-lg rounded-lg flex items-center transition-all duration-300 shadow-md hover:shadow-lg text-nowrap"
                 endIcon={<SkipNextIcon />}
               >
                 Skip
               </Button>
               <Button
+              onClick={handleNextQuestion}
                 className="text-white bg-gradient-to-r from-blue-500 to-blue-700 hover:from-blue-600 hover:to-blue-700 px-3 md:px-5 py-2 md:py-3 font-bold text-lg rounded-lg flex items-center transition-all duration-300 shadow-md hover:shadow-lg text-nowrap"
                 endIcon={<NextIcon />}
               >
