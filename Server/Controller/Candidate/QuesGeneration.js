@@ -116,6 +116,11 @@ const generateQuestionsWithGeminis = async (resumeText) => {
     Resume Content:
     ${resumeText}
 
+    first check if the uploaded text is an resume text or not?
+    if the text is not an type of resume text then ONLY SHOW this message
+
+    "NOT AN RESUME"
+
     Rules:
     1. Generate exactly 12 questions in the following sequence:
        - Question 1: Tell me about yourself or Introcude your self (Type Question).
@@ -142,7 +147,8 @@ const generateQuestionsWithGeminis = async (resumeText) => {
   if (!data.candidates || !data.candidates[0]) {
     throw new Error('Invalid response from Gemini API');
   }
-
+  console.log(data.candidates[0].content.parts[0].text);
+  
   return data.candidates[0].content.parts[0].text;
 };
 
