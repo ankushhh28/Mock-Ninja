@@ -1,39 +1,53 @@
 import React from "react";
-import { Box, Button } from '@mui/material'
 
 const Can_FbHistory = () => {
-
   return (
-    <div className="w-full h-auto flex flex-col items-center justify-start bg-gray-100">
-      <h1 className="px-16 pt-6 sm:pt-14 text-3xl md:text-4xl font-bold text-primary w-full bg-[#f5f3ff] text-center">
+    <div className="flex flex-col w-full items-center bg-[#f3f5ff] gap-y-6">
+      <h1 className="px-16 pt-6 text-3xl md:text-4xl font-bold text-primary w-full bg-[#f5f3ff] text-center mt-2">
         Previous Interview's History
       </h1>
-      <div className="flex flex-col gap-4 w-full px-8 py-10">
-        
-        <div className="flex items-center justify-between w-full p-4 mb-2 rounded-lg shadow-md border bg-[#e9dcff] hover:bg-[#d6b3ff] transition duration-300">
-          <span className="text-gray-800 font-semibold w-1/6 text-center">1</span>
-          <span className="text-gray-800 font-medium w-4/6 text-center">02 Feb, 2025</span>
-          <span className="text-gray-800 font-medium w-4/6 text-left">Resume</span>
-          <button className="bg-[#8667f2] hover:bg-[#6e4fcf] text-white px-4 py-2 rounded-md font-bold uppercase text-nowrap">
+      <div className="flex flex-col w-full max-w-[1300px] mt-4 md:m-2">
+        <div className="flex items-center justify-between w-full p-4 mb-2 rounded-lg shadow-md bg-[#e9dcff] hover:bg-[#d6b3ff] transition duration-300">
+          <span className="text-gray-800 font-semibold w-1/6 md:w-2/6 text-left lg:pl-6">
+            1
+          </span>
+          <span className="text-gray-800 font-medium text-center sm:w-full sm:text-left">
+            02 Feb, 2025
+          </span>
+          <span className="text-gray-800 font-medium sm:w-full text-left">
+            Resume
+          </span>
+          <button className="bg-[#8667f2] hover:bg-[#6e4fcf] text-white px-4 py-2 rounded-md font-bold uppercase text-nowrap hidden sm:block">
             View Details
           </button>
         </div>
 
         <div className="flex items-center justify-between w-full p-4 mb-2 rounded-lg shadow-md border bg-[#e9dcff] hover:bg-[#d6b3ff] transition duration-300">
-          <span className="text-gray-800 font-semibold w-1/6 text-center">2</span>
-          <span className="text-gray-800 font-medium w-4/6 text-center">02 Feb, 2025</span>
-          <span className="text-gray-800 font-medium w-4/6 text-left">Domain</span>
-          <button className="bg-[#8667f2] hover:bg-[#6e4fcf] text-white px-4 py-2 rounded-md font-bold uppercase text-nowrap">
+          <span className="text-gray-800 font-semibold w-1/6 md:w-2/6 text-left lg:pl-6">
+            2
+          </span>
+          <span className="text-gray-800 font-medium text-center sm:w-full sm:text-left">
+            02 Feb, 2025
+          </span>
+          <span className="text-gray-800 font-medium sm:w-full text-left">
+            Domain
+          </span>
+          <button className="bg-[#8667f2] hover:bg-[#6e4fcf] text-white px-4 py-2 rounded-md font-bold uppercase text-nowrap hidden sm:block">
             View Details
           </button>
         </div>
 
-
         <div className="flex items-center justify-between w-full p-4 mb-2 rounded-lg shadow-md border bg-[#e9dcff] hover:bg-[#d6b3ff] transition duration-300">
-          <span className="text-gray-800 font-semibold w-1/6 text-center">3</span>
-          <span className="text-gray-800 font-medium w-4/6 text-center">02 Feb, 2025</span>
-          <span className="text-gray-800 font-medium w-4/6 text-left">Topic</span>
-          <button className="bg-[#8667f2] hover:bg-[#6e4fcf] text-white px-4 py-2 rounded-md font-bold uppercase text-nowrap">
+          <span className="text-gray-800 font-semibold w-1/6 md:w-2/6 text-left lg:pl-6">
+            3
+          </span>
+          <span className="text-gray-800 font-medium text-center sm:w-full sm:text-left">
+            02 Feb, 2025
+          </span>
+          <span className="text-gray-800 font-medium sm:w-full text-left">
+            Skill
+          </span>
+          <button className="bg-[#8667f2] hover:bg-[#6e4fcf] text-white px-4 py-2 rounded-md font-bold uppercase text-nowrap hidden sm:block">
             View Details
           </button>
         </div>

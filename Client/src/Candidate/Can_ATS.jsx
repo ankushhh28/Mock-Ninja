@@ -20,9 +20,9 @@ const CanATS = () => {
     <Can_Layout>
     <ProfileComplete/>
     <>
-    <div className="flex flex-col lg:flex-row items-center justify-center min-h-screen bg-gradient-to-br from-purple-200 to-purple-300 text-white p-4 lg:p-8 gap-4 lg:gap-8">
+    <div className="flex flex-col lg:flex-row items-center justify-center min-h-screen bg-[#f3f5ff] text-white p-4 lg:p-8 gap-4 lg:gap-8">
       {/* ----------------------------Left Side-------------------------------- */}
-      <div className="w-full lg:w-1/2 flex flex-col items-center justify-center gap-y-4 lg:gap-y-6 bg-white/30 backdrop-blur-lg p-4 lg:p-8 rounded-lg shadow-xl">
+      <div className="w-full lg:w-1/2 flex flex-col items-center justify-center gap-y-4 lg:gap-y-6 bg-white/30 backdrop-blur-lg p-4 lg:p-8 rounded-lg shadow-2xl">
         <h1 className="text-2xl lg:text-3xl font-bold text-[#8667f2] text-center">
           RESUME CHECKER
         </h1>
