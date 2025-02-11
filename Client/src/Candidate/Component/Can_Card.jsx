@@ -104,6 +104,8 @@ const Can_Card = () => {
 
   const navigate = useNavigate();
 
+  const fileInputRef = useRef(null)
+
   // -------------------------------------------------------------------
 
   const [open, setOpen] = useState(false);
@@ -185,8 +187,8 @@ const Can_Card = () => {
           headers: { "Content-Type": "multipart/form-data" },
         }
       );
-      setQuestionGenerated(response.data.questions.split("\n"));
-      savingQues(response.data.questions.split("\n"))
+        setQuestionGenerated(response.data.questions.split("\n"));
+        savingQues(response.data.questions.split("\n"))
     } catch (error) {
       setError({
         open: true,
@@ -197,7 +199,7 @@ const Can_Card = () => {
       });
     } finally {
       setLoading(false);
-      setFile("");
+      clearFile()
     }
   };
 
@@ -273,6 +275,13 @@ const Can_Card = () => {
     } finally {
       setLoading(false);
     }
+  };
+
+  // -------------------------------------------------------------------
+
+  const clearFile = () => {
+    setFile(null);                    
+    fileInputRef.current.value = ""; 
   };
 
   // -------------------------------------------------------------------
@@ -416,6 +425,7 @@ const Can_Card = () => {
               inputProps={{ accept: "application/pdf" }}
               helperText="Choose only PDF file"
               onChange={(e) => setFile(e.target.files[0])}
+              inputRef={fileInputRef}
             />
           </Box>
         )}

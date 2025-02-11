@@ -43,15 +43,12 @@ const Can_AiIntPage = () => {
   const savedQuestions = parseInt(sessionStorage.getItem("currentQuestionIndex")) || 0
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
 
-  const savedCount = parseInt(sessionStorage.getItem("timer") || 5)
+  const savedCount = parseInt(sessionStorage.getItem("timer") || 120)
   const [timer, setTimer] = useState(120)
 
   // console.log(timer, currentQuestionIndex);
 
-  // useEffect(() => {
-  //   sessionStorage.setItem('currentQuestionIndex', currentQuestionIndex);
-  //   sessionStorage.setItem('timer', timer);
-  // }, [currentQuestionIndex, timer]);
+  // useEffect(() 
 
   // ------------- NEXT BUTTON -- COUNT DOWN BUTTON -----------------
 
@@ -99,6 +96,8 @@ const Can_AiIntPage = () => {
                 .map((item) => item.trim())
                 .filter((item) => item !== "");
           setQuestions(questionsArray);
+          console.log(questionsArray);
+          
         }
       } catch (error) {
         setModalMsg({
@@ -169,80 +168,81 @@ const Can_AiIntPage = () => {
       ) : (
         // ---------------------- MOCK SCREEN -----------------------------------------------------
         <>
-          <Box className="flex flex-col w-full h-screen py-10 px-12 md:px-3 gap-4 sm:gap-6 md:gap-8 md:py-10 bg-[#202124]">
-            {/* ---------------- Question Section --------------------------- */}
+          <Box className="flex flex-col w-full h-screen py-6 px-4 sm:px-8 md:px-12 gap-4 sm:gap-6 md:gap-8 md:py-10 bg-[#202124]">
+  {/* ---------------- Question Section --------------------------- */}
 
-            <Box className="flex flex-col items-center text-white gap-4">
-              <h2 className="text-sm md:text-2xl font-semibold tracking-wide text-gray-300">
-                QUESTION
-              </h2>
+  <Box className="flex flex-col items-center text-white gap-4">
+    <h2 className="text-sm sm:text-base md:text-2xl font-semibold tracking-wide text-gray-300">
+      QUESTION
+    </h2>
 
-              <p
-                id="question"
-                className="text-lg md:text-3xl font-bold tracking-wide text-center"
-              >
-                {questions[currentQuestionIndex]}
-              </p>
-            </Box>
+    <p
+      id="question"
+      className="text-lg sm:text-xl md:text-3xl font-bold tracking-wide text-center"
+    >
+      {questions[currentQuestionIndex]}
+    </p>
+  </Box>
 
-            {/* ------------------------- Video Frames Section --------------------- */}
+  {/* ------------------------- Video Frames Section --------------------- */}
 
-            <Box
-              id="video-frames"
-              className="flex flex-col md:flex-row justify-center gap-8 md:gap-6 flex-wrap sm:mb-12"
-            >
-              {/* ---------------- AI ------------------------------  */}
+  <Box
+    id="video-frames"
+    className="flex flex-col sm:flex-row justify-center gap-6 sm:gap-8 md:gap-12 flex-wrap sm:mb-4"
+  >
+    {/* ---------------- AI ------------------------------  */}
 
-              <Box
-                id="Ai"
-                className="w-full md:w-[40%] h-64 md:h-96 bg-[#3c4043] rounded-2xl flex items-end justify-center"
-              >
-                <Button fullWidth>
-                  <span className="text-xl mr-2 normal-case tracking-wide">
-                    Repeat
-                  </span>
-                  <VolumeUpIcon className="text-3xl" />
-                </Button>
-              </Box>
+    <Box
+      id="Ai"
+      className="w-full sm:w-[45%] md:w-[40%] h-48 sm:h-64 md:h-96 bg-[#3c4043] rounded-2xl flex items-end justify-center"
+    >
+      <Button fullWidth>
+        <span className="text-xl mr-2 normal-case tracking-wide">
+          Repeat
+        </span>
+        <VolumeUpIcon className="text-3xl" />
+      </Button>
+    </Box>
 
-              {/* ---------------- Timer ------------------ */}
-              <Box className="flex animate-pulse items-center justify-center text-red-500 text-3xl md:text-2xl font-bold mx-6 ">
-              {Math.floor(timer / 60)}:
-              {(timer % 60).toString().padStart(2, '0')}
-              </Box>
+    {/* ---------------- Timer ------------------ */}
+    <Box className="flex animate-pulse items-center justify-center text-red-500 text-2xl sm:text-3xl font-bold mx-4 sm:mx-6">
+      {Math.floor(timer / 60)}:
+      {(timer % 60).toString().padStart(2, '0')}
+    </Box>
 
-              {/* ------------------- Webcam ---------------- */}
-              <Box
-                id="web-cam"
-                className="w-full md:w-[40%] h-64 md:h-96 bg-[#3c4043] rounded-2xl flex items-end justify-center"
-              >
-                <Button fullWidth>
-                  <span className="text-xl mr-2 normal-case tracking-wide">
-                    Answer
-                  </span>
-                  <MicIcon className="text-3xl" />
-                </Button>
-              </Box>
-            </Box>
+    {/* ------------------- Webcam ---------------- */}
+    <Box
+      id="web-cam"
+      className="w-full sm:w-[45%] md:w-[40%] h-48 sm:h-64 md:h-96 bg-[#3c4043] rounded-2xl flex items-end justify-center"
+    >
+      <Button fullWidth>
+        <span className="text-xl mr-2 normal-case tracking-wide">
+          Answer
+        </span>
+        <MicIcon className="text-3xl" />
+      </Button>
+    </Box>
+  </Box>
 
-            {/* --------------------------------- Buttons Section --------------------------- */}
-            <Box className="flex justify-center gap-4 md:gap-8">
-              <Button
-              onClick={handleNextQuestion}
-                className=" text-white bg-gradient-to-r from-blue-500 to-blue-700 hover:from-blue-600 hover:to-blue-700 px-3 md:px-5 py-2 md:py-3 font-bold text-lg rounded-lg flex items-center transition-all duration-300 shadow-md hover:shadow-lg text-nowrap"
-                endIcon={<SkipNextIcon />}
-              >
-                Skip
-              </Button>
-              <Button
-              onClick={handleNextQuestion}
-                className="text-white bg-gradient-to-r from-blue-500 to-blue-700 hover:from-blue-600 hover:to-blue-700 px-3 md:px-5 py-2 md:py-3 font-bold text-lg rounded-lg flex items-center transition-all duration-300 shadow-md hover:shadow-lg text-nowrap"
-                endIcon={<NextIcon />}
-              >
-                Next
-              </Button>
-            </Box>
-          </Box>
+  {/* --------------------------------- Buttons Section --------------------------- */}
+  <Box className="flex flex-col sm:flex-row justify-center gap-4 sm:gap-6 md:gap-8">
+    <Button
+      onClick={handleNextQuestion}
+      className="text-white bg-gradient-to-r from-blue-500 to-blue-700 hover:from-blue-600 hover:to-blue-700 px-4 sm:px-5 py-2 sm:py-3 font-bold text-lg rounded-lg flex items-center transition-all duration-300 shadow-md hover:shadow-lg text-nowrap"
+      endIcon={<SkipNextIcon />}
+    >
+      Skip
+    </Button>
+    <Button
+      onClick={handleNextQuestion}
+      className="text-white bg-gradient-to-r from-blue-500 to-blue-700 hover:from-blue-600 hover:to-blue-700 px-4 sm:px-5 py-2 sm:py-3 font-bold text-lg rounded-lg flex items-center transition-all duration-300 shadow-md hover:shadow-lg text-nowrap"
+      endIcon={<NextIcon />}
+    >
+      Next
+    </Button>
+  </Box>
+</Box>
+
         </>
       )}
 
