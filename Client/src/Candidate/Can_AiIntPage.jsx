@@ -95,7 +95,7 @@ const Can_AiIntPage = () => {
                 .map((item) => item.trim())
                 .filter((item) => item !== "");
           setQuestions(questionsArray);
-          console.log(questionsArray);
+          // console.log(questionsArray);
         }
       } catch (error) {
         setModalMsg({
@@ -114,7 +114,7 @@ const Can_AiIntPage = () => {
     fetchingQuestions();
   }, [mockId]);
 
-  // ------------------- HANDLING NEXT QUESTION ---------------
+  // ------------- HANDLING NEXT QUESTION ------------------------
 
   const handleNextQuestion = () => {
     setCurrentQuestionIndex((prevIndex) => {
@@ -129,7 +129,7 @@ const Can_AiIntPage = () => {
     setTimer(120);
   };
 
-  // ------------------- Showing Questions (Timer Logic) ---------------
+  // ------------- Showing Questions (Timer Logic) ----------------
 
   useEffect(() => {
     if (next === true && count === true) {
@@ -151,21 +151,23 @@ const Can_AiIntPage = () => {
     }
   }, [currentQuestionIndex, questions, next, count]);
 
-  // ------------------------------- Start Listening ----------------------
+  // --------------------- Start Listening ----------------------
+
   const startListening = () => {
     setIsListening(true);
     recognitionRef.current.start();
     // console.log("Listening started...");
   };
 
-  // ------------------------------- Stop Listening ----------------------
+  // --------------------- Stop Listening ----------------------
+
   const stopListening = () => {
     setIsListening(false);
     recognitionRef.current.stop();
     // console.log("Listening stopped.");
   };
 
-  // -------------------------- Question & Answer records -----------------
+  // ---------------- Question & Answer records -----------------
 
   useEffect(() => {
     const SpeechRecognition =
@@ -198,6 +200,7 @@ const Can_AiIntPage = () => {
   }, []);
 
   // ----------------------- TEXT-TO-SPEECH -------------------------------
+
   useEffect(() => {
     if (next === true && count === true) {
       const speak = () => {
@@ -217,9 +220,8 @@ const Can_AiIntPage = () => {
     }
   }, [currentQuestionIndex, next, count, questions]);
 
-  // ----------------------------------------------------------------
-
   // ---------------------- REPEAT QUESTION SPEECH -------------------
+
   const repeatQuestion = (questions) => {
     const synth = window.speechSynthesis;
     const utterance = new SpeechSynthesisUtterance(questions);
@@ -362,6 +364,8 @@ const Can_AiIntPage = () => {
 
     return () => clearInterval(interval);
   }, []);
+
+
 
   return (
     <>
