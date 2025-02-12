@@ -38,7 +38,7 @@ const Can_AiIntPage = () => {
   const [text, setText] = useState("");
   const [isListening, setIsListening] = useState(false);
   const [isSpeaking, setIsSpeaking] = useState(false);
-  const [userAnswer,setUserAnswer] = useState([])
+  const [userAnswer, setUserAnswer] = useState([]);
 
   // ---CURRENT_QUESTION_INDEX -- SECONDS COUNT INDEX  (SESSION STORAGE) --------
 
@@ -121,13 +121,37 @@ const Can_AiIntPage = () => {
   // ------------- HANDLING NEXT QUESTION ------------------------
 
   const handleNextQuestion = () => {
+    const currentIdx = currentQuestionIndex;
+
+    // If speech recognition is active, stop it to avoid further text accumulation.
+    if (isListening && recognitionRef.current) {
+      recognitionRef.current.stop();
+    }
+
+    // Save the answer for the current question using the captured index.
+    // This ensures that the answer is stored for the intended question.
+    setUserAnswer((prevAnswers) => {
+      // Create a copy of the previous answers array
+      const updatedAnswers = [...prevAnswers];
+      // Set (or overwrite) the answer at the current question index
+      updatedAnswers[currentIdx] = {
+        question: questions[currentIdx],
+        answer: text.trim(),
+      };
+      return updatedAnswers;
+    });
+
+    // Clear the transcript so that the next question starts with a blank answer.
+    setText("");
     setCurrentQuestionIndex((prevIndex) => {
-      if (prevIndex < questions.length - 1) {
+      if (prevIndex <= questions.length - 1) {
         return prevIndex + 1;
-      } else {
+      } else if (currentQuestionIndex === 11) {
         endInterview();
         sessionStorage.removeItem("currentQuestionIndex");
         sessionStorage.removeItem("timer");
+
+        console.log("User Answers:", userAnswer);
         return;
       }
     });
@@ -188,8 +212,6 @@ const Can_AiIntPage = () => {
       setText((prev) => prev + " " + transcript);
     };
 
-    
-
     recognition.onerror = (event) => {
       console.error("Error:", event.error);
     };
@@ -205,6 +227,11 @@ const Can_AiIntPage = () => {
       recognition.stop();
     };
   }, []);
+
+  // useEffect(() => {
+  //   console.log(userAnswer);
+
+  // },[userAnswer])
 
   // ----------------------- TEXT-TO-SPEECH -------------------------------
 
@@ -223,7 +250,7 @@ const Can_AiIntPage = () => {
 
         synth.speak(utterance);
       };
-      speak();
+      // speak();
     }
   }, [currentQuestionIndex, next, count, questions]);
 
