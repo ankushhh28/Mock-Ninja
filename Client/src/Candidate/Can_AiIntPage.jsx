@@ -4,6 +4,9 @@ import { DataContext } from "../Context/DataProvider";
 import axios from "axios";
 import { Alert, Box, CircularProgress, Snackbar, Button } from "@mui/material";
 
+import Webcam from "react-webcam";
+import * as faceapi from "face-api.js";
+
 import NextIcon from "@mui/icons-material/ChevronRight";
 import SkipNextIcon from "@mui/icons-material/SkipNext";
 import VolumeUpIcon from "@mui/icons-material/VolumeUp";
@@ -35,6 +38,7 @@ const Can_AiIntPage = () => {
   const [text, setText] = useState("");
   const [isListening, setIsListening] = useState(false);
   const [isSpeaking, setIsSpeaking] = useState(false);
+  const [userAnswer,setUserAnswer] = useState([])
 
   // ---CURRENT_QUESTION_INDEX -- SECONDS COUNT INDEX  (SESSION STORAGE) --------
 
@@ -121,6 +125,7 @@ const Can_AiIntPage = () => {
       if (prevIndex < questions.length - 1) {
         return prevIndex + 1;
       } else {
+        endInterview();
         sessionStorage.removeItem("currentQuestionIndex");
         sessionStorage.removeItem("timer");
         return;
@@ -183,6 +188,8 @@ const Can_AiIntPage = () => {
       setText((prev) => prev + " " + transcript);
     };
 
+    
+
     recognition.onerror = (event) => {
       console.error("Error:", event.error);
     };
@@ -198,6 +205,11 @@ const Can_AiIntPage = () => {
       recognition.stop();
     };
   }, []);
+
+  // useEffect(() => {
+  //   console.log(userAnswer);
+    
+  // },[userAnswer])
 
   // ----------------------- TEXT-TO-SPEECH -------------------------------
 
@@ -320,7 +332,13 @@ const Can_AiIntPage = () => {
       // const handGesture = await analyzeHandGestures(video);
 
       if (!detections) {
-        console.log("No face detected");
+        setInterviewData((prevData) => [
+          ...prevData,
+          {
+            noFace: "No face Detected",
+            timestamp: new Date().toISOString(),
+          },
+        ]);
         return;
       }
 
@@ -335,9 +353,9 @@ const Can_AiIntPage = () => {
 
       previousLandmarks = detections.landmarks;
 
-      console.log(
-        `Expression: ${dominantExpression}, Eye Contact: ${eyeContact}, Posture: ${posture}`
-      );
+      // console.log(
+      //   `Expression: ${dominantExpression}, Eye Contact: ${eyeContact}, Posture: ${posture}`
+      // );
 
       setInterviewData((prevData) => [
         ...prevData,
@@ -365,7 +383,28 @@ const Can_AiIntPage = () => {
     return () => clearInterval(interval);
   }, []);
 
+  // ------------------- GENERATING FEEDBACK -----------------------------
 
+  const endInterview = async () => {
+    console.log("Sending all interview data:", interviewData);
+
+    try {
+      const response = await fetch(
+        `${backendUrl}/Can/Generating-Gesture-Feedback`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ interviewData }),
+        }
+      );
+
+      const result = await response.json();
+      // setFeedback(result);
+      console.log("Feedback received:", result);
+    } catch (error) {
+      console.error("Error sending data:", error);
+    }
+  };
 
   return (
     <>
@@ -432,23 +471,35 @@ const Can_AiIntPage = () => {
               {/* ------------------- Webcam ---------------- */}
               <Box
                 id="web-cam"
-                className="w-full sm:w-[45%] md:w-[40%] h-48 sm:h-64 md:h-96 bg-[#3c4043] rounded-2xl flex items-end justify-center"
+                className="relative w-full sm:w-[45%] md:w-[40%] h-48 sm:h-64 md:h-96 bg-[#3c4043] rounded-2xl overflow-hidden"
               >
-                {!isListening ? (
-                  <Button fullWidth onClick={startListening}>
-                    <span className="text-xl mr-2 normal-case tracking-wide">
-                      Answer
-                    </span>
-                    <MicIcon className="text-3xl" />
-                  </Button>
-                ) : (
-                  <Button fullWidth onClick={stopListening}>
-                    <span className="text-xl mr-2 normal-case tracking-wide">
-                      Stop
-                    </span>
-                    <MicOffIcon className="text-3xl" />
-                  </Button>
-                )}
+                {/* Live Video */}
+
+                <Webcam
+                  ref={webcamRef}
+                  screenshotFormat="image/jpeg"
+                  width={400}
+                  mirrored
+                  className="absolute top-0 left-0 w-full h-full object-cover rounded-2xl"
+                />
+
+                <div className="absolute bottom-1  flex justify-center w-full">
+                  {!isListening ? (
+                    <Button fullWidth onClick={startListening}>
+                      <span className="text-xl mr-2 normal-case tracking-wide">
+                        Answer
+                      </span>
+                      <MicIcon className="text-3xl" />
+                    </Button>
+                  ) : (
+                    <Button fullWidth onClick={stopListening}>
+                      <span className="text-xl mr-2 normal-case tracking-wide">
+                        Stop
+                      </span>
+                      <MicOffIcon className="text-3xl" />
+                    </Button>
+                  )}
+                </div>
               </Box>
             </Box>
 

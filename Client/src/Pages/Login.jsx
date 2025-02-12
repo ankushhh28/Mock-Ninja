@@ -169,6 +169,7 @@ const Login = () => {
                     const decoded = jwtDecode(credentialResponse.credential);
                     if (decoded) {
                       setCridentials(decoded);
+                      // console.log(decoded)
                     }
                   }}
                   onError={() => {
