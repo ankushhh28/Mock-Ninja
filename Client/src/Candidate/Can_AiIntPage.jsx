@@ -206,11 +206,6 @@ const Can_AiIntPage = () => {
     };
   }, []);
 
-  // useEffect(() => {
-  //   console.log(userAnswer);
-    
-  // },[userAnswer])
-
   // ----------------------- TEXT-TO-SPEECH -------------------------------
 
   useEffect(() => {
