@@ -77,7 +77,7 @@ const InterviewerPrivate = () => {
 
 {/*-------------------------- STUDENT ROUTES (WITH LOGIN) ----------------*/}
 
-      <Route element={<CandidatePrivate/>}>
+      {/* <Route element={<CandidatePrivate/>}> */}
         <Route path="/Candidate/Home" element={<CanHome />} />
         <Route path="/Candidate/AI/Mock" element={<CanAiMock />} />
         <Route path="/Candidate/Mock" element={<CanMock />} />
@@ -86,7 +86,7 @@ const InterviewerPrivate = () => {
         <Route element={<CandidateAiInterviewHomePrivate/>}>
           <Route path="/Candidate/Interview/:mockID" element={<CanAiIntPage />} />
         </Route>
-      </Route>
+      {/* </Route> */}
 
 {/*-------------------------- SELECTOR ROUTES (WITH LOGIN) ----------------*/}
       

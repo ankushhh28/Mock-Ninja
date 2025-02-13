@@ -146,7 +146,7 @@ const Can_AiIntPage = () => {
     setCurrentQuestionIndex((prevIndex) => {
       if (prevIndex <= questions.length - 1) {
         return prevIndex + 1;
-      } else if (currentQuestionIndex === 11) {
+      } else {
         endInterview();
         sessionStorage.removeItem("currentQuestionIndex");
         sessionStorage.removeItem("timer");
