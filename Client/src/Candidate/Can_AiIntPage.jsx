@@ -57,7 +57,7 @@ const Can_AiIntPage = () => {
   // ---------------- USER ANSWER SESSION STORAGE -------------------
 
   const savedUserAnswer = sessionStorage.getItem("userAnswer");
-  const initialUserAnswer = savedUserAnswer ? JSON.parse(savedUserAnswer) : []
+  const initialUserAnswer = savedUserAnswer ? JSON.parse(savedUserAnswer) : [];
 
   const [userAnswer, setUserAnswer] = useState([]);
 
@@ -134,33 +134,43 @@ const Can_AiIntPage = () => {
 
   const handleNextQuestion = () => {
     const currentIdx = currentQuestionIndex;
-  
+
     if (isListening && recognitionRef.current) {
       recognitionRef.current.stop();
     }
-  
+
     const updatedAnswers = [...userAnswer];
     updatedAnswers[currentIdx] = {
       question: questions[currentIdx],
       answer: text.trim(),
     };
-  
+
     setUserAnswer(updatedAnswers);
-  
+
     setText("");
-  
+
     if (currentIdx < questions.length - 1) {
       setCurrentQuestionIndex(currentIdx + 1);
-      setTimer(120);
-    } else {
-      setTimeout(() => {
-        endInterview();
-        overAllFeedback();
-        sessionStorage.removeItem("currentQuestionIndex");
-        sessionStorage.removeItem("timer");
-      }, 0);
-    }
+      setTimer(120);}
+    // } else {
+    //   setTimeout(() => {
+    //     endInterview();
+    //     overAllFeedback();
+    //     sessionStorage.removeItem("currentQuestionIndex");
+    //     sessionStorage.removeItem("timer");
+    //   }, 0);
+    // }
   };
+
+  useEffect(() => {
+    if (currentQuestionIndex > 11) {
+      endInterview();
+      overAllFeedback();
+      navigate("/Candidate/Home");
+      sessionStorage.removeItem("currentQuestionIndex");
+      sessionStorage.removeItem("timer");
+    }
+  }, [currentQuestionIndex]);
 
   // ------------- Showing Questions (Timer Logic) ----------------
 
@@ -249,7 +259,7 @@ const Can_AiIntPage = () => {
 
         synth.speak(utterance);
       };
-      speak();
+      // speak();
     }
   }, [currentQuestionIndex, next, count, questions]);
 
@@ -420,7 +430,6 @@ const Can_AiIntPage = () => {
   // ------------------- GENERATING GESTURE FEEDBACK -----------------------------
 
   const endInterview = async () => {
-
     try {
       const response = await fetch(
         `${backendUrl}/Can/Generating-Gesture-Feedback`,
@@ -441,16 +450,20 @@ const Can_AiIntPage = () => {
 
   // ------------------- GENERATING OVERALL FEEDBACK -----------------------------
 
-  const overAllFeedback = async() => {
+  const overAllFeedback = async () => {
+    console.log(userAnswer);
     try {
-      const response = await axios.post(`${backendUrl}/Can/Generating-Overall-Feedback`, userAnswer)
-      if(response.status === 200){
+      const response = await axios.post(
+        `${backendUrl}/Can/Generating-Overall-Feedback`,
+        userAnswer
+      );
+      if (response.status === 200) {
         console.log(response.data);
       }
     } catch (error) {
       console.log(error.response.data.message, error);
     }
-  }
+  };
 
   return (
     <>
@@ -502,12 +515,19 @@ const Can_AiIntPage = () => {
                   }
                   className="w-full bg-white/10 backdrop-blur-md rounded-md py-2 px-4 text-black font-semibold hover:bg-white/20 transition duration-200"
                 >
-                  <span className={`text-xl mr-2 normal-case tracking-wide
-                  ${isSpeaking ? "text-green-500" : "bg-transparent"}`}>
+                  <span
+                    className={`text-xl mr-2 normal-case tracking-wide
+                  ${isSpeaking ? "text-green-500" : "bg-transparent"}`}
+                  >
                     Repeat
                   </span>
-                  <span className={`${isSpeaking ? "text-green-500" : "bg-transparent"}`}>
-                  <VolumeUpIcon className={`text-3xl`} /></span>
+                  <span
+                    className={`${
+                      isSpeaking ? "text-green-500" : "bg-transparent"
+                    }`}
+                  >
+                    <VolumeUpIcon className={`text-3xl`} />
+                  </span>
                 </Button>
               </Box>
 
@@ -535,18 +555,22 @@ const Can_AiIntPage = () => {
 
                 <div className="absolute bottom-0  flex justify-center w-full">
                   {!isListening ? (
-                    <Button 
-                    className="w-full bg-white/10 backdrop-blur-md rounded-md py-2 px-4 text-black font-semibold hover:bg-white/20 transition duration-200"
-                    fullWidth onClick={startListening}>
+                    <Button
+                      className="w-full bg-white/10 backdrop-blur-md rounded-md py-2 px-4 text-black font-semibold hover:bg-white/20 transition duration-200"
+                      fullWidth
+                      onClick={startListening}
+                    >
                       <span className="text-xl mr-2 normal-case tracking-wide text-green-500">
                         Answer
                       </span>
                       <MicIcon className="text-3xl text-green-500" />
                     </Button>
                   ) : (
-                    <Button 
-                    className="w-full bg-white/10 backdrop-blur-md rounded-md py-2 px-4 text-black font-semibold hover:bg-white/20 transition duration-200"
-                    fullWidth onClick={stopListening}>
+                    <Button
+                      className="w-full bg-white/10 backdrop-blur-md rounded-md py-2 px-4 text-black font-semibold hover:bg-white/20 transition duration-200"
+                      fullWidth
+                      onClick={stopListening}
+                    >
                       <span className="text-xl mr-2 normal-case tracking-wide text-red-500">
                         Stop
                       </span>
