@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
-import { data, useParams } from "react-router-dom";
+import { data, useNavigate, useNavigation, useParams } from "react-router-dom";
 import { DataContext } from "../Context/DataProvider";
 import axios from "axios";
 import { Alert, Box, CircularProgress, Snackbar, Button } from "@mui/material";
@@ -23,7 +23,10 @@ const Can_AiIntPage = () => {
 
   const params = useParams();
   const mockId = params.mockID;
+
   const recognitionRef = useRef(null);
+
+  const navigate = useNavigate()
 
   // -------------------- USE STATES -------------------------------
 
@@ -149,18 +152,21 @@ const Can_AiIntPage = () => {
   
     setText("");
   
-    if (currentIdx < questions.length - 1) {
+    if (currentIdx <= questions.length - 1) {
       setCurrentQuestionIndex(currentIdx + 1);
       setTimer(120);
-    } else {
-      setTimeout(() => {
-        endInterview();
-        overAllFeedback();
-        sessionStorage.removeItem("currentQuestionIndex");
-        sessionStorage.removeItem("timer");
-      }, 0);
-    }
+    } 
   };
+
+  useEffect(() => {
+    if(currentQuestionIndex > 11){
+      endInterview();
+      overAllFeedback();
+      navigate("/Candidate/Home")
+      sessionStorage.removeItem("currentQuestionIndex");
+      sessionStorage.removeItem("timer");
+    }
+  },[currentQuestionIndex])
 
   // ------------- Showing Questions (Timer Logic) ----------------
 
@@ -442,6 +448,7 @@ const Can_AiIntPage = () => {
   // ------------------- GENERATING OVERALL FEEDBACK -----------------------------
 
   const overAllFeedback = async() => {
+    console.log(userAnswer);
     try {
       const response = await axios.post(`${backendUrl}/Can/Generating-Overall-Feedback`, userAnswer)
       if(response.status === 200){
