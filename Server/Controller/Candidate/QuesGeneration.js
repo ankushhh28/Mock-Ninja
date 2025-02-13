@@ -4,13 +4,13 @@ import * as pdfjsLib from 'pdfjs-dist';
 
 
 const GEMINI_API_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent";
-const API_KEY = "AIzaSyDRTXIWOeecfaLpDK78sD8qOG6bNX86r2U";
+const API_KEY = "AIzaSyAjn5ZlEdmcKjtyPQ0Cyeqvi_stG07d1Lo";
 
 // ------------- PROMPT FOR GENERATING DOMAIN & SKILLS QUESTIONS -------------
 
 async function generateQuestionsWithGemini(domain, level) {
   const prompt = `
-  Based on the following criteria, generate **non-repetitive** and **relevant** interview questions.
+  Based on the following criteria, generate **non-repetitive** and **real** interview questions.
   
   **Criteria:**
   - **Domain:** ${domain}
@@ -106,7 +106,7 @@ const extractTextFromPDF = async (buffer) => {
 
 const generateQuestionsWithGeminis = async (resumeText) => {
   const prompt = `
-    Based on the following resume content, generate non-repetitive and relevant interview questions.
+    Based on the following resume content, generate non-repetitive and real interview questions.
 
     Resume Content:
     ${resumeText}
