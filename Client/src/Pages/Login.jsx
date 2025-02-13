@@ -92,13 +92,13 @@ const Login = () => {
 
     if (!formdata.email) {
       setLoading(false);
-      setErrorMsg("Email is required");
+      setErrorMsg("Email is required")
       return;
     }
 
     if (!formdata.password) {
       setLoading(false);
-      setErrorMsg("Password is required");
+      setErrorMsg("Password is required")
       return;
     }
 
