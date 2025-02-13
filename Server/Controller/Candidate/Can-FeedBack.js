@@ -112,10 +112,10 @@ const GEMINI_API_URL = "https://generativelanguage.googleapis.com/v1beta/models/
     const prompt = `
       Based on the following interview data and generate constructive feedback for each interview question, as well as overall feedback on the candidate's performance.
 
-      If interview data is not provided clearly then only provide an overallFeedback in 3-4 lines, indicate that the candidate did not answer the question and provide topics that the candidate should cover in future interviews.
+      If interview data is not provided clearly, indicate that the candidate did not answer the question then show only overall feedback in rule 4 format and provide topics that the candidate should cover in future interviews.
 
       Interview Data:
-      Asked Questions with candidate answer: ${questionAnswer}
+      Asked Questions with candidate answer: ${JSON.stringify(questionAnswer, null, 2)}
 
       Rules:
       1. For each interview question and its corresponding candidate answer, generate detailed feedback. If the candidate's answer is unsatisfactory, provide specific guidance on how to improve.
@@ -124,12 +124,11 @@ const GEMINI_API_URL = "https://generativelanguage.googleapis.com/v1beta/models/
       4. Your output must be in JSON format exactly as follows:
       [
         {
-          "feedback1": "<Your detailed feedback on the answer, or indicate that the candidate did not answer if empty>"
+          "question 1 feedback": "<Your detailed feedback on the answer, or indicate that the candidate did not answer if empty>"
         },
         {
-          "feedback2": "<Your detailed feedback on the answer, or indicate that the candidate did not answer if empty>"
-        },
-        ...,
+          "question 2 feedback": "<Your detailed feedback on the answer, or indicate that the candidate did not answer if empty>"
+        },...,
         {
           "overallFeedback": "<Your overall feedback on the candidate's performance>"
         }
