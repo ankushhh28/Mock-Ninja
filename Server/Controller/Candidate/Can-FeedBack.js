@@ -1,15 +1,32 @@
 import axios from "axios";
+import FeedbackSchema from "../../Models/FeedbackSchema.js";
 
 const GEMINI_API_KEY = "AIzaSyAjn5ZlEdmcKjtyPQ0Cyeqvi_stG07d1Lo";
 const GEMINI_API_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent";
 
+// ----------- SAVING FEEDBACKs TO CANDIDATE PROFILE --------------
+
+  export const SavingOverallFeedback = async(data, mockId, email) => {
+    try {
+      const newData = new FeedbackSchema({
+        mockId,
+        QuestionAnswerFeedback:data,
+        email
+      })
+      await newData.save()
+      return "Successfully Saved"
+    } catch (error) {
+      return "Error while Saving Questions"
+    }
+  }
+
 // ----------- GENERATING GESTURE FEEDBACK ----------------
 
   export const gestureFeedback = async (req, res) => {
-    const { interviewData } = req.body;
+    const { serverData } = req.body;
 
-    // console.log(interviewData);
-    
+    const interviewData = serverData.interviewData
+
     const expressionCount = {};
     let totalConfidence = 0;
     let eyeContactCount = { direct: 0, indirect: 0 };
@@ -53,7 +70,7 @@ const GEMINI_API_URL = "https://generativelanguage.googleapis.com/v1beta/models/
           parts: [
             {
               text:  `
-              Analyze the following interview performance data if interview data is not available then follow rule 1, and provide constructive feedback in simple English. Keep the feedback short, clear, and understandable.
+              Analyze the following interview performance data if interview data is not available then follow rule 1, and provide constructive feedback in simple English. Keep the feedback, clear, and understandable.
               
               Performance Data:
               - Dominant expression: ${dominantExpression}
@@ -72,7 +89,6 @@ const GEMINI_API_URL = "https://generativelanguage.googleapis.com/v1beta/models/
               {,
                 "areas_for_improvement": "<Your summary of the candidate's areas for improvement>",
                 "suggestions": "<Your concise suggestions for improvement>",
-                "gestures": "<Your feedback on the candidate's gestures>"
               }
               7. Do not include any extra text, markdown formatting, bullet points, or commentary outside of this JSON structure.
               
@@ -93,7 +109,7 @@ const GEMINI_API_URL = "https://generativelanguage.googleapis.com/v1beta/models/
 
       const feedbackText = response.data.candidates[0]?.content?.parts[0]?.text;
       const feedback = JSON.parse(feedbackText);
-      res.json(feedback);
+      res.status(200).json(feedback);
 
     } catch (error) {
       console.error('Error:', error.response ? error.response.data : error.message);
@@ -109,39 +125,40 @@ const GEMINI_API_URL = "https://generativelanguage.googleapis.com/v1beta/models/
 // ----------- PROMPT FOR GENERATING OVERALL FEEDBACK ----------------
 
   const GeneratingFeedback = async(questionAnswer) => {
-    const prompt = `
-      Based on the following interview data and generate constructive feedback for each interview question, as well as overall feedback on the candidate's performance.
 
-      If interview data is not provided clearly, indicate that the candidate did not answer the question then show only overall feedback in rule 4 format and provide topics that the candidate should cover in future interviews.
+  const prompt = `
+    Based on the following interview data and generate constructive feedback for each interview question, as well as overall feedback on the candidate's performance.
 
-      Interview Data:
-      Asked Questions with candidate answer: ${JSON.stringify(questionAnswer, null, 2)}
+    If interview data is not provided clearly, indicate that the candidate did not answer the question then show only overall feedback in rule 4 format and provide topics that the candidate should cover in future interviews.
 
-      Rules:
-      1. For each interview question and its corresponding candidate answer, generate detailed feedback. If the candidate's answer is unsatisfactory, provide specific guidance on how to improve.
-      2. If the candidate's answer is empty, clearly indicate that the candidate did not answer the question and provide topics that the candidate should cover in future interviews.
-      3. Provide an overall feedback summary that includes comprehensive guidance on the candidate's overall performance.
-      4. Your output must be in JSON format exactly as follows:
-      [
-        {
-          "question 1 feedback": "<Your detailed feedback on the answer, or indicate that the candidate did not answer if empty>"
-        },
-        {
-          "question 2 feedback": "<Your detailed feedback on the answer, or indicate that the candidate did not answer if empty>"
-        },...,
-        {
-          "overallFeedback": "<Your overall feedback on the candidate's performance>"
-        }
-      ]
-      5. Do not include any extra text, markdown formatting, bullet points, or commentary outside of this JSON array.
+    Interview Data:
+    Asked Questions with candidate answer: ${JSON.stringify(questionAnswer, null, 2)}
 
-      STRICTLY FOLLOW RULE 4.
-      STRICTLY FOLLOW RULE 4.
-      STRICTLY FOLLOW RULE 4.
-      STRICTLY FOLLOW RULE 4.
+    Rules:
+    1. For each interview question and its corresponding candidate answer, generate detailed feedback. If the candidate's answer is unsatisfactory, provide specific guidance on how to improve.
+    2. If the candidate's answer is empty, clearly indicate that the candidate did not answer the question and provide topics that the candidate should cover in future interviews.
+    3. Provide an overall feedback summary that includes comprehensive guidance on the candidate's overall performance.
+    4. Your output must be in JSON format exactly as follows:
+    [
+      {
+        "question 1 feedback": "<Your detailed feedback on the answer, or indicate that the candidate did not answer if empty>"
+      },
+      {
+        "question 2 feedback": "<Your detailed feedback on the answer, or indicate that the candidate did not answer if empty>"
+      },...,
+      {
+        "overallFeedback": "<Your overall feedback on the candidate's performance>"
+      }
+    ]
+    5. Do not include any extra text, markdown formatting, bullet points, or commentary outside of this JSON array.
 
-      IN JSON FORMATE ONLY
-      `;
+    STRICTLY FOLLOW RULE 4.
+    STRICTLY FOLLOW RULE 4.
+    STRICTLY FOLLOW RULE 4.
+    STRICTLY FOLLOW RULE 4.
+
+    IN JSON FORMATE ONLY
+    `;
 
     try {
       const response = await axios.post(`${GEMINI_API_URL}?key=${GEMINI_API_KEY}`,
@@ -164,14 +181,35 @@ const GEMINI_API_URL = "https://generativelanguage.googleapis.com/v1beta/models/
 // ----------- GENERATING OVERALL FEEDBACK ----------------
 
   export const OverallFeedback = async(req,res) => {
-    const {questionAnswer} = req.body
+
+    const {mockId, email, userAnswer} = req.body
 
     try {
-      const feedback = await GeneratingFeedback(questionAnswer)
-      return res.status(200).json(feedback)
+      const feedback = await GeneratingFeedback(userAnswer)
+      const SavingQuestionsFeedback = await SavingOverallFeedback(feedback,mockId, email)
+      return res.status(200).json({message:"Successfull"})
     } catch (error) {
       return res.status(500).json({message:"Something went wrong! Try again later"})
     }
   }
 
-// ----------- SAVING FEEDBACKs TO CANDIDATE PROFILE --------------
+// ------------- SAVING GESTURE FEEDBACK ------------------
+
+  export const savingGestureFeedback = async(req, res) => {
+    const {mockId, email, data} = req.body
+
+    const savedData = JSON.stringify(data)
+
+    try {
+    const newData = new FeedbackSchema({
+      mockId,
+      email,
+      GestureFeedback:savedData
+    }) 
+    await newData.save()
+    return res.status(200).json({message:"Successfull"})
+    } catch (error) {
+      console.log(error);
+      return res.status(500).json({message:"Something went wrong! Try again later"})
+    }
+  }

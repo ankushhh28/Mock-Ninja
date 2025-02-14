@@ -9,7 +9,7 @@ import ImageUpload from "../Utils/ImageUpload.js";
 import { CandidateImageupload, UploadImage, getImage } from "../Controller/Candidate/Can_Image.js";
 import { domainSkillQuesGeneration, resumeQuesGeneration } from "../Controller/Candidate/QuesGeneration.js";
 import { GeneratedQuesStore, fetchingQues } from "../Controller/Candidate/QuesGen.js";
-import { OverallFeedback, gestureFeedback } from "../Controller/Candidate/Can-FeedBack.js";
+import { OverallFeedback, gestureFeedback, savingGestureFeedback } from "../Controller/Candidate/Can-FeedBack.js";
 
 const upload = multer({ storage: multer.memoryStorage() });
 
@@ -35,6 +35,7 @@ CandidateRouter.get("/fetching-Generate-Questions", fetchingQues)
 
 CandidateRouter.post("/Generating-Gesture-Feedback", gestureFeedback)
 CandidateRouter.post("/Generating-Overall-Feedback", OverallFeedback)
+CandidateRouter.post("/Saving-Gesture-Feedback", savingGestureFeedback)
 
 
 export default CandidateRouter
