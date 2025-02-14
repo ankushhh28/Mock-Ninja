@@ -26,7 +26,7 @@ const Can_AiIntPage = () => {
 
   const recognitionRef = useRef(null);
 
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   // -------------------- USE STATES -------------------------------
 
@@ -151,22 +151,22 @@ const Can_AiIntPage = () => {
     setUserAnswer(updatedAnswers);
 
     setText("");
-  
+
     if (currentIdx <= questions.length - 1) {
       setCurrentQuestionIndex(currentIdx + 1);
       setTimer(120);
-    } 
+    }
   };
 
   useEffect(() => {
-    if(currentQuestionIndex > 11){
+    if (currentQuestionIndex > 11) {
       endInterview();
       overAllFeedback();
-      navigate("/Candidate/Home")
+      navigate("/Candidate/Home");
       sessionStorage.removeItem("currentQuestionIndex");
       sessionStorage.removeItem("timer");
     }
-  },[currentQuestionIndex])
+  }, [currentQuestionIndex]);
 
   // ------------- Showing Questions (Timer Logic) ----------------
 
@@ -307,7 +307,7 @@ const Can_AiIntPage = () => {
         "https://justadudewhohacks.github.io/face-api.js/models"
       );
 
-      // console.log("Models Loaded Successfully");
+      console.log("Models Loaded Successfully");
     };
     loadModels();
   }, []);
@@ -379,6 +379,8 @@ const Can_AiIntPage = () => {
             timestamp: new Date().toISOString(),
           },
         ]);
+        console.log("no face detecteddd");
+
         return;
       }
 
@@ -393,9 +395,9 @@ const Can_AiIntPage = () => {
 
       previousLandmarks = detections.landmarks;
 
-      // console.log(
-      //   `Expression: ${dominantExpression}, Eye Contact: ${eyeContact}, Posture: ${posture}`
-      // );
+      console.log(
+        `Expression: ${dominantExpression}, Eye Contact: ${eyeContact}, Posture: ${posture}`
+      );
 
       setInterviewData((prevData) => [
         ...prevData,
@@ -426,6 +428,8 @@ const Can_AiIntPage = () => {
   // ------------------- GENERATING GESTURE FEEDBACK -----------------------------
 
   const endInterview = async () => {
+    console.log(interviewData);
+
     try {
       const response = await fetch(
         `${backendUrl}/Can/Generating-Gesture-Feedback`,
@@ -446,13 +450,10 @@ const Can_AiIntPage = () => {
 
   // ------------------- GENERATING OVERALL FEEDBACK -----------------------------
 
-  const overAllFeedback = async() => {
+  const overAllFeedback = async () => {
     console.log(userAnswer);
     try {
-      const response = await axios.post(
-        `${backendUrl}/Can/Generating-Overall-Feedback`,
-        userAnswer
-      );
+      const response = await axios.post(`${backendUrl}/Can/Generating-Overall-Feedback`,userAnswer)
       if (response.status === 200) {
         console.log(response.data);
       }
