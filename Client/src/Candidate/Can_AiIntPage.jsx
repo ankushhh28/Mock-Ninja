@@ -42,6 +42,10 @@ const Can_AiIntPage = () => {
   const [isListening, setIsListening] = useState(false);
   const [isSpeaking, setIsSpeaking] = useState(false);
   const [isNextButtonDisabled, setIsNextButtonDisabled] = useState(false);
+  const [OverallFeedbacks, setOverallFeedback] = useState(false);
+  const [SavingGesture, setSavingGesture] = useState(false);
+  const [loadingOverall, setLoadingOverall] = useState(false)
+  const [loadingGesture, setLoadingGesture] = useState(false)
 
   // ---CURRENT_QUESTION_INDEX -- SECONDS COUNT INDEX  (SESSION STORAGE) --------
 
@@ -162,11 +166,17 @@ const Can_AiIntPage = () => {
     if (currentQuestionIndex > 11) {
       endInterview();
       overAllFeedback();
-      navigate("/Candidate/Home");
       sessionStorage.removeItem("currentQuestionIndex");
       sessionStorage.removeItem("timer");
+      
     }
   }, [currentQuestionIndex]);
+
+  useEffect(() => {
+    if(OverallFeedbacks && SavingGesture){
+      navigate("/Candidate/Home")
+    }
+  },[OverallFeedbacks, SavingGesture])
 
   // ------------- Showing Questions (Timer Logic) ----------------
 
@@ -425,10 +435,34 @@ const Can_AiIntPage = () => {
     return () => clearInterval(interval);
   }, []);
 
+  // ------------------- SAVING GESTURE FEEDBACK DATA -----------------------------
+
+  const SavingGestureFeedback = async(data) => {
+    const serverData = {
+      mockId:mockId,
+      email:account.email,
+      data
+    }
+    try {
+      const response = await axios.post(`${backendUrl}/Can/Saving-Gesture-Feedback`, serverData)
+      if(response.status === 200){
+        setSavingGesture(true)
+        }
+    } catch (error) {
+      setModalMsg({ open: true, msg: error.response.data.message ? error.response.data.message : "Check your connection! Try later", severity: 'error' })
+    }
+  }
+
   // ------------------- GENERATING GESTURE FEEDBACK -----------------------------
 
   const endInterview = async () => {
     console.log(interviewData);
+
+    const serverData = {
+      interviewData
+    }
+
+    setLoadingGesture(true)
 
     try {
       const response = await fetch(
@@ -436,29 +470,37 @@ const Can_AiIntPage = () => {
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ interviewData }),
+          body: JSON.stringify({ serverData }),
         }
       );
 
       const result = await response.json();
-      // setFeedback(result);
-      console.log(result);
+      SavingGestureFeedback(result)
     } catch (error) {
-      console.error("Error sending data:", error);
+      setModalMsg({ open: true, msg: error.response.data.message ? error.response.data.message : "Check your connection! Try later", severity: 'error' })
+    } finally {
+    setLoadingGesture(false)
     }
   };
 
   // ------------------- GENERATING OVERALL FEEDBACK -----------------------------
 
-  const overAllFeedback = async () => {
-    console.log(userAnswer);
+  const overAllFeedback = async() => {
+    const server = {
+      mockId:mockId,
+      email:account.email,
+      userAnswer
+    }
+    setLoadingOverall(true)
     try {
-      const response = await axios.post(`${backendUrl}/Can/Generating-Overall-Feedback`,userAnswer)
-      if (response.status === 200) {
-        console.log(response.data);
+      const response = await axios.post(`${backendUrl}/Can/Generating-Overall-Feedback`, server)
+      if(response.status === 200){
+      setOverallFeedback(true)
       }
     } catch (error) {
-      console.log(error.response.data.message, error);
+      setModalMsg({ open: true, msg: error.response.data.message ? error.response.data.message : "Check your connection! Try later", severity: 'error' })
+    } finally {
+      setLoadingOverall(false)
     }
   };
 
@@ -474,7 +516,11 @@ const Can_AiIntPage = () => {
         <Box className="h-screen w-screen flex items-center justify-center">
           <CircularProgress />
         </Box>
-      ) : (
+      ) : loadingGesture || loadingOverall ? (
+        <Box className="h-screen w-screen flex items-center justify-center">
+        <CircularProgress />
+      </Box>
+      ) :(
         // ---------------------- MOCK SCREEN -----------------------------------------------------
         <>
           <Box className="flex flex-col w-full h-screen py-6 px-4 sm:px-8 md:px-12 gap-4 sm:gap-6 md:gap-8 md:py-10 bg-[#202124]">
@@ -599,8 +645,6 @@ const Can_AiIntPage = () => {
               </Button>
             </Box>
           </Box>
-        </>
-      )}
 
       {/* --------------------------------- SNACKBAR --------------------------- */}
       {/* --------------------------------- SNACKBAR --------------------------- */}
@@ -620,6 +664,8 @@ const Can_AiIntPage = () => {
           <b>{modalMsg.msg}</b>
         </Alert>
       </Snackbar>
+        </>
+      )}
     </>
   );
 };
