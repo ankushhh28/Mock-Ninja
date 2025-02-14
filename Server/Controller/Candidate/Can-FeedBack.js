@@ -237,3 +237,26 @@ export const savingGestureFeedback = async (req, res) => {
       .json({ message: "Something went wrong! Try again later" });
   }
 };
+
+// -------------- FETCHING CANDIDATE FEEDBACk -----------
+
+export const fetchingFeedback = async (req, res) => {
+  try {
+    const { mockId } = req.query;
+
+    if (!mockId) {
+      return res.status(400).json({ message: "mockId is required" });
+    }
+
+    const feedbackData = await FeedbackSchema.find({ mockId });
+
+    if (!feedbackData) {
+      return res.status(404).json({ message: "No feedback found for the given mockId" });
+    }
+
+    return res.status(200).json({ feedbackData });
+  } catch (error) {
+    console.error("Error fetching feedback:", error);
+    return res.status(500).json({ message: "Something went wrong! Try again later" });
+  }
+};
