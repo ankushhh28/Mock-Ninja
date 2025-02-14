@@ -13,6 +13,9 @@ const feedbackschema = new mongoose.Schema({
   email:{
     type:String
   },
+  userQuestionAnswer:{
+    type:String
+  },
 },{timestamps:true})
 
 const FeedbackSchema = mongoose.model("feedback", feedbackschema)
