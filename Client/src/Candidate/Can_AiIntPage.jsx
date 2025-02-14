@@ -174,7 +174,7 @@ const Can_AiIntPage = () => {
 
   useEffect(() => {
     if(OverallFeedbacks && SavingGesture){
-      navigate("/Candidate/Home")
+      navigate(`/Feedback/${mockId}`)
     }
   },[OverallFeedbacks, SavingGesture])
 

@@ -30,6 +30,7 @@ const CanMock = lazy(() => import("./Candidate/Can_Mock"));
 const CanATS = lazy(() => import("./Candidate/Can_ATS"));
 const CanProfile = lazy(() => import("./Candidate/Can_Profile"));
 const CanAiIntPage = lazy(() => import("./Candidate/Can_AiIntPage"));
+const CanFeedbackPage = lazy(() => import("./Candidate/Component/Can_Feedback"));
 
 //------------------------------- SELECTOR IMPORTS ONLY -------------------------
 
@@ -86,7 +87,6 @@ const App = () => {
                 <Route path="/Forgot-password" element={<ForgotPass />} />
                 <Route path="/Interviewer-Home" element={<InterviewerHome />} />
                 <Route path="/test/Feedback" element={<Can_Feedback />} />
-                {/* <Route path="/Candidate/InstructionsAI" element={<InstructionsAI />} /> */}
 
                 {/*-------------------------- STUDENT ROUTES (WITH LOGIN) ----------------*/}
 
@@ -102,6 +102,7 @@ const App = () => {
                     element={<CanAiIntPage />}
                   />
                 </Route>
+                <Route path="/Feedback/:mockId" element={<CanFeedbackPage/>}/>
                 {/* </Route> */}
 
         <Route path="/" element={<Home />} />

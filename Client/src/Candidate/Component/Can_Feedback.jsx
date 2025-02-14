@@ -1,7 +1,9 @@
-import { useState } from "react";
+import axios from 'axios'
+import { useContext, useEffect, useState } from "react";
+import { DataContext } from "../../Context/DataProvider";
+import { useParams } from "react-router-dom";
 
 const Can_Feedback = () => {
-  const [activeStep, setActiveStep] = useState(1);
 
   const steps = [
     {
@@ -125,6 +127,45 @@ const Can_Feedback = () => {
         "View detailed analytics on your past mock interviews to monitor consistency and growth.",
     },
   ];
+
+  const {backendUrl} = useContext(DataContext)
+  const {mockId} = useParams()
+
+// ----------------- USE STATES --------------------
+
+  const [activeStep, setActiveStep] = useState(1);
+  const [OverallFeedback, setOverallFeedback] = useState([]);
+  const [GestureFeedback, setGestureFeedback] = useState([]);
+  
+  useEffect(() => {
+    const fetchingFeedback = async () => {
+      try {
+        const response = await axios.get(`${backendUrl}/Can/Fetching-Gesture-Feedback`, {
+          params: { mockId },
+        });
+  
+        if (response.status === 200 && response.data.feedbackData?.length > 0) {
+          const firstFeedback = response.data.feedbackData[0];
+  
+          if (firstFeedback.GestureFeedback) {
+            setGestureFeedback(firstFeedback);
+          } else if (response.data.feedbackData[1]) {
+            setGestureFeedback(response.data.feedbackData[1]);
+          }
+  
+          if (firstFeedback.QuestionAnswerFeedback) {
+            setOverallFeedback(firstFeedback);
+          } else if (response.data.feedbackData[1]) {
+            setOverallFeedback(response.data.feedbackData[1]);
+          }
+        }
+      } catch (error) {
+        console.log(error.response?.data?.message || "Error fetching feedback");
+      }
+    };
+  
+    fetchingFeedback();
+  }, [mockId, backendUrl]);
 
   return (
     <div className="w-full h-auto px-6 sm:px-12 md:px-16 py-10 sm:py-4 bg-purple-50 flex flex-col mx-auto">
