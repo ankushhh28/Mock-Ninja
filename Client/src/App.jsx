@@ -104,9 +104,6 @@ const App = () => {
                 </Route>
                 {/* </Route> */}
 
-<<<<<<< HEAD
-                {/*-------------------------- SELECTOR ROUTES (WITH LOGIN) ----------------*/}
-=======
         <Route path="/" element={<Home />} />
         <Route path="/About" element={<About />} />
         <Route path="/Contact-us" element={<ContactUs />} />
@@ -114,7 +111,6 @@ const App = () => {
         <Route path="/Login" element={<Login />} />
         <Route path="/Forgot-password" element={<ForgotPass />} />
         <Route path="/Interviewer-Home" element={<InterviewerHome />} />
->>>>>>> 165dc105aec1154d718e29d02912ebafac208061
 
                 <Route element={<InterviewerPrivate />}>
                   <Route path="/Interviewer/Home" element={<SelectorHome />} />

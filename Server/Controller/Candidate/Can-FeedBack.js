@@ -7,33 +7,26 @@ const GEMINI_API_URL =
 
 // ----------- SAVING FEEDBACKs TO CANDIDATE PROFILE --------------
 
-  export const SavingOverallFeedback = async(data, mockId, email) => {
-    try {
-      const newData = new FeedbackSchema({
-        mockId,
-        QuestionAnswerFeedback:data,
-        email
-      })
-      await newData.save()
-      return "Successfully Saved"
-    } catch (error) {
-      return "Error while Saving Questions"
-    }
+export const SavingOverallFeedback = async (data, mockId, email) => {
+  try {
+    const newData = new FeedbackSchema({
+      mockId,
+      QuestionAnswerFeedback: data,
+      email,
+    });
+    await newData.save();
+    return "Successfully Saved";
+  } catch (error) {
+    return "Error while Saving Questions";
   }
+};
 
 // ----------- GENERATING GESTURE FEEDBACK ----------------
 
-  export const gestureFeedback = async (req, res) => {
-    const { serverData } = req.body;
+export const gestureFeedback = async (req, res) => {
+  const { serverData } = req.body;
 
-    const interviewData = serverData.interviewData
-
-    const expressionCount = {};
-    let totalConfidence = 0;
-    let eyeContactCount = { direct: 0, indirect: 0 };
-    let postureIssues = { good: 0, tilted: 0, movement: 0 };
-    let handMovements = { minor: 0, excessive: 0, none: 0 };
-    let noFaceCount = 0;
+  const interviewData = serverData.interviewData;
 
   const expressionCount = {};
   let totalConfidence = 0;
@@ -77,12 +70,12 @@ const GEMINI_API_URL =
       ? (totalConfidence / (interviewData.length - noFaceCount)).toFixed(2)
       : "N/A";
 
-    const requestBody = {
-      contents: [
-        {
-          parts: [
-            {
-              text:  `
+  const requestBody = {
+    contents: [
+      {
+        parts: [
+          {
+            text: `
               Analyze the following interview performance data if interview data is not available then follow rule 1, and provide constructive feedback in simple English. Keep the feedback, clear, and understandable.
               
               Performance Data:
@@ -106,45 +99,23 @@ const GEMINI_API_URL =
               7. Do not include any extra text, markdown formatting, bullet points, or commentary outside of this JSON structure.
               
               STRICTLY FOLLOW THE ABOVE INSTRUCTIONS.
-              `
-            }
-          ]
-        }
-      ]
-    };
-
-    try {
-      const response = await axios.post(
-        `${GEMINI_API_URL}?key=${GEMINI_API_KEY}`,
-        requestBody,
-        { headers: { 'Content-Type': 'application/json' } }
-      );
-
-      const feedbackText = response.data.candidates[0]?.content?.parts[0]?.text;
-      const feedback = JSON.parse(feedbackText);
-      res.status(200).json(feedback);
-
-    } catch (error) {
-      console.error('Error:', error.response ? error.response.data : error.message);
-
-      if (error instanceof SyntaxError) {
-        res.status(500).json({ error: 'Invalid JSON response from Gemini API' });
-      } else {
-        res.status(500).json({ error: 'Failed to get feedback from Gemini API' });
-      }
-    }
+              `,
+          },
+        ],
+      },
+    ],
   };
 
   try {
     const response = await axios.post(
-      `${GEMINI_API_URL}?key=${GEMINI_API_KEY}`,
+      ` ${GEMINI_API_URL}?key=${GEMINI_API_KEY}`,
       requestBody,
       { headers: { "Content-Type": "application/json" } }
     );
 
     const feedbackText = response.data.candidates[0]?.content?.parts[0]?.text;
     const feedback = JSON.parse(feedbackText);
-    res.json(feedback);
+    res.status(200).json(feedback);
   } catch (error) {
     console.error(
       "Error:",
@@ -161,15 +132,18 @@ const GEMINI_API_URL =
 
 // ----------- PROMPT FOR GENERATING OVERALL FEEDBACK ----------------
 
-  const GeneratingFeedback = async(questionAnswer) => {
-
+const GeneratingFeedback = async (questionAnswer) => {
   const prompt = `
     Based on the following interview data and generate constructive feedback for each interview question, as well as overall feedback on the candidate's performance.
 
     If interview data is not provided clearly, indicate that the candidate did not answer the question then show only overall feedback in rule 4 format and provide topics that the candidate should cover in future interviews.
 
     Interview Data:
-    Asked Questions with candidate answer: ${JSON.stringify(questionAnswer, null, 2)}
+    Asked Questions with candidate answer: ${JSON.stringify(
+      questionAnswer,
+      null,
+      2
+    )}
 
     Rules:
     1. For each interview question and its corresponding candidate answer, generate detailed feedback. If the candidate's answer is unsatisfactory, provide specific guidance on how to improve.
@@ -198,8 +172,6 @@ const GEMINI_API_URL =
     `;
 
   try {
-    console.log(prompt);
-    
     const response = await axios.post(
       `${GEMINI_API_URL}?key=${GEMINI_API_KEY}`,
       {
@@ -225,37 +197,43 @@ const GEMINI_API_URL =
 
 // ----------- GENERATING OVERALL FEEDBACK ----------------
 
-  export const OverallFeedback = async(req,res) => {
+export const OverallFeedback = async (req, res) => {
+  const { mockId, email, userAnswer } = req.body;
 
-    const {mockId, email, userAnswer} = req.body
-
-    try {
-      const feedback = await GeneratingFeedback(userAnswer)
-      const SavingQuestionsFeedback = await SavingOverallFeedback(feedback,mockId, email)
-      return res.status(200).json({message:"Successfull"})
-    } catch (error) {
-      return res.status(500).json({message:"Something went wrong! Try again later"})
-    }
+  try {
+    const feedback = await GeneratingFeedback(userAnswer);
+    const SavingQuestionsFeedback = await SavingOverallFeedback(
+      feedback,
+      mockId,
+      email
+    );
+    return res.status(200).json({ message: "Successfull" });
+  } catch (error) {
+    return res
+      .status(500)
+      .json({ message: "Something went wrong! Try again later" });
   }
 };
 
 // ------------- SAVING GESTURE FEEDBACK ------------------
 
-  export const savingGestureFeedback = async(req, res) => {
-    const {mockId, email, data} = req.body
+export const savingGestureFeedback = async (req, res) => {
+  const { mockId, email, data } = req.body;
 
-    const savedData = JSON.stringify(data)
+  const savedData = JSON.stringify(data);
 
-    try {
+  try {
     const newData = new FeedbackSchema({
       mockId,
       email,
-      GestureFeedback:savedData
-    }) 
-    await newData.save()
-    return res.status(200).json({message:"Successfull"})
-    } catch (error) {
-      console.log(error);
-      return res.status(500).json({message:"Something went wrong! Try again later"})
-    }
+      GestureFeedback: savedData,
+    });
+    await newData.save();
+    return res.status(200).json({ message: "Successfull" });
+  } catch (error) {
+    console.log(error);
+    return res
+      .status(500)
+      .json({ message: "Something went wrong! Try again later" });
   }
+};
