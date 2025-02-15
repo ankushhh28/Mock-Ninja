@@ -1,10 +1,9 @@
-import axios from 'axios'
+import axios from "axios";
 import { useContext, useEffect, useState } from "react";
 import { DataContext } from "../../Context/DataProvider";
 import { useParams } from "react-router-dom";
 
 const Can_Feedback = () => {
-
   const steps = [
     {
       id: 1,
@@ -128,31 +127,34 @@ const Can_Feedback = () => {
     },
   ];
 
-  const {backendUrl} = useContext(DataContext)
-  const {mockId} = useParams()
+  const { backendUrl } = useContext(DataContext);
+  const { mockId } = useParams();
 
-// ----------------- USE STATES --------------------
+  // ----------------- USE STATES --------------------
 
   const [activeStep, setActiveStep] = useState(1);
   const [OverallFeedback, setOverallFeedback] = useState([]);
   const [GestureFeedback, setGestureFeedback] = useState([]);
-  
+
   useEffect(() => {
     const fetchingFeedback = async () => {
       try {
-        const response = await axios.get(`${backendUrl}/Can/Fetching-Gesture-Feedback`, {
-          params: { mockId },
-        });
-  
+        const response = await axios.get(
+          `${backendUrl}/Can/Fetching-Gesture-Feedback`,
+          {
+            params: { mockId },
+          }
+        );
+
         if (response.status === 200 && response.data.feedbackData?.length > 0) {
           const firstFeedback = response.data.feedbackData[0];
-  
+
           if (firstFeedback.GestureFeedback) {
             setGestureFeedback(firstFeedback);
           } else if (response.data.feedbackData[1]) {
             setGestureFeedback(response.data.feedbackData[1]);
           }
-  
+
           if (firstFeedback.QuestionAnswerFeedback) {
             setOverallFeedback(firstFeedback);
           } else if (response.data.feedbackData[1]) {
@@ -163,9 +165,17 @@ const Can_Feedback = () => {
         console.log(error.response?.data?.message || "Error fetching feedback");
       }
     };
-  
+
     fetchingFeedback();
   }, [mockId, backendUrl]);
+
+  useEffect(() => {
+    // console.log("Gestures", GestureFeedback);
+    // console.log("overall", OverallFeedback);
+  }, [OverallFeedback, GestureFeedback]);
+
+  const demo = JSON.parse(OverallFeedback);
+  console.log(demo);
 
   return (
     <div className="w-full h-auto px-6 sm:px-12 md:px-16 py-10 sm:py-4 bg-purple-50 flex flex-col mx-auto">
@@ -236,16 +246,20 @@ const Can_Feedback = () => {
                   activeStep === step.id ? "text-[#8667F2]" : "text-gray-900"
                 }`}
               >
-                <span>
-                  {step.title}
-                </span>
+                <span>{step.title}</span>
                 <span>{activeStep === step.id ? "▲" : "▼"}</span>
               </button>
               {activeStep === step.id && (
                 <>
-                  <p className="text-gray-700 px-4 pb-3">Question: {step.question}</p>
-                  <p className="text-gray-700 px-4 pb-3">Your answer: {step.answer}</p>
-                  <p className="text-gray-700 px-4 pb-3">Feedback: {step.feedback}</p>
+                  <p className="text-gray-700 px-4 pb-3">
+                    Question: {step.question}
+                  </p>
+                  <p className="text-gray-700 px-4 pb-3">
+                    Your answer: {step.answer}
+                  </p>
+                  <p className="text-gray-700 px-4 pb-3">
+                    Feedback: {step.feedback}
+                  </p>
                 </>
               )}
             </div>
