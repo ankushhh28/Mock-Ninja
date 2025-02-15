@@ -198,7 +198,7 @@ const parsedFeedbacks = useMemo(() => {
 
       {/* ----------------------------------- QUESTIONS FEEDBACK ---------------------------------------- */}
 
-      <div className="w-full max-w-6xl mt-10 bg-[#F4F1FF] rounded-2xl shadow-lg p-8 border border-primary">
+      <div className="w-full  mt-10 bg-[#F4F1FF] rounded-2xl shadow-lg p-8 border border-primary">
         {/* ----------------------------------------------------------------------------------------------- */}
         <h2 className="text-2xl font-semibold text-[#8667F2] mb-4">
           Individual Questions Feedback
