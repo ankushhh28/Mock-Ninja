@@ -1,5 +1,6 @@
 import axios from "axios";
 import FeedbackSchema from "../../Models/FeedbackSchema.js";
+import QuesGenSchema from "../../Models/QuesGenSchema.js";
 
 const GEMINI_API_KEY = "AIzaSyAjn5ZlEdmcKjtyPQ0Cyeqvi_stG07d1Lo";
 const GEMINI_API_URL =
@@ -17,6 +18,24 @@ export const SavingOverallFeedback = async (data, mockId, email) => {
     await newData.save();
     return "Successfully Saved";
   } catch (error) {
+    return "Error while Saving Questions";
+  }
+};
+
+// ------------ SAVING QUESTION & ANSWER ---------------------
+
+export const SavingQuestionAsnwer = async(userAnswer,mockId) => {
+
+  const data = JSON.stringify(userAnswer)
+  try {
+    const newData = new FeedbackSchema({
+      mockId,
+      userQuestionAnswer: data,
+    });
+    await newData.save();
+    return "Successfully Saved";
+  } catch (error) {
+    console.log(error);
     return "Error while Saving Questions";
   }
 };
@@ -202,11 +221,10 @@ export const OverallFeedback = async (req, res) => {
 
   try {
     const feedback = await GeneratingFeedback(userAnswer);
-    const SavingQuestionsFeedback = await SavingOverallFeedback(
-      feedback,
-      mockId,
-      email
-    );
+    await Promise.all([
+      SavingOverallFeedback(feedback, mockId, email),
+      SavingQuestionAsnwer(userAnswer, mockId),
+    ]);
     return res.status(200).json({ message: "Successfull" });
   } catch (error) {
     return res
@@ -249,12 +267,13 @@ export const fetchingFeedback = async (req, res) => {
     }
 
     const feedbackData = await FeedbackSchema.find({ mockId });
+    const feedbackDataType = await QuesGenSchema.findOne({ mockID:mockId });
 
     if (!feedbackData) {
       return res.status(404).json({ message: "No feedback found for the given mockId" });
     }
 
-    return res.status(200).json({ feedbackData });
+    return res.status(200).json({ feedbackData, feedbackDataType: feedbackDataType ? feedbackDataType.details : null });
   } catch (error) {
     console.error("Error fetching feedback:", error);
     return res.status(500).json({ message: "Something went wrong! Try again later" });
