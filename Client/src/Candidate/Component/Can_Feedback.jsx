@@ -1,4 +1,4 @@
-import axios from 'axios'
+import axios from "axios";
 import { useContext, useEffect, useState } from "react";
 import { DataContext } from "../../Context/DataProvider";
 import { useParams } from "react-router-dom";
@@ -10,7 +10,7 @@ const Can_Feedback = () => {
   const {backendUrl} = useContext(DataContext)
   const {mockId} = useParams()
 
-// ----------------- USE STATES --------------------
+  // ----------------- USE STATES --------------------
 
   const [activeStep, setActiveStep] = useState(1);
   const [OverallFeedback, setOverallFeedback] = useState([]);
@@ -21,14 +21,17 @@ const Can_Feedback = () => {
   useEffect(() => {
     const fetchingFeedback = async () => {
       try {
-        const response = await axios.get(`${backendUrl}/Can/Fetching-Gesture-Feedback`, {
-          params: { mockId },
-        });
-  
+        const response = await axios.get(
+          `${backendUrl}/Can/Fetching-Gesture-Feedback`,
+          {
+            params: { mockId },
+          }
+        );
+
         if (response.status === 200 && response.data.feedbackData?.length > 0) {
           setIntType(response.data.feedbackDataType);
           const firstFeedback = response.data.feedbackData[0];
-  
+
           if (firstFeedback.GestureFeedback) {
             setGestureFeedback(firstFeedback);
           } else if (response.data.feedbackData[1].GestureFeedback) {
@@ -36,7 +39,7 @@ const Can_Feedback = () => {
           } else {
             setGestureFeedback(response.data.feedbackData[2]);
           }
-  
+
           if (firstFeedback.QuestionAnswerFeedback) {
             setOverallFeedback(firstFeedback);
           } else if (response.data.feedbackData[1].QuestionAnswerFeedback) {
@@ -58,7 +61,7 @@ const Can_Feedback = () => {
         console.log(error.response?.data?.message || "Error fetching feedback");
       }
     };
-  
+
     fetchingFeedback();
   }, [mockId, backendUrl]);
 
@@ -195,7 +198,7 @@ const parsedFeedbacks = useMemo(() => {
 
       {/* ----------------------------------- QUESTIONS FEEDBACK ---------------------------------------- */}
 
-      <div className="w-full max-w-6xl mt-10 bg-[#F4F1FF] rounded-2xl shadow-lg p-8 border border-primary">
+      <div className="w-full  mt-10 bg-[#F4F1FF] rounded-2xl shadow-lg p-8 border border-primary">
         {/* ----------------------------------------------------------------------------------------------- */}
         <h2 className="text-2xl font-semibold text-[#8667F2] mb-4">
           Individual Questions Feedback
@@ -211,16 +214,20 @@ const parsedFeedbacks = useMemo(() => {
                   activeStep === step.id ? "text-[#8667F2]" : "text-gray-900"
                 }`}
               >
-                <span>
-                  {step.title}
-                </span>
+                <span>{step.title}</span>
                 <span>{activeStep === step.id ? "▲" : "▼"}</span>
               </button>
               {activeStep === step.id && (
                 <>
-                  <p className="text-gray-700 px-4 pb-3">Question: {step.question}</p>
-                  <p className="text-gray-700 px-4 pb-3">Your answer: {step.answer}</p>
-                  <p className="text-gray-700 px-4 pb-3">Feedback: {step.feedback}</p>
+                  <p className="text-gray-700 px-4 pb-3">
+                    Question: {step.question}
+                  </p>
+                  <p className="text-gray-700 px-4 pb-3">
+                    Your answer: {step.answer}
+                  </p>
+                  <p className="text-gray-700 px-4 pb-3">
+                    Feedback: {step.feedback}
+                  </p>
                 </>
               )}
             </div>
