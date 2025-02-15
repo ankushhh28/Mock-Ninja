@@ -187,9 +187,11 @@ const Can_Card = () => {
           headers: { "Content-Type": "multipart/form-data" },
         }
       );
-        setQuestionGenerated(response.data.questions.split("\n"));
-        savingQues(response.data.questions.split("\n"))
+      const cleanedData = response.data.questions.split("\n")
+        setQuestionGenerated(cleanedData);
+        savingQues(response.data.questions)
     } catch (error) {
+      console.log(error);
       setError({
         open: true,
         msg:

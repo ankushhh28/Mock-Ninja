@@ -1,6 +1,19 @@
 import React from "react";
 
 const Can_FbHistory = () => {
+
+  // api key = /Fetching-Gesture-Feedback-List
+
+  // email bhejna orr email ki spelling yhi rakhna 
+  // as params bhejna
+
+  // console.log krwakar data dekh lena kya aa rha hai 
+
+  // details ke under interview type rhega 
+  // createdAt ke ander date rhegi kabb interview diya tha
+
+  // server chalu krr lena
+
   return (
     <div className="flex flex-col w-full items-center bg-[#f3f5ff] gap-y-6">
       <h1 className="px-16 pt-6 text-3xl md:text-4xl font-bold text-primary w-full bg-[#f5f3ff] text-center mt-2">

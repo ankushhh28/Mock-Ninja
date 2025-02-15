@@ -2,14 +2,13 @@ import express from "express";
 import cors from "cors"
 import multer from "multer";
 
-
 import { verifyCandidateToken } from "../Utils/CanAuth.js";
 import { fetchCandidateDetails, updateCandidateDetails } from "../Controller/Candidate/CandidateDetails.js";
 import ImageUpload from "../Utils/ImageUpload.js";
 import { CandidateImageupload, UploadImage, getImage } from "../Controller/Candidate/Can_Image.js";
 import { domainSkillQuesGeneration, resumeQuesGeneration } from "../Controller/Candidate/QuesGeneration.js";
 import { GeneratedQuesStore, fetchingQues } from "../Controller/Candidate/QuesGen.js";
-import { OverallFeedback, fetchingFeedback, gestureFeedback, savingGestureFeedback } from "../Controller/Candidate/Can-FeedBack.js";
+import { OverallFeedback, fetchingFeedback, fetchingFeedbackList, gestureFeedback, savingGestureFeedback } from "../Controller/Candidate/Can-FeedBack.js";
 
 const upload = multer({ storage: multer.memoryStorage() });
 
@@ -38,6 +37,7 @@ CandidateRouter.post("/Generating-Overall-Feedback", OverallFeedback)
 CandidateRouter.post("/Saving-Gesture-Feedback", savingGestureFeedback)
 
 CandidateRouter.get("/Fetching-Gesture-Feedback", fetchingFeedback)
+CandidateRouter.get("/Fetching-Gesture-Feedback-List", fetchingFeedbackList)
 
 
 export default CandidateRouter

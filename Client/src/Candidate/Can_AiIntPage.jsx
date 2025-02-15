@@ -113,12 +113,12 @@ const Can_AiIntPage = () => {
           const questionsArray = Array.isArray(response.data.questions)
             ? response.data.questions
             : response.data.questions
-                .replace(/[\[\]{}":.\?]|question|\b\d+\b/g, "")
-                .split(/,(?=[A-Z])/)
-                .map((item) => item.trim())
-                .filter((item) => item !== "");
+            .replace(/[\[\]{}":.\?\\\n]|question|\b\d+\b|\bn\b/g, "")
+            // .split(/,(?=[A-Z])/)
+            .split(/,\s*(?=[A-Z])/)
+            .map((item) => item.trim())
+            .filter((item) => item !== "");
           setQuestions(questionsArray);
-          // console.log(questionsArray);
         }
       } catch (error) {
         setModalMsg({
@@ -316,8 +316,6 @@ const Can_AiIntPage = () => {
       await faceapi.nets.faceLandmark68Net.loadFromUri(
         "https://justadudewhohacks.github.io/face-api.js/models"
       );
-
-      console.log("Models Loaded Successfully");
     };
     loadModels();
   }, []);
@@ -389,7 +387,7 @@ const Can_AiIntPage = () => {
             timestamp: new Date().toISOString(),
           },
         ]);
-        console.log("no face detecteddd");
+        // console.log("no face detecteddd");
 
         return;
       }
@@ -405,9 +403,9 @@ const Can_AiIntPage = () => {
 
       previousLandmarks = detections.landmarks;
 
-      console.log(
-        `Expression: ${dominantExpression}, Eye Contact: ${eyeContact}, Posture: ${posture}`
-      );
+      // console.log(
+      //   `Expression: ${dominantExpression}, Eye Contact: ${eyeContact}, Posture: ${posture}`
+      // );
 
       setInterviewData((prevData) => [
         ...prevData,
@@ -456,7 +454,6 @@ const Can_AiIntPage = () => {
   // ------------------- GENERATING GESTURE FEEDBACK -----------------------------
 
   const endInterview = async () => {
-    console.log(interviewData);
 
     const serverData = {
       interviewData

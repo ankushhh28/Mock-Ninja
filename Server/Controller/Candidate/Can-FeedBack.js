@@ -13,7 +13,6 @@ export const SavingOverallFeedback = async (data, mockId, email) => {
     const newData = new FeedbackSchema({
       mockId,
       QuestionAnswerFeedback: data,
-      email,
     });
     await newData.save();
     return "Successfully Saved";
@@ -24,13 +23,16 @@ export const SavingOverallFeedback = async (data, mockId, email) => {
 
 // ------------ SAVING QUESTION & ANSWER ---------------------
 
-export const SavingQuestionAsnwer = async(userAnswer,mockId) => {
+export const SavingQuestionAsnwer = async(userAnswer,mockId,email) => {
 
   const data = JSON.stringify(userAnswer)
   try {
+    const questionDoc = await QuesGenSchema.findOne({ mockID: mockId });
     const newData = new FeedbackSchema({
       mockId,
       userQuestionAnswer: data,
+      details: questionDoc.details,
+      email
     });
     await newData.save();
     return "Successfully Saved";
@@ -187,6 +189,8 @@ const GeneratingFeedback = async (questionAnswer) => {
     STRICTLY FOLLOW RULE 4.
     STRICTLY FOLLOW RULE 4.
 
+    **GIVE FEEDBACK ONLY IN RULE 4 FORMAT**
+
     IN JSON FORMATE ONLY
     `;
 
@@ -223,7 +227,7 @@ export const OverallFeedback = async (req, res) => {
     const feedback = await GeneratingFeedback(userAnswer);
     await Promise.all([
       SavingOverallFeedback(feedback, mockId, email),
-      SavingQuestionAsnwer(userAnswer, mockId),
+      SavingQuestionAsnwer(userAnswer, mockId, email),
     ]);
     return res.status(200).json({ message: "Successfull" });
   } catch (error) {
@@ -243,7 +247,6 @@ export const savingGestureFeedback = async (req, res) => {
   try {
     const newData = new FeedbackSchema({
       mockId,
-      email,
       GestureFeedback: savedData,
     });
     await newData.save();
@@ -279,3 +282,21 @@ export const fetchingFeedback = async (req, res) => {
     return res.status(500).json({ message: "Something went wrong! Try again later" });
   }
 };
+
+// -------------- FETCHING CANDIDATE FEEDBACk LIST -----------
+
+export const fetchingFeedbackList = async(req, res) => {
+
+  const {email} = req.query
+
+  try {
+    const feedData = await FeedbackSchema.find({email})
+    if(!feedData){
+      return res.status(404).json({message:"No Previous Interview history available"})
+    }
+
+    return res.status(200).json(feedData)
+  } catch (error) {
+    return res.status(500).json({message:"Something went wrong! Try again later"})
+  }
+}

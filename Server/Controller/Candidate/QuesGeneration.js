@@ -45,6 +45,9 @@ async function generateQuestionsWithGemini(domain, level) {
   STRICTLY FOLLOW RULE NUMBER 3.
   STRICTLY FOLLOW RULE NUMBER 3.
   STRICTLY FOLLOW RULE NUMBER 3.
+
+  **GIVE QUESTIONS IN RULE 3 FORMAT ONLY**
+  **DONT USE COMMA IN A QUESTION INSTEAD OF COMMA USE "or" ONLY**
   `;
 
   try {
@@ -124,8 +127,21 @@ const generateQuestionsWithGeminis = async (resumeText) => {
        - Questions 8-10: Project-related questions.
        - Questions 11-12: Managerial questions.
     2. Ensure questions are relevant to the skills and experience in the resume.
-    3. Provide the questions in a numbered list format.
-    4. Exclude any coding-specific questions.
+    3. **STRICTLY** provide the questions in the following **JSON format**:
+    [
+      { "question:1": "Your first question here" },
+      { "question:2": "Your second question here" },
+      { "question:3": "Your third question here" },
+      ...
+      { "question:12": "Your twelfth question here" }
+    ]
+    4. **DO NOT** include any category headings like "Introductory", "Basic Technical", or any extra text outside of the JSON array.
+    5. **STRICTLY FOLLOW RULE NUMBER 3** — no explanations, no numbering outside the JSON format.
+    6. **Exclude any coding-specific questions.**
+
+    ❗ IMPORTANT:STRICTLY FOLLOW RULE NUMBER 3. 
+    ❗ IMPORTANT:STRICTLY FOLLOW RULE NUMBER 3. 
+    ❗ IMPORTANT:STRICTLY FOLLOW RULE NUMBER 3. 
   `;
 
   const response = await fetch(`${GEMINI_API_URL}?key=${API_KEY}`, {
@@ -142,7 +158,6 @@ const generateQuestionsWithGeminis = async (resumeText) => {
   if (!data.candidates || !data.candidates[0]) {
     throw new Error('Invalid response from Gemini API');
   }
-  // console.log(data.candidates[0].content.parts[0].text);
   
   return data.candidates[0].content.parts[0].text;
 };
