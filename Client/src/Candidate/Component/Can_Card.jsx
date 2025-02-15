@@ -41,7 +41,7 @@ const skillsss = [
   "Pandas", "NumPy", "Excel", "Power Query",
   "Matplotlib", "Seaborn", "Tableau", "Power BI", "Plotly", "D3.js",
   "Hypothesis Testing", "ANOVA", "Regression Analysis", "Time Series Analysis",
-  "Apache Spark", "Hadoop", "Kafka",
+  "Apache Spark", "Hadoop", "Kafka","C++",
   "Scikit-learn", "TensorFlow", "Keras", "XGBoost",
   "NoSQL",
   "Supervised Learning", "Unsupervised Learning", "Reinforcement Learning",
