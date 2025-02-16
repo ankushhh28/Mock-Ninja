@@ -1,6 +1,10 @@
 import React, { useContext, useEffect, useState } from "react";
 import { DataContext } from "../../Context/DataProvider";
+<<<<<<< HEAD
 import { useNavigate } from "react-router-dom";
+=======
+import { useNavigate, useParams } from "react-router-dom";
+>>>>>>> 74cdf5ee025720eb55db92944b3ac7bbcee6b7f3
 import axios from "axios";
 import {Button, CircularProgress, Typography} from "@mui/material"
 
@@ -8,9 +12,9 @@ const Can_FbHistory = () => {
 
   const { backendUrl, account } = useContext(DataContext);
   const email = account.email;
-  const navigate = useNavigate()
+  const { mockId } = useParams();
 
-  // -------------- USE STATES ----------------------------
+  const navigate = useNavigate();
 
   const [intData, setIntData] = useState([]);
   const [loading, setLoading] = useState(false)
