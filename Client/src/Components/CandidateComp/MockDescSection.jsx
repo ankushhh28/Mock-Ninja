@@ -1,5 +1,5 @@
 import React, { useContext, useRef } from "react";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import chatbot from "../../assets/images/bgremovedbot.gif";
 import longbot from "../../assets/images/longbot.gif";
 import interviewer from "../../assets/images/interviewer.png";
@@ -12,7 +12,7 @@ import ScrollTrigger from "gsap/ScrollTrigger";
 
 const MockDescSection = () => {
   const { beforeLogin, setBeforeLogin, account } = useContext(DataContext);
-
+  const navigate = useNavigate();
   // ----------------------------- GSAP ANIMATION -----------------
   // ----------------------------- GSAP ANIMATION -----------------
 
@@ -80,7 +80,12 @@ const MockDescSection = () => {
             improvement tips to pass automated screenings.
           </p>
           <Button
-            onClick={() => setBeforeLogin(true)}
+            onClick={() => { 
+            if ( account.name === "" && account.accessToken === ""){
+              setBeforeLogin(true);
+            }else{
+              navigate("/Candidate/AI/Mock")
+            }}}
             variant="contained"
             className=" normal-case text-white bg-gradient-to-r from-purple-600 to-[#8667f2] hover:from-purple-700 hover:to-[#764de8] px-6 py-4 font-bold text-xl rounded-xl flex items-center transition-all duration-300 shadow-md hover:shadow-lg text-nowrap"
           >
@@ -158,7 +163,12 @@ const MockDescSection = () => {
 
           <Button
             variant="contained"
-            onClick={() => setBeforeLogin(true)}
+            onClick={() => {if ( account.name === "" && account.accessToken === ""){ 
+              setBeforeLogin(true);
+            }else{
+              navigate("/Candidate/Mock")
+            }
+          }}
             className=" text-white  bg-gradient-to-r from-purple-600 to-[#8667f2] hover:from-purple-700 hover:to-[#764de8]  px-6 py-4 normal-case font-bold text-xl transition-all duration-300 shadow-md hover:shadow-lg text-nowrap rounded-xl"
           >
             Schedule an Interview

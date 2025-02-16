@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Box, Typography } from "@mui/material";
 
 import StarIcon from "@mui/icons-material/Star";
@@ -8,8 +8,12 @@ import TwitterIcon from "@mui/icons-material/Twitter";
 import LinkedInIcon from "@mui/icons-material/LinkedIn";
 
 import Logo from "../assets/Logo.png"
-
+import { DataContext } from "../Context/DataProvider";
+import { useNavigate } from "react-router-dom";
 const Footer = () => {
+  const { beforeLogin, setBeforeLogin, account } = useContext(DataContext);
+  const navigate = useNavigate();
+
   return (
     <Box
       className="w-screen h-auto relative bottom-0"
@@ -33,7 +37,13 @@ const Footer = () => {
         <Box className="flex flex-col sm:flex-row gap-8 sm:gap-14">
           <Box className="flex flex-col gap-4">
             <Box className="hover:text-gray-300 cursor-pointer text-lg sm:text-xl">Home</Box>
-            <Box className="hover:text-gray-300 cursor-pointer text-lg sm:text-xl">
+            <Box onClick={() => { 
+            if ( account.name === "" && account.accessToken === ""){
+              setBeforeLogin(true);
+            }else{
+              navigate("/Candidate/AI/Mock")
+            }}}
+            className="hover:text-gray-300 cursor-pointer text-lg sm:text-xl">
               AI Interview
             </Box>
             <Box className="hover:text-gray-300 cursor-pointer text-lg sm:text-xl">
