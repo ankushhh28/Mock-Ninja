@@ -456,7 +456,6 @@ useEffect(() => {
       email:account.email,
       data
     }
-    if(!SavingGesture){
     try {
       const response = await axios.post(`${backendUrl}/Can/Saving-Gesture-Feedback`, serverData)
       if(response.status === 200){
@@ -465,7 +464,6 @@ useEffect(() => {
     } catch (error) {
       setModalMsg({ open: true, msg: error.response.data.message ? error.response.data.message : "Check your connection! Try later", severity: 'error' })
     }
-  }
   }
 
   // ------------------- GENERATING GESTURE FEEDBACK -----------------------------
@@ -506,7 +504,6 @@ useEffect(() => {
       userAnswer
     }
     setLoadingOverall(true)
-    if(!OverallFeedbacks){
       try {
         const response = await axios.post(`${backendUrl}/Can/Generating-Overall-Feedback`, server)
         if(response.status === 200){
@@ -517,7 +514,6 @@ useEffect(() => {
       } finally {
         setLoadingOverall(false)
       }
-    }
   };
 
   return (
