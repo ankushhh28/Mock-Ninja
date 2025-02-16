@@ -7,6 +7,12 @@ import Can_Layout from "../CanLayout/Can_Layout"
 
 const Can_Feedback = () => {
 
+  useEffect(() => {
+    setTimeout(() => {
+      document.body.scrollTo({ top: 0, behavior: "smooth" });
+    }, 100);
+  }, []);
+
   const {backendUrl} = useContext(DataContext)
   const {mockId} = useParams()
 
@@ -156,7 +162,7 @@ const parsedFeedbacks = useMemo(() => {
         <div className="flex flex-col gap-4 text-gray-800 sm:flex-row justify-between ">
           <p className=" text-lg sm:text-xl text-gray-700">
             <span className="text-primary font-semibold">
-              Type of Interview:
+              Interview Details:
             </span>{" "}
             {intType}
           </p>

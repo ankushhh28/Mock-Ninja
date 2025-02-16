@@ -10,6 +10,10 @@ const GEMINI_API_URL =
 
 export const SavingOverallFeedback = async (data, mockId, email) => {
   try {
+    const MOCK = await FeedbackSchema.findOne({mockId})
+    if(MOCK){
+      return res.status(400).json({message:"Overall Feedback already Generated"})
+    }
     const newData = new FeedbackSchema({
       mockId,
       QuestionAnswerFeedback: data,
@@ -184,12 +188,14 @@ const GeneratingFeedback = async (questionAnswer) => {
     ]
     5. Do not include any extra text, markdown formatting, bullet points, or commentary outside of this JSON array.
 
-    STRICTLY FOLLOW RULE 4.
-    STRICTLY FOLLOW RULE 4.
-    STRICTLY FOLLOW RULE 4.
-    STRICTLY FOLLOW RULE 4.
+    ❗ IMPORTANT: **DONT USE COMMA IN A QUESTION INSTEAD OF COMMA USE "or" ONLY**
+    ❗ IMPORTANT: **DONT USE COMMA IN A QUESTION INSTEAD OF COMMA USE "or" ONLY**
+    ❗ IMPORTANT: **DONT USE COMMA IN A QUESTION INSTEAD OF COMMA USE "or" ONLY**
 
-    **GIVE FEEDBACK ONLY IN RULE 4 FORMAT**
+    ❗ IMPORTANT: STRICTLY FOLLOW RULE 4.
+    ❗ IMPORTANT: STRICTLY FOLLOW RULE 4.
+    ❗ IMPORTANT: STRICTLY FOLLOW RULE 4.
+    ❗ IMPORTANT: STRICTLY FOLLOW RULE 4.
 
     IN JSON FORMATE ONLY
     `;
@@ -245,6 +251,11 @@ export const savingGestureFeedback = async (req, res) => {
   const savedData = JSON.stringify(data);
 
   try {
+    const MOCK = await FeedbackSchema.findOne({mockId})
+    if(MOCK){
+      return res.status(400).json({message:"Something went wrong! Try again later"})
+    }
+
     const newData = new FeedbackSchema({
       mockId,
       GestureFeedback: savedData,
@@ -291,8 +302,8 @@ export const fetchingFeedbackList = async(req, res) => {
 
   try {
     const feedData = await FeedbackSchema.find({email})
-    if(!feedData){
-      return res.status(404).json({message:"No Previous Interview history available"})
+    if(feedData == ""){
+      return res.status(404).json({message:"No previous interview records found."})
     }
 
     return res.status(200).json(feedData)

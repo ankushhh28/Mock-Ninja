@@ -41,6 +41,7 @@ const CanProfile = () => {
   const [imageLoading, setImageLoading] = useState(false)
   const [modalMsg, setModalMsg] = useState({open:false, message:"", severity:""})
   const [loading, setLoading] = useState(false)
+  const [fetchLoading, setFetchLoading] = useState(false)
 
   const [candidateData, setCandidateData] = useState({
     candidateName:"",
@@ -57,7 +58,6 @@ const CanProfile = () => {
 // ---------------------------------------------------------------------------------
 
   const UploadImage = async(img) => {
-    setImageLoading(true)
     const serverResponse = {
       email:account.email,
       role:account.role,
@@ -77,7 +77,6 @@ const CanProfile = () => {
       console.log(error.response.data.message)
     } finally {
       setProfileImage("")
-      setImageLoading(false)
     }
   }
 
@@ -88,7 +87,7 @@ const CanProfile = () => {
     const formdata = new FormData();
     formdata.append("file", profileImage)
     formdata.append("role", account.role);
-    
+    setImageLoading(true)
     try {
       const response = await axios.post(`${backendUrl}/Can/Image-Upload-Database`, formdata,  {
         headers: {
@@ -102,7 +101,9 @@ const CanProfile = () => {
       }
     } catch (error) {
       setModalMsg({ open: true, message: error.response?.data?.message || "Check your connection! Try later", severity: 'error' })
-    } 
+    } finally {
+      setImageLoading(false)
+    }
   }
 
   useEffect(() => {
@@ -177,6 +178,7 @@ const CanProfile = () => {
         email: account.email,
         accessToken: account.accessToken,
       };
+      setFetchLoading(true)
       try {
         const response = await axios.get(
           `${backendUrl}/Can/Fetching-Candidate-Details`,
@@ -191,6 +193,8 @@ const CanProfile = () => {
         setCandidateData(response.data)
       } catch (error) {
         setModalMsg({ open: true, message: error.response?.data?.message || "Check your connection! Try later", severity: 'error' })
+      } finally {
+        setFetchLoading(false)
       }
     };
 
@@ -268,7 +272,7 @@ const CanProfile = () => {
 {/* -------------------------------------------------------------------------- */}
 
     <Box className="flex justify-center mb-8 ">
-    {imageLoading ? (
+    {imageLoading || fetchLoading ? (
       <Box>
         <CircularProgress/>
       </Box>

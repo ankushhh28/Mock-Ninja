@@ -90,7 +90,7 @@ const App = () => {
 
                 {/*-------------------------- STUDENT ROUTES (WITH LOGIN) ----------------*/}
 
-                {/* <Route element={<CandidatePrivate/>}> */}
+                <Route element={<CandidatePrivate/>}>
                 <Route path="/Candidate/Home" element={<CanHome />} />
                 <Route path="/Candidate/AI/Mock" element={<CanAiMock />} />
                 <Route path="/Candidate/Mock" element={<CanMock />} />
@@ -103,7 +103,7 @@ const App = () => {
                   />
                 </Route>
                 <Route path="/Feedback/:mockId" element={<CanFeedbackPage/>}/>
-                {/* </Route> */}
+                </Route>
 
         <Route path="/" element={<Home />} />
         <Route path="/About" element={<About />} />

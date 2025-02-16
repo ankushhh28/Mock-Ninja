@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useRef, useState } from "react";
 import { data, useNavigate, useNavigation, useParams } from "react-router-dom";
 import { DataContext } from "../Context/DataProvider";
 import axios from "axios";
-import { Alert, Box, CircularProgress, Snackbar, Button } from "@mui/material";
+import { Alert, Box, CircularProgress, Snackbar, Button, Typography } from "@mui/material";
 
 import Webcam from "react-webcam";
 import * as faceapi from "face-api.js";
@@ -12,6 +12,8 @@ import SkipNextIcon from "@mui/icons-material/SkipNext";
 import VolumeUpIcon from "@mui/icons-material/VolumeUp";
 import MicIcon from "@mui/icons-material/Mic";
 import MicOffIcon from "@mui/icons-material/MicOff";
+
+import { IoIosWarning } from "react-icons/io";
 
 import Intructions from "./Component/InstructionsAI";
 import CountdownAnimation from "./Component/CountDown";
@@ -23,6 +25,7 @@ const Can_AiIntPage = () => {
 
   const params = useParams();
   const mockId = params.mockID;
+
 
   const recognitionRef = useRef(null);
 
@@ -42,35 +45,47 @@ const Can_AiIntPage = () => {
   const [isListening, setIsListening] = useState(false);
   const [isSpeaking, setIsSpeaking] = useState(false);
   const [isNextButtonDisabled, setIsNextButtonDisabled] = useState(false);
-  const [OverallFeedbacks, setOverallFeedback] = useState(false);
-  const [SavingGesture, setSavingGesture] = useState(false);
   const [loadingOverall, setLoadingOverall] = useState(false)
   const [loadingGesture, setLoadingGesture] = useState(false)
+  const [nextClicked, setNextClicked] = useState(true)
 
-  // ---CURRENT_QUESTION_INDEX -- SECONDS COUNT INDEX  (SESSION STORAGE) --------
+// -----------------------------------------------------------------------------
+
+const savedSavingGesture = JSON.parse(sessionStorage.getItem("SavingGesture")) ?? false;
+const savedOverallFeedbacks = JSON.parse(sessionStorage.getItem("OverallFeedbacks")) ?? false;
+
+const [SavingGesture, setSavingGesture] = useState(savedSavingGesture);
+const [OverallFeedbacks, setOverallFeedback] = useState(savedOverallFeedbacks);
+
+useEffect(() => {
+  sessionStorage.setItem("SavingGesture", JSON.stringify(SavingGesture));
+  sessionStorage.setItem("OverallFeedbacks", JSON.stringify(OverallFeedbacks));
+}, [SavingGesture, OverallFeedbacks]);
+
+// ---CURRENT_QUESTION_INDEX -- SECONDS COUNT INDEX  (SESSION STORAGE) --------
 
   const savedQuestions =
     parseInt(sessionStorage.getItem("currentQuestionIndex")) || 0;
-  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
+  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(savedQuestions);
 
   const savedCount = parseInt(sessionStorage.getItem("timer") || 120);
-  const [timer, setTimer] = useState(120);
+  const [timer, setTimer] = useState(savedCount);
 
-  // useEffect(() => {
-  //   sessionStorage.setItem("currentQuestionIndex", currentQuestionIndex);
-  //   sessionStorage.setItem("timer", timer);
-  // }, [currentQuestionIndex, timer]);
+  useEffect(() => {
+    sessionStorage.setItem("currentQuestionIndex", currentQuestionIndex);
+    sessionStorage.setItem("timer", timer);
+  }, [currentQuestionIndex, timer]);
 
   // ---------------- USER ANSWER SESSION STORAGE -------------------
 
   const savedUserAnswer = sessionStorage.getItem("userAnswer");
   const initialUserAnswer = savedUserAnswer ? JSON.parse(savedUserAnswer) : [];
 
-  const [userAnswer, setUserAnswer] = useState([]);
+  const [userAnswer, setUserAnswer] = useState(initialUserAnswer);
 
-  // useEffect(() => {
-  //   sessionStorage.setItem("userAnswer", JSON.stringify(userAnswer));
-  // }, [userAnswer]);
+  useEffect(() => {
+    sessionStorage.setItem("userAnswer", JSON.stringify(userAnswer));
+  }, [userAnswer]);
 
   // ------------- NEXT BUTTON -- COUNT DOWN BUTTON -----------------
 
@@ -94,7 +109,7 @@ const Can_AiIntPage = () => {
 
   useEffect(() => {
     const fetchingQuestions = async () => {
-      setLoading(true);
+      setLoading(true)
       try {
         const response = await axios.get(
           `${backendUrl}/Can/fetching-Generate-Questions`,
@@ -168,9 +183,11 @@ const Can_AiIntPage = () => {
       overAllFeedback();
       sessionStorage.removeItem("currentQuestionIndex");
       sessionStorage.removeItem("timer");
-      
+      sessionStorage.removeItem("userAnswer");
+      sessionStorage.removeItem("SavingGesture");
+      sessionStorage.removeItem("OverallFeedbacks");
     }
-  }, [currentQuestionIndex]);
+  }, [currentQuestionIndex, nextClicked]);
 
   useEffect(() => {
     if(OverallFeedbacks && SavingGesture){
@@ -265,7 +282,7 @@ const Can_AiIntPage = () => {
 
         synth.speak(utterance);
       };
-      // speak();
+      speak();
     }
   }, [currentQuestionIndex, next, count, questions]);
 
@@ -294,7 +311,7 @@ const Can_AiIntPage = () => {
 
   // ------------------------------------------------------------------
   // ------------------------------------------------------------------
-  // -------------------------- GESTURE FEEDBACK ----------------------
+  // ---------------------- GESTURE FEEDBACK --------------------------
   // ------------------------------------------------------------------
   // ------------------------------------------------------------------
 
@@ -302,8 +319,6 @@ const Can_AiIntPage = () => {
   const [interviewData, setInterviewData] = useState([]);
   let previousLandmarks = null;
   let previousTimestamp = Date.now();
-  let previousFrame = null;
-  let stableHandCounter = 0;
 
   useEffect(() => {
     const loadModels = async () => {
@@ -441,6 +456,7 @@ const Can_AiIntPage = () => {
       email:account.email,
       data
     }
+    if(!SavingGesture){
     try {
       const response = await axios.post(`${backendUrl}/Can/Saving-Gesture-Feedback`, serverData)
       if(response.status === 200){
@@ -449,6 +465,7 @@ const Can_AiIntPage = () => {
     } catch (error) {
       setModalMsg({ open: true, msg: error.response.data.message ? error.response.data.message : "Check your connection! Try later", severity: 'error' })
     }
+  }
   }
 
   // ------------------- GENERATING GESTURE FEEDBACK -----------------------------
@@ -489,15 +506,17 @@ const Can_AiIntPage = () => {
       userAnswer
     }
     setLoadingOverall(true)
-    try {
-      const response = await axios.post(`${backendUrl}/Can/Generating-Overall-Feedback`, server)
-      if(response.status === 200){
-      setOverallFeedback(true)
+    if(!OverallFeedbacks){
+      try {
+        const response = await axios.post(`${backendUrl}/Can/Generating-Overall-Feedback`, server)
+        if(response.status === 200){
+        setOverallFeedback(true)
+        }
+      } catch (error) {
+        setModalMsg({ open: true, msg: error.response.data.message ? error.response.data.message : "Check your connection! Try later", severity: 'error' })
+      } finally {
+        setLoadingOverall(false)
       }
-    } catch (error) {
-      setModalMsg({ open: true, msg: error.response.data.message ? error.response.data.message : "Check your connection! Try later", severity: 'error' })
-    } finally {
-      setLoadingOverall(false)
     }
   };
 
@@ -510,13 +529,25 @@ const Can_AiIntPage = () => {
       ) : !count ? (
         <CountdownAnimation setCount={setCount} />
       ) : loading ? (
-        <Box className="h-screen w-screen flex items-center justify-center">
-          <CircularProgress />
+        <Box className="h-screen w-screen flex items-center justify-center bg-purple-100 flex-col">
+          <Typography className="text-xl sm:text-3xl font-semibold text-primary">
+            Preparing Your Interview
+          </Typography>
+            <Typography className="text-xl sm:text-3xl font-semibold text-primary mt-1">
+            Please Wait!
+            </Typography>
+          <CircularProgress size={30} className="text-primary mt-4" />
         </Box>
       ) : loadingGesture || loadingOverall ? (
-        <Box className="h-screen w-screen flex items-center justify-center">
-        <CircularProgress />
-      </Box>
+        <Box className="h-screen w-screen flex items-center justify-center bg-purple-100 flex-col">
+          <Typography className="text-xl sm:text-3xl font-semibold text-primary">
+            Generating Your Feedback
+          </Typography>
+            <Typography className="text-xl sm:text-3xl font-semibold text-primary mt-1">
+            Please Wait!
+            </Typography>
+          <CircularProgress size={30} className="text-primary mt-4" />
+        </Box>
       ) :(
         // ---------------------- MOCK SCREEN -----------------------------------------------------
         <>
@@ -524,7 +555,21 @@ const Can_AiIntPage = () => {
             {/* ---------------- Question Section --------------------------- */}
 
             <Box className="flex flex-col items-center text-white gap-4">
-              <h2 className="text-sm sm:text-base md:text-2xl font-semibold tracking-wide text-gray-300">
+              {currentQuestionIndex > 11 && (OverallFeedbacks === false || SavingGesture === false) ? (
+                <>
+                <Box className="flex bg-yellow-200 p-3 rounded-lg">
+                  <IoIosWarning className="text-yellow-700 hidden sm:block sm:text-2xl mt-[-8px] sm:mt-0 "/>
+                  <Typography className="text-yellow-700 text-justify">
+                  <span className="font-semibold">Warning:</span> If you close this tab or press the back button, your interview feedback won’t be generated.
+                  </Typography>
+                </Box>
+                <Typography className="text-xl sm:text-2xl md:text-3xl font-semibold text-red-600">
+                  Server is Busy! Stay on Screen, and click on next button after 20-30 seconds
+                </Typography>
+                </>
+              ) : (
+                <>
+                <h2 className="text-sm sm:text-base md:text-2xl font-semibold tracking-wide text-gray-300">
                 QUESTION
               </h2>
 
@@ -534,6 +579,9 @@ const Can_AiIntPage = () => {
               >
                 {questions[currentQuestionIndex]}
               </p>
+                </>
+              )}
+              
             </Box>
 
             {/* ------------------------- Video Frames Section --------------------- */}
@@ -626,15 +674,15 @@ const Can_AiIntPage = () => {
             <Box className="flex flex-col sm:flex-row justify-center gap-4 sm:gap-6 md:gap-8">
               <Button
                 onClick={handleNextQuestionWithDisable}
-                // disabled={isSpeaking || isNextButtonDisabled}
+                disabled={isSpeaking || isNextButtonDisabled}
                 className="text-white bg-gradient-to-r from-blue-500 to-blue-700 hover:from-blue-600 hover:to-blue-700 px-4 sm:px-5 py-2 sm:py-3 font-bold text-lg rounded-lg flex items-center transition-all duration-300 shadow-md hover:shadow-lg text-nowrap"
                 endIcon={<SkipNextIcon />}
               >
                 Skip
               </Button>
               <Button
-                // disabled={isSpeaking || isNextButtonDisabled}
-                onClick={handleNextQuestionWithDisable}
+                disabled={isSpeaking || isNextButtonDisabled}
+                onClick={() => {handleNextQuestionWithDisable(); setNextClicked((data) => !data)}}
                 className="text-white bg-gradient-to-r from-blue-500 to-blue-700 hover:from-blue-600 hover:to-blue-700 px-4 sm:px-5 py-2 sm:py-3 font-bold text-lg rounded-lg flex items-center transition-all duration-300 shadow-md hover:shadow-lg text-nowrap"
                 endIcon={<NextIcon />}
               >
