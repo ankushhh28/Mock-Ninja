@@ -161,7 +161,7 @@ const GeneratingFeedback = async (questionAnswer) => {
   const prompt = `
     Based on the following interview data and generate constructive feedback for each interview question, as well as overall feedback on the candidate's performance.
 
-    If interview data is not provided clearly, indicate that the candidate did not answer the question then show only overall feedback in rule 4 format and provide topics that the candidate should cover in future interviews.
+    If interview data is not provided clearly, indicate that the candidate did not answer the question then provide topics that the candidate should cover in future interviews **IN RULE 4 FORMAT ONLY**.
 
     Interview Data:
     Asked Questions with candidate answer: ${JSON.stringify(
@@ -188,8 +188,6 @@ const GeneratingFeedback = async (questionAnswer) => {
     ]
     5. Do not include any extra text, markdown formatting, bullet points, or commentary outside of this JSON array.
 
-    ❗ IMPORTANT: **DONT USE COMMA IN A QUESTION INSTEAD OF COMMA USE "or" ONLY**
-    ❗ IMPORTANT: **DONT USE COMMA IN A QUESTION INSTEAD OF COMMA USE "or" ONLY**
     ❗ IMPORTANT: **DONT USE COMMA IN A QUESTION INSTEAD OF COMMA USE "or" ONLY**
 
     ❗ IMPORTANT: STRICTLY FOLLOW RULE 4.
