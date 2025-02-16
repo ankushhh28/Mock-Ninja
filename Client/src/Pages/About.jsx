@@ -140,7 +140,7 @@ const About = () => {
           </p>
 
 {/* ---------------------features grid---------------------------- */}
-          <div className="bg-[#f3f5ff] w-full px-6 space-x-5">
+          <div className="bg-[#f3f5ff] w-full px-16">
           <h2
             ref={text2Ref}
             className="text-center text-4xl font-semibold text-gray-800 mb-12"
@@ -151,7 +151,7 @@ const About = () => {
             {features.map((feature, index) => (
               <div
                 key={index}
-                className="rounded-xl shadow-lg p-6 sm:p-8 bg-[#f3f5ff] border-white border-2 place-items-center hover:scale-105 ease-in-out duration-300"
+                className="rounded-xl shadow-lg py-12 sm:p-8 bg-[#f3f5ff] border-white border-2 place-items-center hover:scale-105 ease-in-out duration-300"
               >
                 <div className="mb-4">{feature.icon}</div>
                 <h3 className="text-xl font-semibold text-[#8667f2]">
@@ -169,7 +169,7 @@ const About = () => {
 
 {/* --------------------team intro-------------------------- */}
 
-          <h1 className="text-3xl font-semibold text-nowrap mt-5">
+          <h1 className="text-3xl font-semibold text-nowrap mt-5 gap-x-5">
             <span
               ref={text3Ref}
               className="bg-gradient-to-r from-purple-500 to-cyan-400 bg-clip-text text-transparent mb-6"
@@ -179,12 +179,12 @@ const About = () => {
             <span> 💡</span>
           </h1>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-y-8 gap-x-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-y-8 gap-x-12">
             <div
               ref={mem1Ref}
-              className="shadow-lg rounded-2xl items-center p-5"
+              className="shadow-lg rounded-2xl items-center p-7 min-w-52 md:min-w-88" 
             >
-              <div className="h-32 w-32 rounded-full grid place-items-center mx-auto overflow-hidden my-3">
+              <div className="h-40 w-40 rounded-full grid place-items-center mx-auto overflow-hidden my-3 hover:scale-105">
                 <img src={p1} alt="why not showing" />
               </div>
               <h3 className="text-xl font-semibold text-[#8667f2]">Anish</h3>
@@ -192,9 +192,9 @@ const About = () => {
             </div>
             <div
               ref={mem2Ref}
-              className="shadow-lg rounded-2xl items-center p-5"
+              className="shadow-lg rounded-2xl items-center p-7 min-w-52 md:min-w-88"
             >
-              <div className="h-32 w-32 rounded-full grid place-items-center mx-auto overflow-hidden my-3">
+              <div className="h-40 w-40 rounded-full grid place-items-center mx-auto overflow-hidden my-3 hover:scale-105">
                 <img src={p2} alt="why not showing" />
               </div>
               <h3 className="text-xl font-semibold text-[#8667f2]">Ankush</h3>
@@ -202,9 +202,9 @@ const About = () => {
             </div>
             <div
               ref={mem3Ref}
-              className="shadow-lg rounded-2xl items-center p-5"
+              className="shadow-lg rounded-2xl items-center p-7 min-w-52 md:min-w-88"
             >
-              <div className="h-32 w-32 rounded-full grid place-items-center mx-auto overflow-hidden my-3">
+              <div className="h-40 w-40 rounded-full grid place-items-center mx-auto overflow-hidden my-3 hover:scale-105">
                 <img src={p3} alt="why not showing" />
               </div>
               <h3 className="text-xl font-semibold text-[#8667f2]">Ishita</h3>
@@ -212,9 +212,9 @@ const About = () => {
             </div>
             <div
               ref={mem4Ref}
-              className="shadow-lg rounded-2xl items-center p-5"
+              className="shadow-lg rounded-2xl items-center p-7 min-w-52 md:min-w-88"
             >
-              <div className="h-32 w-32 rounded-full grid place-items-center mx-auto overflow-hidden my-3">
+              <div className="h-40 w-40 rounded-full grid place-items-center mx-auto overflow-hidden my-3 hover:scale-105">
                 <img src={p4} alt="why not showing" />
               </div>
               <h3 className="text-xl font-semibold text-[#8667f2]">Shruti</h3>
@@ -232,13 +232,13 @@ const About = () => {
                 backgroundColor: "#8667f2",
                 "&:hover": { backgroundColor: "#6a52c7" },
               }}
-              className="bg-gradient-to-r from-purple-600 to-[#8667f2] hover:from-purple-700 hover:to-[#764de8]"
+              className="bg-gradient-to-r from-purple-600 to-[#8667f2] hover:from-purple-700 hover:to-[#764de8] p-3 text-lg font-light rounded-xl hover:scale-100"
             >
               Get Started
             </Button>
           </div>
 {/* -----------------gradient------------------------- */}
-          <div className="flex flex-col min-h-screen min-w-full items-center justify-center text-center bg-[linear-gradient(to_bottom,_#f3f5ff_1%,_transparent_40%),radial-gradient(circle_at_center,_#a2f8d3,_#c7ade2,_#a4d8fd)] -mb-24">
+          <div className="flex flex-col min-h-screen min-w-full items-center justify-center text-center bg-[linear-gradient(to_bottom,_#f3f5ff_1%,_transparent_30%),radial-gradient(circle_at_center,_#a2f8d3,_#c7ade2,_#a4d8fd)] -mb-24">
             <h1 className="text-5xl md:text-6xl font-bold text-black">
               Try MockNinja for free.
             </h1>
