@@ -72,10 +72,7 @@ const Can_FbHistory = () => {
                 ? Domain
                 : Skills}
             </span>
-            <button
-              className="bg-[#8667f2] hover:bg-[#6e4fcf] text-white px-4 py-2 rounded-md font-bold uppercase text-nowrap hidden sm:block"
-              onClick={() => navigate("/Feedback/:mockId")}
-            >
+            <button className="bg-[#8667f2] hover:bg-[#6e4fcf] text-white px-4 py-2 rounded-md font-bold uppercase text-nowrap hidden sm:block">
               View Details
             </button>
           </div>
