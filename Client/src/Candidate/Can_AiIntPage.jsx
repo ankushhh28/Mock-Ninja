@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
-import { useParams } from "react-router-dom";
+import { data, useNavigate, useNavigation, useParams } from "react-router-dom";
 import { DataContext } from "../Context/DataProvider";
 import axios from "axios";
 import { Alert, Box, CircularProgress, Snackbar, Button } from "@mui/material";
@@ -23,7 +23,10 @@ const Can_AiIntPage = () => {
 
   const params = useParams();
   const mockId = params.mockID;
+
   const recognitionRef = useRef(null);
+
+  const navigate = useNavigate();
 
   // -------------------- USE STATES -------------------------------
 
@@ -38,7 +41,11 @@ const Can_AiIntPage = () => {
   const [text, setText] = useState("");
   const [isListening, setIsListening] = useState(false);
   const [isSpeaking, setIsSpeaking] = useState(false);
-  const [userAnswer,setUserAnswer] = useState([])
+  const [isNextButtonDisabled, setIsNextButtonDisabled] = useState(false);
+  const [OverallFeedbacks, setOverallFeedback] = useState(false);
+  const [SavingGesture, setSavingGesture] = useState(false);
+  const [loadingOverall, setLoadingOverall] = useState(false)
+  const [loadingGesture, setLoadingGesture] = useState(false)
 
   // ---CURRENT_QUESTION_INDEX -- SECONDS COUNT INDEX  (SESSION STORAGE) --------
 
@@ -49,9 +56,21 @@ const Can_AiIntPage = () => {
   const savedCount = parseInt(sessionStorage.getItem("timer") || 120);
   const [timer, setTimer] = useState(120);
 
-  // console.log(timer, currentQuestionIndex);
+  // useEffect(() => {
+  //   sessionStorage.setItem("currentQuestionIndex", currentQuestionIndex);
+  //   sessionStorage.setItem("timer", timer);
+  // }, [currentQuestionIndex, timer]);
 
-  // useEffect(()
+  // ---------------- USER ANSWER SESSION STORAGE -------------------
+
+  const savedUserAnswer = sessionStorage.getItem("userAnswer");
+  const initialUserAnswer = savedUserAnswer ? JSON.parse(savedUserAnswer) : [];
+
+  const [userAnswer, setUserAnswer] = useState([]);
+
+  // useEffect(() => {
+  //   sessionStorage.setItem("userAnswer", JSON.stringify(userAnswer));
+  // }, [userAnswer]);
 
   // ------------- NEXT BUTTON -- COUNT DOWN BUTTON -----------------
 
@@ -94,12 +113,12 @@ const Can_AiIntPage = () => {
           const questionsArray = Array.isArray(response.data.questions)
             ? response.data.questions
             : response.data.questions
-                .replace(/[\[\]{}":.\?]|question|\b\d+\b/g, "")
-                .split(/,(?=[A-Z])/)
-                .map((item) => item.trim())
-                .filter((item) => item !== "");
+            .replace(/[\[\]{}":.\?\\\n]|question|\b\d+\b|\bn\b/g, "")
+            // .split(/,(?=[A-Z])/)
+            .split(/,\s*(?=[A-Z])/)
+            .map((item) => item.trim())
+            .filter((item) => item !== "");
           setQuestions(questionsArray);
-          // console.log(questionsArray);
         }
       } catch (error) {
         setModalMsg({
@@ -121,18 +140,43 @@ const Can_AiIntPage = () => {
   // ------------- HANDLING NEXT QUESTION ------------------------
 
   const handleNextQuestion = () => {
-    setCurrentQuestionIndex((prevIndex) => {
-      if (prevIndex < questions.length - 1) {
-        return prevIndex + 1;
-      } else {
-        endInterview();
-        sessionStorage.removeItem("currentQuestionIndex");
-        sessionStorage.removeItem("timer");
-        return;
-      }
-    });
-    setTimer(120);
+    const currentIdx = currentQuestionIndex;
+
+    if (isListening && recognitionRef.current) {
+      recognitionRef.current.stop();
+    }
+
+    const updatedAnswers = [...userAnswer];
+    updatedAnswers[currentIdx] = {
+      question: questions[currentIdx],
+      answer: text.trim(),
+    };
+
+    setUserAnswer(updatedAnswers);
+
+    setText("");
+
+    if (currentIdx <= questions.length - 1) {
+      setCurrentQuestionIndex(currentIdx + 1);
+      setTimer(120);
+    }
   };
+
+  useEffect(() => {
+    if (currentQuestionIndex > 11) {
+      endInterview();
+      overAllFeedback();
+      sessionStorage.removeItem("currentQuestionIndex");
+      sessionStorage.removeItem("timer");
+      
+    }
+  }, [currentQuestionIndex]);
+
+  useEffect(() => {
+    if(OverallFeedbacks && SavingGesture){
+      navigate(`/Feedback/${mockId}`)
+    }
+  },[OverallFeedbacks, SavingGesture])
 
   // ------------- Showing Questions (Timer Logic) ----------------
 
@@ -188,8 +232,6 @@ const Can_AiIntPage = () => {
       setText((prev) => prev + " " + transcript);
     };
 
-    
-
     recognition.onerror = (event) => {
       console.error("Error:", event.error);
     };
@@ -206,11 +248,6 @@ const Can_AiIntPage = () => {
     };
   }, []);
 
-  // useEffect(() => {
-  //   console.log(userAnswer);
-    
-  // },[userAnswer])
-
   // ----------------------- TEXT-TO-SPEECH -------------------------------
 
   useEffect(() => {
@@ -223,12 +260,12 @@ const Can_AiIntPage = () => {
         utterance.lang = "hi-IN";
 
         // Set speaking status
-        // utterance.onstart = () => setIsSpeaking(true);
-        // utterance.onend = () => setIsSpeaking(false);
+        utterance.onstart = () => setIsSpeaking(true);
+        utterance.onend = () => setIsSpeaking(false);
 
         synth.speak(utterance);
       };
-      speak();
+      // speak();
     }
   }, [currentQuestionIndex, next, count, questions]);
 
@@ -238,7 +275,21 @@ const Can_AiIntPage = () => {
     const synth = window.speechSynthesis;
     const utterance = new SpeechSynthesisUtterance(questions);
     utterance.lang = "hi-IN";
+
+    utterance.onstart = () => setIsSpeaking(true);
+    utterance.onend = () => setIsSpeaking(false);
+
     synth.speak(utterance);
+  };
+
+  // ----------------- SKIP & NEXT BUTTON DISABLE ---------------------
+
+  const handleNextQuestionWithDisable = () => {
+    setIsNextButtonDisabled(true);
+    handleNextQuestion();
+    setTimeout(() => {
+      setIsNextButtonDisabled(false);
+    }, 2000);
   };
 
   // ------------------------------------------------------------------
@@ -249,7 +300,6 @@ const Can_AiIntPage = () => {
 
   const webcamRef = useRef(null);
   const [interviewData, setInterviewData] = useState([]);
-  const [feedback, setFeedback] = useState(null);
   let previousLandmarks = null;
   let previousTimestamp = Date.now();
   let previousFrame = null;
@@ -266,8 +316,6 @@ const Can_AiIntPage = () => {
       await faceapi.nets.faceLandmark68Net.loadFromUri(
         "https://justadudewhohacks.github.io/face-api.js/models"
       );
-
-      console.log("Models Loaded Successfully");
     };
     loadModels();
   }, []);
@@ -339,6 +387,8 @@ const Can_AiIntPage = () => {
             timestamp: new Date().toISOString(),
           },
         ]);
+        // console.log("no face detecteddd");
+
         return;
       }
 
@@ -383,10 +433,33 @@ const Can_AiIntPage = () => {
     return () => clearInterval(interval);
   }, []);
 
-  // ------------------- GENERATING FEEDBACK -----------------------------
+  // ------------------- SAVING GESTURE FEEDBACK DATA -----------------------------
+
+  const SavingGestureFeedback = async(data) => {
+    const serverData = {
+      mockId:mockId,
+      email:account.email,
+      data
+    }
+    try {
+      const response = await axios.post(`${backendUrl}/Can/Saving-Gesture-Feedback`, serverData)
+      if(response.status === 200){
+        setSavingGesture(true)
+        }
+    } catch (error) {
+      setModalMsg({ open: true, msg: error.response.data.message ? error.response.data.message : "Check your connection! Try later", severity: 'error' })
+    }
+  }
+
+  // ------------------- GENERATING GESTURE FEEDBACK -----------------------------
 
   const endInterview = async () => {
-    console.log("Sending all interview data:", interviewData);
+
+    const serverData = {
+      interviewData
+    }
+
+    setLoadingGesture(true)
 
     try {
       const response = await fetch(
@@ -394,15 +467,37 @@ const Can_AiIntPage = () => {
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ interviewData }),
+          body: JSON.stringify({ serverData }),
         }
       );
 
       const result = await response.json();
-      // setFeedback(result);
-      console.log("Feedback received:", result);
+      SavingGestureFeedback(result)
     } catch (error) {
-      console.error("Error sending data:", error);
+      setModalMsg({ open: true, msg: error.response.data.message ? error.response.data.message : "Check your connection! Try later", severity: 'error' })
+    } finally {
+    setLoadingGesture(false)
+    }
+  };
+
+  // ------------------- GENERATING OVERALL FEEDBACK -----------------------------
+
+  const overAllFeedback = async() => {
+    const server = {
+      mockId:mockId,
+      email:account.email,
+      userAnswer
+    }
+    setLoadingOverall(true)
+    try {
+      const response = await axios.post(`${backendUrl}/Can/Generating-Overall-Feedback`, server)
+      if(response.status === 200){
+      setOverallFeedback(true)
+      }
+    } catch (error) {
+      setModalMsg({ open: true, msg: error.response.data.message ? error.response.data.message : "Check your connection! Try later", severity: 'error' })
+    } finally {
+      setLoadingOverall(false)
     }
   };
 
@@ -418,7 +513,11 @@ const Can_AiIntPage = () => {
         <Box className="h-screen w-screen flex items-center justify-center">
           <CircularProgress />
         </Box>
-      ) : (
+      ) : loadingGesture || loadingOverall ? (
+        <Box className="h-screen w-screen flex items-center justify-center">
+        <CircularProgress />
+      </Box>
+      ) :(
         // ---------------------- MOCK SCREEN -----------------------------------------------------
         <>
           <Box className="flex flex-col w-full h-screen py-6 px-4 sm:px-8 md:px-12 gap-4 sm:gap-6 md:gap-8 md:py-10 bg-[#202124]">
@@ -454,15 +553,26 @@ const Can_AiIntPage = () => {
                   onClick={() =>
                     repeatQuestion(questions[currentQuestionIndex])
                   }
+                  className="w-full bg-white/10 backdrop-blur-md rounded-md py-2 px-4 text-black font-semibold hover:bg-white/20 transition duration-200"
                 >
-                  <span className="text-xl mr-2 normal-case tracking-wide">
+                  <span
+                    className={`text-xl mr-2 normal-case tracking-wide
+                  ${isSpeaking ? "text-green-500" : "bg-transparent"}`}
+                  >
                     Repeat
                   </span>
-                  <VolumeUpIcon className="text-3xl" />
+                  <span
+                    className={`${
+                      isSpeaking ? "text-green-500" : "bg-transparent"
+                    }`}
+                  >
+                    <VolumeUpIcon className={`text-3xl`} />
+                  </span>
                 </Button>
               </Box>
 
               {/* ---------------- Timer ------------------ */}
+
               <Box className="flex animate-pulse items-center justify-center text-red-500 text-2xl sm:text-3xl font-bold mx-4 sm:mx-6">
                 {Math.floor(timer / 60)}:
                 {(timer % 60).toString().padStart(2, "0")}
@@ -483,20 +593,28 @@ const Can_AiIntPage = () => {
                   className="absolute top-0 left-0 w-full h-full object-cover rounded-2xl"
                 />
 
-                <div className="absolute bottom-1  flex justify-center w-full">
+                <div className="absolute bottom-0  flex justify-center w-full">
                   {!isListening ? (
-                    <Button fullWidth onClick={startListening}>
-                      <span className="text-xl mr-2 normal-case tracking-wide">
+                    <Button
+                      className="w-full bg-white/10 backdrop-blur-md rounded-md py-2 px-4 text-black font-semibold hover:bg-white/20 transition duration-200"
+                      fullWidth
+                      onClick={startListening}
+                    >
+                      <span className="text-xl mr-2 normal-case tracking-wide text-green-500">
                         Answer
                       </span>
-                      <MicIcon className="text-3xl" />
+                      <MicIcon className="text-3xl text-green-500" />
                     </Button>
                   ) : (
-                    <Button fullWidth onClick={stopListening}>
-                      <span className="text-xl mr-2 normal-case tracking-wide">
+                    <Button
+                      className="w-full bg-white/10 backdrop-blur-md rounded-md py-2 px-4 text-black font-semibold hover:bg-white/20 transition duration-200"
+                      fullWidth
+                      onClick={stopListening}
+                    >
+                      <span className="text-xl mr-2 normal-case tracking-wide text-red-500">
                         Stop
                       </span>
-                      <MicOffIcon className="text-3xl" />
+                      <MicOffIcon className="text-3xl text-red-500" />
                     </Button>
                   )}
                 </div>
@@ -504,16 +622,19 @@ const Can_AiIntPage = () => {
             </Box>
 
             {/* --------------------------------- Buttons Section --------------------------- */}
+
             <Box className="flex flex-col sm:flex-row justify-center gap-4 sm:gap-6 md:gap-8">
               <Button
-                onClick={handleNextQuestion}
+                onClick={handleNextQuestionWithDisable}
+                // disabled={isSpeaking || isNextButtonDisabled}
                 className="text-white bg-gradient-to-r from-blue-500 to-blue-700 hover:from-blue-600 hover:to-blue-700 px-4 sm:px-5 py-2 sm:py-3 font-bold text-lg rounded-lg flex items-center transition-all duration-300 shadow-md hover:shadow-lg text-nowrap"
                 endIcon={<SkipNextIcon />}
               >
                 Skip
               </Button>
               <Button
-                onClick={handleNextQuestion}
+                // disabled={isSpeaking || isNextButtonDisabled}
+                onClick={handleNextQuestionWithDisable}
                 className="text-white bg-gradient-to-r from-blue-500 to-blue-700 hover:from-blue-600 hover:to-blue-700 px-4 sm:px-5 py-2 sm:py-3 font-bold text-lg rounded-lg flex items-center transition-all duration-300 shadow-md hover:shadow-lg text-nowrap"
                 endIcon={<NextIcon />}
               >
@@ -521,8 +642,6 @@ const Can_AiIntPage = () => {
               </Button>
             </Box>
           </Box>
-        </>
-      )}
 
       {/* --------------------------------- SNACKBAR --------------------------- */}
       {/* --------------------------------- SNACKBAR --------------------------- */}
@@ -542,6 +661,8 @@ const Can_AiIntPage = () => {
           <b>{modalMsg.msg}</b>
         </Alert>
       </Snackbar>
+        </>
+      )}
     </>
   );
 };

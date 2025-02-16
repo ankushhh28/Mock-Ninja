@@ -4,9 +4,9 @@ export const DataContext = createContext(null);
 
 const DataProvider = ({ children }) => {
   // http://localhost:5000
-  // https://mock-ninja-backend.onrender.com
+  // https://mock-ninja-backend1.onrender.com
 
-  const backendUrl = "https://mock-ninja-backend.onrender.com";
+  const backendUrl = "https://mock-ninja-backend1.onrender.com"
 
   // ----------------------------------------------------------------------------
 

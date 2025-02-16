@@ -119,7 +119,7 @@ const About = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-y-8 gap-x-4">
             <div ref={mem1Ref} className="shadow-lg rounded-2xl items-center p-5">
               <h3 className="text-xl font-semibold text-[#8667f2]">Anish</h3>
-              <p className="text-black">Backend Developer</p>
+              <p className="text-black">Full Stack Developer</p>
             </div>
             <div ref={mem2Ref} className="shadow-lg rounded-2xl items-center p-5">
               <h3 className="text-xl font-semibold text-[#8667f2]">Ankush</h3>
@@ -143,6 +143,7 @@ const About = () => {
                 backgroundColor: "#8667f2",
                 "&:hover": { backgroundColor: "#6a52c7" },
               }}
+              className=""
             >
               Get Started
             </Button>

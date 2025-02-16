@@ -41,7 +41,7 @@ const skillsss = [
   "Pandas", "NumPy", "Excel", "Power Query",
   "Matplotlib", "Seaborn", "Tableau", "Power BI", "Plotly", "D3.js",
   "Hypothesis Testing", "ANOVA", "Regression Analysis", "Time Series Analysis",
-  "Apache Spark", "Hadoop", "Kafka",
+  "Apache Spark", "Hadoop", "Kafka","C++",
   "Scikit-learn", "TensorFlow", "Keras", "XGBoost",
   "NoSQL",
   "Supervised Learning", "Unsupervised Learning", "Reinforcement Learning",
@@ -187,9 +187,11 @@ const Can_Card = () => {
           headers: { "Content-Type": "multipart/form-data" },
         }
       );
-        setQuestionGenerated(response.data.questions.split("\n"));
-        savingQues(response.data.questions.split("\n"))
+      const cleanedData = response.data.questions.split("\n")
+        setQuestionGenerated(cleanedData);
+        savingQues(response.data.questions)
     } catch (error) {
+      console.log(error);
       setError({
         open: true,
         msg:

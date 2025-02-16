@@ -1,9 +1,16 @@
 import React, { lazy, Suspense, useContext } from "react";
-import { BrowserRouter, Navigate, Outlet, Route, Routes } from "react-router-dom";
+import {
+  BrowserRouter,
+  Navigate,
+  Outlet,
+  Route,
+  Routes,
+} from "react-router-dom";
 
 import { Box, CircularProgress } from "@mui/material";
 import DataProvider, { DataContext } from "./Context/DataProvider";
 import CanDataProvider, { CanDataContext } from "./Context/CanDataProvider";
+import Can_Feedback from "./Candidate/Component/Can_Feedback";
 
 //-------------------------------- PUBLIC IMPORTS ONLY --------------------------
 
@@ -23,7 +30,7 @@ const CanMock = lazy(() => import("./Candidate/Can_Mock"));
 const CanATS = lazy(() => import("./Candidate/Can_ATS"));
 const CanProfile = lazy(() => import("./Candidate/Can_Profile"));
 const CanAiIntPage = lazy(() => import("./Candidate/Can_AiIntPage"));
-// const InstructionsAI = lazy(() => import("./Candidate/Component/InstructionsAI"));
+const CanFeedbackPage = lazy(() => import("./Candidate/Component/Can_Feedback"));
 
 //------------------------------- SELECTOR IMPORTS ONLY -------------------------
 
@@ -32,39 +39,71 @@ const SelectorHome = lazy(() => import("./Selector/SelectorHome"));
 // ------------------------------ CANDIDATE PROTECTED ---------------------------
 
 const CandidatePrivate = () => {
-  const { account } = useContext(DataContext)
-  return account.role === "Candidate" ? <Outlet/> : <Navigate to = {"/Login"}/>
-}
+  const { account } = useContext(DataContext);
+  return account.role === "Candidate" ? <Outlet /> : <Navigate to={"/Login"} />;
+};
 
 const CandidateAiInterviewHomePrivate = () => {
-  const { questionGenerated } = useContext(CanDataContext)
-  return questionGenerated ? <Outlet/> : <Navigate to = {"/Candidate/AI/Mock"}/>
-}
+  const { questionGenerated } = useContext(CanDataContext);
+  return questionGenerated ? (
+    <Outlet />
+  ) : (
+    <Navigate to={"/Candidate/AI/Mock"} />
+  );
+};
 
 // ------------------------------ INTERVIEWER PROTECTED --------------------------
 
 const InterviewerPrivate = () => {
-  const { account } = useContext(DataContext)
-  return account.role === "Interviewer" ? <Outlet/> : <Navigate to = {"/Login"}/>
-}
+  const { account } = useContext(DataContext);
+  return account.role === "Interviewer" ? (
+    <Outlet />
+  ) : (
+    <Navigate to={"/Login"} />
+  );
+};
 
-  const App = () => {
-
+const App = () => {
   return (
     <>
-    <DataProvider>
-      <CanDataProvider>
-      <BrowserRouter>
+      <DataProvider>
+        <CanDataProvider>
+          <BrowserRouter>
+            <Suspense
+              fallback={
+                <Box className="h-[100vh] flex justify-center items-center text-purple-400">
+                  <CircularProgress />
+                </Box>
+              }
+            >
+              <Routes>
+                {/*-------------------------- PUBLIC ROUTES (WITHOUT LOGIN) ----------------*/}
 
-        <Suspense fallback={
-        <Box className="h-[100vh] flex justify-center items-center text-purple-400">
-        <CircularProgress />
-        </Box>
-        }>
+                <Route path="/" element={<Home />} />
+                <Route path="/About" element={<About />} />
+                <Route path="/Contact-us" element={<ContactUs />} />
+                <Route path="/Register" element={<Register />} />
+                <Route path="/Login" element={<Login />} />
+                <Route path="/Forgot-password" element={<ForgotPass />} />
+                <Route path="/Interviewer-Home" element={<InterviewerHome />} />
+                <Route path="/test/Feedback" element={<Can_Feedback />} />
 
-        <Routes>
+                {/*-------------------------- STUDENT ROUTES (WITH LOGIN) ----------------*/}
 
-{/*-------------------------- PUBLIC ROUTES (WITHOUT LOGIN) ----------------*/}
+                {/* <Route element={<CandidatePrivate/>}> */}
+                <Route path="/Candidate/Home" element={<CanHome />} />
+                <Route path="/Candidate/AI/Mock" element={<CanAiMock />} />
+                <Route path="/Candidate/Mock" element={<CanMock />} />
+                <Route path="/Candidate/ATS" element={<CanATS />} />
+                <Route path="/Candidate/Profile" element={<CanProfile />} />
+                <Route element={<CandidateAiInterviewHomePrivate />}>
+                  <Route
+                    path="/Candidate/Interview/:mockID"
+                    element={<CanAiIntPage />}
+                  />
+                </Route>
+                <Route path="/Feedback/:mockId" element={<CanFeedbackPage/>}/>
+                {/* </Route> */}
 
         <Route path="/" element={<Home />} />
         <Route path="/About" element={<About />} />
@@ -73,33 +112,15 @@ const InterviewerPrivate = () => {
         <Route path="/Login" element={<Login />} />
         <Route path="/Forgot-password" element={<ForgotPass />} />
         <Route path="/Interviewer-Home" element={<InterviewerHome />} />
-        {/* <Route path="/Candidate/InstructionsAI" element={<InstructionsAI />} /> */}
 
-{/*-------------------------- STUDENT ROUTES (WITH LOGIN) ----------------*/}
-
-      <Route element={<CandidatePrivate/>}>
-        <Route path="/Candidate/Home" element={<CanHome />} />
-        <Route path="/Candidate/AI/Mock" element={<CanAiMock />} />
-        <Route path="/Candidate/Mock" element={<CanMock />} />
-        <Route path="/Candidate/ATS" element={<CanATS />} />
-        <Route path="/Candidate/Profile" element={<CanProfile />} />
-        <Route element={<CandidateAiInterviewHomePrivate/>}>
-          <Route path="/Candidate/Interview/:mockID" element={<CanAiIntPage />} />
-        </Route>
-      </Route>
-
-{/*-------------------------- SELECTOR ROUTES (WITH LOGIN) ----------------*/}
-      
-      <Route element={<InterviewerPrivate/>}>
-        <Route path="/Interviewer/Home" element={<SelectorHome />} />
-      </Route>
-
-
-        </Routes>
-        </Suspense>
-      </BrowserRouter>
-      </CanDataProvider>
-    </DataProvider>
+                <Route element={<InterviewerPrivate />}>
+                  <Route path="/Interviewer/Home" element={<SelectorHome />} />
+                </Route>
+              </Routes>
+            </Suspense>
+          </BrowserRouter>
+        </CanDataProvider>
+      </DataProvider>
     </>
   );
 };
