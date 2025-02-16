@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Layout from "../Layout/Layout";
 
 import { TextField, Button } from "@mui/material";
@@ -10,6 +10,13 @@ import { MdLocationPin } from "react-icons/md";
 import map from "../assets/images/map.png";
 
 const ContactUs = () => {
+  // --------------------------------------------------- USE STATES -------------------------------------------------
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    subject: "",
+    message: "",
+  });
 
   const contact = [
     {
@@ -34,7 +41,21 @@ const ContactUs = () => {
     },
   ];
 
-// --------------------------------------------------------------------------------------------------------------------------
+  // ------------------------------------------------------------------------------------------------------------------------
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const handleFormSubmit = (event) => {
+    event.preventDefault();
+    console.log(formData);
+    formData.name = "";
+    formData.email = "";
+    formData.subject = "";
+    formData.message = "";
+  };
+
+  // --------------------------------------------------------------------------------------------------------------------------
 
   return (
     <Layout>
@@ -96,18 +117,23 @@ const ContactUs = () => {
               Fill out the form below and we will get back to you as soon as
               possible.
             </p>
-            <form className="flex flex-col space-y-8">
-              <TextField label="Name" variant="outlined" fullWidth />
-              <TextField label="Email" variant="outlined" fullWidth />
-              <TextField label="Subject" variant="outlined" fullWidth />
+            <form
+              className="flex flex-col space-y-8"
+              onSubmit={handleFormSubmit(event)}
+            >
+              <TextField label="Name" variant="outlined" fullWidth  onChange={handleChange}/>
+              <TextField label="Email" variant="outlined" fullWidth onChange={handleChange} />
+              <TextField label="Subject" variant="outlined" fullWidth  onChange={handleChange}/>
               <TextField
                 label="Message"
                 variant="outlined"
                 multiline
                 rows={4}
                 fullWidth
+                onChange={handleChange}
               />
               <Button
+                type="submit"
                 variant="contained"
                 className="normal-case text-white bg-gradient-to-r from-purple-600 to-[#8667f2] hover:from-purple-700 hover:to-[#764de8]  py-2 font-bold text-base sm:text-lg rounded-xl  transition-all duration-300 shadow-md hover:shadow-lg text-nowrap"
               >
