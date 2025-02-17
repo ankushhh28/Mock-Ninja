@@ -8,12 +8,8 @@ const GEMINI_API_URL =
 
 // ----------- SAVING FEEDBACKs TO CANDIDATE PROFILE --------------
 
-export const SavingOverallFeedback = async (data, mockId, email) => {
+export const SavingOverallFeedback = async (data, mockId) => {
   try {
-    const MOCK = await FeedbackSchema.findOne({mockId})
-    if(MOCK){
-      return res.status(400).json({message:"Overall Feedback already Generated"})
-    }
     const newData = new FeedbackSchema({
       mockId,
       QuestionAnswerFeedback: data,
@@ -161,7 +157,7 @@ const GeneratingFeedback = async (questionAnswer) => {
   const prompt = `
     Based on the following interview data and generate constructive feedback for each interview question, as well as overall feedback on the candidate's performance.
 
-    If interview data is not provided clearly, indicate that the candidate did not answer the question then provide topics that the candidate should cover in future interviews **IN RULE 4 FORMAT ONLY**.
+    If interview data is not provided clearly, indicate that the candidate did not answer the question then provide topics that the candidate should cover in future interviews **IN RUE 4 FORMAT ONLY**.
 
     Interview Data:
     Asked Questions with candidate answer: ${JSON.stringify(
@@ -229,10 +225,9 @@ export const OverallFeedback = async (req, res) => {
 
   try {
     const feedback = await GeneratingFeedback(userAnswer);
-    await Promise.all([
-      SavingOverallFeedback(feedback, mockId, email),
-      SavingQuestionAsnwer(userAnswer, mockId, email),
-    ]);
+    const data1 = await  SavingOverallFeedback(feedback, mockId, email)
+    const data2 = await SavingQuestionAsnwer(userAnswer, mockId, email)
+
     return res.status(200).json({ message: "Successfull" });
   } catch (error) {
     return res
@@ -249,10 +244,6 @@ export const savingGestureFeedback = async (req, res) => {
   const savedData = JSON.stringify(data);
 
   try {
-    const MOCK = await FeedbackSchema.findOne({mockId})
-    if(MOCK){
-      return res.status(400).json({message:"Something went wrong! Try again later"})
-    }
 
     const newData = new FeedbackSchema({
       mockId,

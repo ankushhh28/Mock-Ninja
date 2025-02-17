@@ -71,6 +71,11 @@ const Can_Feedback = () => {
     fetchingFeedback();
   }, [mockId, backendUrl]);
 
+  useEffect(() => {
+    sessionStorage.removeItem("SavingGesture");
+    sessionStorage.removeItem("OverallFeedbacks");
+  },[])
+
 // ------------ FOR SHOWING GESTURE DATA --------------
 
   const FinalGestureFeedback = GestureFeedback && GestureFeedback.GestureFeedback

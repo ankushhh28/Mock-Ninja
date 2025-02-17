@@ -48,11 +48,12 @@ const Can_AiIntPage = () => {
   const [loadingOverall, setLoadingOverall] = useState(false)
   const [loadingGesture, setLoadingGesture] = useState(false)
   const [nextClicked, setNextClicked] = useState(true)
+  const [resetTriggered, setResetTriggered] = useState(false);
 
 // -----------------------------------------------------------------------------
 
-const savedSavingGesture = JSON.parse(sessionStorage.getItem("SavingGesture")) ?? false;
-const savedOverallFeedbacks = JSON.parse(sessionStorage.getItem("OverallFeedbacks")) ?? false;
+const savedSavingGesture = JSON.parse(sessionStorage.getItem("SavingGesture")) || false;
+const savedOverallFeedbacks = JSON.parse(sessionStorage.getItem("OverallFeedbacks")) || false;
 
 const [SavingGesture, setSavingGesture] = useState(savedSavingGesture);
 const [OverallFeedbacks, setOverallFeedback] = useState(savedOverallFeedbacks);
@@ -178,20 +179,43 @@ useEffect(() => {
   };
 
   useEffect(() => {
+    if(currentQuestionIndex === 0){
+      setTimer(120)
+    }
+  },[])
+
+  useEffect(() => {
     if (currentQuestionIndex > 11) {
-      endInterview();
-      overAllFeedback();
       sessionStorage.removeItem("currentQuestionIndex");
       sessionStorage.removeItem("timer");
       sessionStorage.removeItem("userAnswer");
       sessionStorage.removeItem("SavingGesture");
       sessionStorage.removeItem("OverallFeedbacks");
+  
+      endInterview();
+      overAllFeedback();
+  
+      setResetTriggered(true);
     }
   }, [currentQuestionIndex, nextClicked]);
 
   useEffect(() => {
+    if (resetTriggered) {
+      setCurrentQuestionIndex(0);
+      setTimer(120);
+      setUserAnswer([]);
+      setSavingGesture(false);
+      setOverallFeedback(false);
+  
+      setResetTriggered(false);
+    }
+  }, [resetTriggered]);
+  
+  useEffect(() => {
     if(OverallFeedbacks && SavingGesture){
-      navigate(`/Feedback/${mockId}`)
+      setTimeout(() => {
+        navigate(`/Feedback/${mockId}`)
+      },[])
     }
   },[OverallFeedbacks, SavingGesture])
 
@@ -462,6 +486,7 @@ useEffect(() => {
         setSavingGesture(true)
         }
     } catch (error) {
+      setSavingGesture(false)
       setModalMsg({ open: true, msg: error.response.data.message ? error.response.data.message : "Check your connection! Try later", severity: 'error' })
     }
   }
@@ -475,23 +500,24 @@ useEffect(() => {
     }
 
     setLoadingGesture(true)
-
-    try {
-      const response = await fetch(
-        `${backendUrl}/Can/Generating-Gesture-Feedback`,
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ serverData }),
-        }
-      );
-
-      const result = await response.json();
-      SavingGestureFeedback(result)
-    } catch (error) {
-      setModalMsg({ open: true, msg: error.response.data.message ? error.response.data.message : "Check your connection! Try later", severity: 'error' })
-    } finally {
-    setLoadingGesture(false)
+    if(!SavingGesture){
+      try {
+        const response = await fetch(
+          `${backendUrl}/Can/Generating-Gesture-Feedback`,
+          {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ serverData }),
+          }
+        );
+  
+        const result = await response.json();
+        SavingGestureFeedback(result)
+      } catch (error) {
+        setModalMsg({ open: true, msg: error.response.data.message ? error.response.data.message : "Check your connection! Try later", severity: 'error' })
+      } finally {
+      setLoadingGesture(false)
+      }
     }
   };
 
@@ -504,16 +530,19 @@ useEffect(() => {
       userAnswer
     }
     setLoadingOverall(true)
+    if(!OverallFeedbacks){
       try {
         const response = await axios.post(`${backendUrl}/Can/Generating-Overall-Feedback`, server)
         if(response.status === 200){
         setOverallFeedback(true)
         }
       } catch (error) {
+        setOverallFeedback(false)
         setModalMsg({ open: true, msg: error.response.data.message ? error.response.data.message : "Check your connection! Try later", severity: 'error' })
       } finally {
         setLoadingOverall(false)
       }
+    }
   };
 
   return (
@@ -670,14 +699,14 @@ useEffect(() => {
             <Box className="flex flex-col sm:flex-row justify-center gap-4 sm:gap-6 md:gap-8">
               <Button
                 onClick={handleNextQuestionWithDisable}
-                disabled={isSpeaking || isNextButtonDisabled}
+                // disabled={isSpeaking || isNextButtonDisabled}
                 className="text-white bg-gradient-to-r from-blue-500 to-blue-700 hover:from-blue-600 hover:to-blue-700 px-4 sm:px-5 py-2 sm:py-3 font-bold text-lg rounded-lg flex items-center transition-all duration-300 shadow-md hover:shadow-lg text-nowrap"
                 endIcon={<SkipNextIcon />}
               >
                 Skip
               </Button>
               <Button
-                disabled={isSpeaking || isNextButtonDisabled}
+                // disabled={isSpeaking || isNextButtonDisabled}
                 onClick={() => {handleNextQuestionWithDisable(); setNextClicked((data) => !data)}}
                 className="text-white bg-gradient-to-r from-blue-500 to-blue-700 hover:from-blue-600 hover:to-blue-700 px-4 sm:px-5 py-2 sm:py-3 font-bold text-lg rounded-lg flex items-center transition-all duration-300 shadow-md hover:shadow-lg text-nowrap"
                 endIcon={<NextIcon />}
