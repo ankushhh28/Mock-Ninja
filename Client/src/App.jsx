@@ -31,6 +31,7 @@ const CanATS = lazy(() => import("./Candidate/Can_ATS"));
 const CanProfile = lazy(() => import("./Candidate/Can_Profile"));
 const CanAiIntPage = lazy(() => import("./Candidate/Can_AiIntPage"));
 const CanFeedbackPage = lazy(() => import("./Candidate/Component/Can_Feedback"));
+const CanRating = lazy(() => import("./Candidate/Component/Can_Rating"));
 
 //------------------------------- SELECTOR IMPORTS ONLY -------------------------
 
@@ -96,6 +97,7 @@ const App = () => {
                 <Route path="/Candidate/Mock" element={<CanMock />} />
                 <Route path="/Candidate/ATS" element={<CanATS />} />
                 <Route path="/Candidate/Profile" element={<CanProfile />} />
+                <Route path="/Candidate/Rating" element={<CanRating />} />
                 <Route element={<CandidateAiInterviewHomePrivate />}>
                   <Route
                     path="/Candidate/Interview/:mockID"
