@@ -30,7 +30,7 @@ const InstructionsAI = ({ setNext }) => {
   ];
 
   return (
-    <div className="h-auto  flex flex-col">
+    <div className="h-auto  flex flex-col ">
       {/* Header */}
       <header className="bg-purple-100 py-5 shadow-md fixed top-0 w-full z-50">
         <Typography variant="h4" className="text-purple-700 font-bold text-center">
@@ -40,7 +40,7 @@ const InstructionsAI = ({ setNext }) => {
 
 
       {/* Content */}
-      <main className="flex-1 mt-20 px-4 sm:px-8 md:px-16 lg:px-32 xl:px-48 py-4 overflow-y-auto ">
+      <main className="flex-1 mt-20 px-4 sm:px-8 md:px-16 lg:px-32 xl:px-48 pt-6 pb-16">
 
       <Typography className="text-center text-red-600 font-semibold animate-pulse mb-4">
         Read Instructions Properly
@@ -55,7 +55,7 @@ const InstructionsAI = ({ setNext }) => {
             <Typography variant="h5" className="font-bold text-gray-700 ">
               Best of Luck!
             </Typography>
-            <Typography className="text-gray-700 tracking-wide">
+            <Typography className="text-gray-700  tracking-wide">
               Stay confident, trust your preparation, and give your best.
             </Typography>
           </div>

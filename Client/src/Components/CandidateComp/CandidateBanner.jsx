@@ -118,32 +118,35 @@ const CandidateBanner = () => {
       <Dialog
         open={beforeLogin && account.name === ""}
         onClose={() => setBeforeLogin(false)}
-        className="backdrop-blur-[1px] flex items-center justify-center"
+        className="backdrop-blur-[1px] flex items-center justify-center "
+        PaperProps={{
+          sx: { borderRadius: 4 }, 
+        }}
       >
-        <div className="bg-gradient-to-br from-[#9870e9] to-[#8E2DE2] shadow-2xl max-w-lg w-full p-8 text-center text-white">
+        <div className="bg-gradient-to-br from-[#9870e9] to-[#8E2DE2] shadow-2xl max-w-lg w-full px-2 py-4 sm:py-8 text-center text-white">
           <IconButton
             className="absolute top-4 right-4 text-white hover:text-gray-200"
             onClick={() => setBeforeLogin(false)}
           >
-            <FaTimes className="text-2xl " />
+            <FaTimes className="text-2xl sm:text-3xl " />
           </IconButton>
-          <DialogTitle className="text-3xl font-extrabold flex   items-center justify-center gap-4">
-            <FaUserLock className="text-3xl" /> Access Required
+          <DialogTitle className="text-2xl sm:text-3xl font-extrabold flex flex-col   items-center justify-center gap-4">
+            <FaUserLock className="text-2xl sm:text-3xl" /> Access Required
           </DialogTitle>
 
-          <DialogContent className="mt-4 px-6 text-lg sm:text-xl leading-relaxed">
+          <DialogContent className="mt-2 text-lg sm:text-xl leading-relaxed">
             Unlock AI-powered interviews, resume analysis, and expert mock
             sessions by signing in or creating an account.
           </DialogContent>
 
-          <DialogActions className="flex flex-col sm:flex-row justify-center gap-6 mt-6 px-4">
+          <DialogActions className="flex items-center justify-center gap-2 sm:gap-4  ">
             <NavLink to={"/Login"}>
-              <button className="bg-white text-[#4A00E0] text-lg sm:text-xl px-6 py-3 rounded-2xl font-semibold hover:bg-gray-200 transition-all shadow-lg text-nowrap flex items-center gap-2 justify-center w-full sm:w-auto">
-                <FaSignInAlt className="text-xl sm:text-2xl" /> Sign In
+              <button className="bg-white text-[#4A00E0] text-lg sm:text-xl px-6 py-3 rounded-xl font-semibold hover:bg-gray-200 transition-all shadow-lg text-nowrap flex items-center gap-2 justify-center w-full sm:w-auto">
+                <FaSignInAlt className="text-xl sm:text-2xl" /> Sign in
               </button>
             </NavLink>
             <NavLink to={"/Register"}>
-              <button className="bg-white text-[#8E2DE2] text-lg sm:text-xl px-6 py-3 rounded-2xl font-semibold hover:bg-gray-200 transition-all shadow-lg flex items-center gap-2 justify-center w-full sm:w-auto">
+              <button className="bg-white text-[#8E2DE2] text-lg sm:text-xl px-6 py-3 rounded-xl font-semibold hover:bg-gray-200 transition-all shadow-lg flex items-center gap-2 justify-center w-full sm:w-auto">
                 <FaUserPlus className="text-xl" /> Register
               </button>
             </NavLink>

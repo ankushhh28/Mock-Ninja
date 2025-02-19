@@ -46,7 +46,7 @@ const CountdownAnimation = ({setCount}) => {
             position: "absolute",
             textShadow: "0 0 20px #ffffff",
           }}
-          className="text-[10rem] sm:text-[12rem]"
+          className="text-[8rem] sm:text-[10rem] "
         >
           {count}
         </div>
