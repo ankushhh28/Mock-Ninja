@@ -51,8 +51,7 @@ const Can_FbHistory = () => {
       <h1 className="px-16 pt-6 text-2xl md:text-4xl font-bold text-primary w-full bg-[#f5f3ff] text-center mt-2">
         Previous Interview's History
       </h1>
-      <div className="flex flex-col w-full max-w-[1300px] mt-4 md:m-2">
-
+      <div className="flex flex-col w-full gap-2 px-6 sm:px-8 md:px-12  mt-4 md:m-2">
         {/* --------------- PREVIOUS HISTORY MAPPING ---------------*/}
 
         {loading ? (

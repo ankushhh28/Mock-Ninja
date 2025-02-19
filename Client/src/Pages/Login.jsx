@@ -77,6 +77,12 @@ const Login = () => {
     setFormData({ ...formdata, [name]: value });
   };
 
+  const handleKeyDown = (e) => {
+    if (e.key === "Enter") {
+      handleSubmit(e);
+    }
+  };
+
   // ------------------------------------------------------------
 
   useEffect(() => {
@@ -92,13 +98,13 @@ const Login = () => {
 
     if (!formdata.email) {
       setLoading(false);
-      setErrorMsg("Email is required")
+      setErrorMsg("Email is required");
       return;
     }
 
     if (!formdata.password) {
       setLoading(false);
-      setErrorMsg("Password is required")
+      setErrorMsg("Password is required");
       return;
     }
 
@@ -137,10 +143,7 @@ const Login = () => {
 
         <Box className="absolute top-2 left-0">
           <NavLink to={"/"}>
-            <Button
-              variant="filled"
-              className="font-semibold  text-black "
-            >
+            <Button variant="filled" className="font-semibold  text-black ">
               <ArrowBackIcon className="text-gray-800 text-2xl" />
             </Button>
           </NavLink>
@@ -222,6 +225,7 @@ const Login = () => {
                 <TextField
                   value={formdata.password}
                   onChange={handleChange}
+                  onKeyDown={handleKeyDown}
                   type={showPassword ? "text" : "password"}
                   fullWidth
                   label="Password"

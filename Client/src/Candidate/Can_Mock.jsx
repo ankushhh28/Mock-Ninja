@@ -8,7 +8,7 @@ const CanMock = () => {
 
     <Can_Layout>
       <ProfileComplete/>
-    <h1 className='text-5xl text-center h-[40vh]'>REVEALED SOON! WORK IS IN PROGRESS...</h1>
+    <h1 className='text-5xl text-center h-[40vh]'>COMING SOON! WORK IN PROGRESS...</h1>
     </Can_Layout>
       
     </>

@@ -2,7 +2,14 @@ import React, { useContext, useEffect, useRef, useState } from "react";
 import { data, useNavigate, useNavigation, useParams } from "react-router-dom";
 import { DataContext } from "../Context/DataProvider";
 import axios from "axios";
-import { Alert, Box, CircularProgress, Snackbar, Button, Typography } from "@mui/material";
+import {
+  Alert,
+  Box,
+  CircularProgress,
+  Snackbar,
+  Button,
+  Typography,
+} from "@mui/material";
 
 import Webcam from "react-webcam";
 import * as faceapi from "face-api.js";
@@ -12,6 +19,7 @@ import SkipNextIcon from "@mui/icons-material/SkipNext";
 import VolumeUpIcon from "@mui/icons-material/VolumeUp";
 import MicIcon from "@mui/icons-material/Mic";
 import MicOffIcon from "@mui/icons-material/MicOff";
+import WarningIcon from "@mui/icons-material/Warning";
 
 import { IoIosWarning } from "react-icons/io";
 
@@ -26,7 +34,6 @@ const Can_AiIntPage = () => {
 
   const params = useParams();
   const mockId = params.mockID;
-
 
   const recognitionRef = useRef(null);
 
@@ -46,29 +53,37 @@ const Can_AiIntPage = () => {
   const [isListening, setIsListening] = useState(false);
   const [isSpeaking, setIsSpeaking] = useState(false);
   const [isNextButtonDisabled, setIsNextButtonDisabled] = useState(false);
-  const [loadingOverall, setLoadingOverall] = useState(false)
-  const [loadingGesture, setLoadingGesture] = useState(false)
-  const [nextClicked, setNextClicked] = useState(true)
+  const [loadingOverall, setLoadingOverall] = useState(false);
+  const [loadingGesture, setLoadingGesture] = useState(false);
+  const [nextClicked, setNextClicked] = useState(true);
   const [resetTriggered, setResetTriggered] = useState(false);
 
-// -----------------------------------------------------------------------------
+  // -----------------------------------------------------------------------------
 
-const savedSavingGesture = JSON.parse(sessionStorage.getItem("SavingGesture")) || false;
-const savedOverallFeedbacks = JSON.parse(sessionStorage.getItem("OverallFeedbacks")) || false;
+  const savedSavingGesture =
+    JSON.parse(sessionStorage.getItem("SavingGesture")) || false;
+  const savedOverallFeedbacks =
+    JSON.parse(sessionStorage.getItem("OverallFeedbacks")) || false;
 
-const [SavingGesture, setSavingGesture] = useState(savedSavingGesture);
-const [OverallFeedbacks, setOverallFeedback] = useState(savedOverallFeedbacks);
+  const [SavingGesture, setSavingGesture] = useState(savedSavingGesture);
+  const [OverallFeedbacks, setOverallFeedback] = useState(
+    savedOverallFeedbacks
+  );
 
-useEffect(() => {
-  sessionStorage.setItem("SavingGesture", JSON.stringify(SavingGesture));
-  sessionStorage.setItem("OverallFeedbacks", JSON.stringify(OverallFeedbacks));
-}, [SavingGesture, OverallFeedbacks]);
+  useEffect(() => {
+    sessionStorage.setItem("SavingGesture", JSON.stringify(SavingGesture));
+    sessionStorage.setItem(
+      "OverallFeedbacks",
+      JSON.stringify(OverallFeedbacks)
+    );
+  }, [SavingGesture, OverallFeedbacks]);
 
-// ---CURRENT_QUESTION_INDEX -- SECONDS COUNT INDEX  (SESSION STORAGE) --------
+  // ---CURRENT_QUESTION_INDEX -- SECONDS COUNT INDEX  (SESSION STORAGE) --------
 
   const savedQuestions =
     parseInt(sessionStorage.getItem("currentQuestionIndex")) || 0;
-  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(savedQuestions);
+  const [currentQuestionIndex, setCurrentQuestionIndex] =
+    useState(savedQuestions);
 
   const savedCount = parseInt(sessionStorage.getItem("timer") || 120);
   const [timer, setTimer] = useState(savedCount);
@@ -111,7 +126,7 @@ useEffect(() => {
 
   useEffect(() => {
     const fetchingQuestions = async () => {
-      setLoading(true)
+      setLoading(true);
       try {
         const response = await axios.get(
           `${backendUrl}/Can/fetching-Generate-Questions`,
@@ -130,11 +145,11 @@ useEffect(() => {
           const questionsArray = Array.isArray(response.data.questions)
             ? response.data.questions
             : response.data.questions
-            .replace(/[\[\]{}":.\?\\\n]|question|\b\d+\b|\bn\b/g, "")
-            // .split(/,(?=[A-Z])/)
-            .split(/,\s*(?=[A-Z])/)
-            .map((item) => item.trim())
-            .filter((item) => item !== "");
+                .replace(/[\[\]{}":.\?\\\n]|question|\b\d+\b|\bn\b/g, "")
+                // .split(/,(?=[A-Z])/)
+                .split(/,\s*(?=[A-Z])/)
+                .map((item) => item.trim())
+                .filter((item) => item !== "");
           setQuestions(questionsArray);
         }
       } catch (error) {
@@ -180,10 +195,10 @@ useEffect(() => {
   };
 
   useEffect(() => {
-    if(currentQuestionIndex === 0){
-      setTimer(120)
+    if (currentQuestionIndex === 0) {
+      setTimer(120);
     }
-  },[])
+  }, []);
 
   useEffect(() => {
     if (currentQuestionIndex > 11) {
@@ -192,10 +207,10 @@ useEffect(() => {
       sessionStorage.removeItem("userAnswer");
       sessionStorage.removeItem("SavingGesture");
       sessionStorage.removeItem("OverallFeedbacks");
-  
+
       endInterview();
       overAllFeedback();
-  
+
       setResetTriggered(true);
     }
   }, [currentQuestionIndex, nextClicked]);
@@ -207,18 +222,18 @@ useEffect(() => {
       setUserAnswer([]);
       setSavingGesture(false);
       setOverallFeedback(false);
-  
+
       setResetTriggered(false);
     }
   }, [resetTriggered]);
-  
+
   useEffect(() => {
-    if(OverallFeedbacks && SavingGesture){
+    if (OverallFeedbacks && SavingGesture) {
       setTimeout(() => {
-        navigate(`/Feedback/${mockId}`)
-      },[])
+        navigate(`/Feedback/${mockId}`);
+      }, []);
     }
-  },[OverallFeedbacks, SavingGesture])
+  }, [OverallFeedbacks, SavingGesture]);
 
   // ------------- Showing Questions (Timer Logic) ----------------
 
@@ -475,33 +490,41 @@ useEffect(() => {
 
   // ------------------- SAVING GESTURE FEEDBACK DATA -----------------------------
 
-  const SavingGestureFeedback = async(data) => {
+  const SavingGestureFeedback = async (data) => {
     const serverData = {
-      mockId:mockId,
-      email:account.email,
-      data
-    }
+      mockId: mockId,
+      email: account.email,
+      data,
+    };
     try {
-      const response = await axios.post(`${backendUrl}/Can/Saving-Gesture-Feedback`, serverData)
-      if(response.status === 200){
-        setSavingGesture(true)
-        }
+      const response = await axios.post(
+        `${backendUrl}/Can/Saving-Gesture-Feedback`,
+        serverData
+      );
+      if (response.status === 200) {
+        setSavingGesture(true);
+      }
     } catch (error) {
-      setSavingGesture(false)
-      setModalMsg({ open: true, msg: error.response.data.message ? error.response.data.message : "Check your connection! Try later", severity: 'error' })
+      setSavingGesture(false);
+      setModalMsg({
+        open: true,
+        msg: error.response.data.message
+          ? error.response.data.message
+          : "Check your connection! Try later",
+        severity: "error",
+      });
     }
-  }
+  };
 
   // ------------------- GENERATING GESTURE FEEDBACK -----------------------------
 
   const endInterview = async () => {
-
     const serverData = {
-      interviewData
-    }
+      interviewData,
+    };
 
-    setLoadingGesture(true)
-    if(!SavingGesture){
+    setLoadingGesture(true);
+    if (!SavingGesture) {
       try {
         const response = await fetch(
           `${backendUrl}/Can/Generating-Gesture-Feedback`,
@@ -511,37 +534,52 @@ useEffect(() => {
             body: JSON.stringify({ serverData }),
           }
         );
-  
+
         const result = await response.json();
-        SavingGestureFeedback(result)
+        SavingGestureFeedback(result);
       } catch (error) {
-        setModalMsg({ open: true, msg: error.response.data.message ? error.response.data.message : "Check your connection! Try later", severity: 'error' })
+        setModalMsg({
+          open: true,
+          msg: error.response.data.message
+            ? error.response.data.message
+            : "Check your connection! Try later",
+          severity: "error",
+        });
       } finally {
-      setLoadingGesture(false)
+        setLoadingGesture(false);
       }
     }
   };
 
   // ------------------- GENERATING OVERALL FEEDBACK -----------------------------
 
-  const overAllFeedback = async() => {
+  const overAllFeedback = async () => {
     const server = {
-      mockId:mockId,
-      email:account.email,
-      userAnswer
-    }
-    setLoadingOverall(true)
-    if(!OverallFeedbacks){
+      mockId: mockId,
+      email: account.email,
+      userAnswer,
+    };
+    setLoadingOverall(true);
+    if (!OverallFeedbacks) {
       try {
-        const response = await axios.post(`${backendUrl}/Can/Generating-Overall-Feedback`, server)
-        if(response.status === 200){
-        setOverallFeedback(true)
+        const response = await axios.post(
+          `${backendUrl}/Can/Generating-Overall-Feedback`,
+          server
+        );
+        if (response.status === 200) {
+          setOverallFeedback(true);
         }
       } catch (error) {
-        setOverallFeedback(false)
-        setModalMsg({ open: true, msg: error.response.data.message ? error.response.data.message : "Check your connection! Try later", severity: 'error' })
+        setOverallFeedback(false);
+        setModalMsg({
+          open: true,
+          msg: error.response.data.message
+            ? error.response.data.message
+            : "Check your connection! Try later",
+          severity: "error",
+        });
       } finally {
-        setLoadingOverall(false)
+        setLoadingOverall(false);
       }
     }
   };
@@ -559,9 +597,9 @@ useEffect(() => {
           <Typography className="text-xl sm:text-3xl font-semibold text-primary">
             Preparing Your Interview
           </Typography>
-            <Typography className="text-xl sm:text-3xl font-semibold text-primary mt-1">
+          <Typography className="text-xl sm:text-3xl font-semibold text-primary mt-1">
             Please Wait!
-            </Typography>
+          </Typography>
           <CircularProgress size={30} className="text-primary mt-4" />
         </Box>
       ) : loadingGesture || loadingOverall ? (
@@ -569,45 +607,57 @@ useEffect(() => {
           <Typography className="text-xl sm:text-3xl font-semibold text-primary">
             Generating Your Feedback
           </Typography>
-            <Typography className="text-xl sm:text-3xl font-semibold text-primary mt-1">
+          <Typography className="text-xl sm:text-3xl font-semibold text-primary mt-1">
             Please Wait!
-            </Typography>
+          </Typography>
           <CircularProgress size={30} className="text-primary mt-4" />
         </Box>
-      ) :(
+      ) : (
         // ---------------------- MOCK SCREEN -----------------------------------------------------
         <>
           <Box className="flex flex-col w-full h-screen py-6 px-4 sm:px-8 md:px-12 gap-4 sm:gap-6 md:gap-8 md:py-10 bg-[#202124]">
             {/* ---------------- Question Section --------------------------- */}
 
             <Box className="flex flex-col items-center text-white gap-4">
-              {currentQuestionIndex > 11 && (OverallFeedbacks === false || SavingGesture === false) ? (
+              {currentQuestionIndex > 11 &&
+              (OverallFeedbacks === false || SavingGesture === false) ? (
                 <>
-                <Box className="flex bg-yellow-200 p-3 rounded-lg">
-                  <IoIosWarning className="text-yellow-700 hidden sm:block sm:text-2xl mt-[-8px] sm:mt-0 "/>
-                  <Typography className="text-yellow-700 text-justify">
-                  <span className="font-semibold">Warning:</span> If you close this tab or press the back button, your interview feedback won’t be generated.
+                  <Box className="flex bg-yellow-200 p-3 rounded-lg">
+                    <IoIosWarning className="text-yellow-700 hidden sm:block sm:text-2xl mt-[-8px] sm:mt-0 " />
+                    <Typography className="text-yellow-700 text-justify">
+                      <span className="font-semibold">Warning:</span> If you
+                      close this tab or press the back button, your interview
+                      feedback won’t be generated.
+                    </Typography>
+                  </Box>
+                  <Typography className="text-xl sm:text-2xl md:text-3xl font-semibold text-red-600">
+                    Server is Busy! Stay on Screen, and click on next button
+                    after 20-30 seconds
                   </Typography>
-                </Box>
-                <Typography className="text-xl sm:text-2xl md:text-3xl font-semibold text-red-600">
-                  Server is Busy! Stay on Screen, and click on next button after 20-30 seconds
-                </Typography>
                 </>
               ) : (
                 <>
-                <h2 className="text-sm sm:text-base md:text-2xl font-semibold tracking-wide text-gray-300">
-                QUESTION
-              </h2>
-
-              <p
-                id="question"
-                className="text-lg sm:text-xl md:text-3xl font-bold tracking-wide text-center"
-              >
-                {questions[currentQuestionIndex]}
-              </p>
+                  <h2 className="text-sm sm:text-base md:text-2xl font-semibold tracking-wide text-gray-300">
+                    QUESTION
+                  </h2>
+                  {/* ------------------------------- Mike Open Warning ----------------------------------------- */}
+                  {/* {!isSpeaking && (
+                    <p className="text-lg my-2 text-yellow-300 tracking-wide animate-pulse">
+                      <span className="mr-2">
+                        <WarningIcon />
+                      </span>
+                      Before answering the question, please click the 'Answer' button
+                    </p>
+                  )} */}
+                  {/* --------------------------------------------------------------------------------------- */}
+                  <p
+                    id="question"
+                    className="text-lg sm:text-xl md:text-3xl font-bold tracking-wide text-center"
+                  >
+                    {questions[currentQuestionIndex]}
+                  </p>
                 </>
               )}
-              
             </Box>
 
             {/* ------------------------- Video Frames Section --------------------- */}
@@ -708,7 +758,10 @@ useEffect(() => {
               </Button>
               <Button
                 disabled={isSpeaking || isNextButtonDisabled}
-                onClick={() => {handleNextQuestionWithDisable(); setNextClicked((data) => !data)}}
+                onClick={() => {
+                  handleNextQuestionWithDisable();
+                  setNextClicked((data) => !data);
+                }}
                 className="text-white bg-gradient-to-r from-blue-500 to-blue-700 hover:from-blue-600 hover:to-blue-700 px-4 sm:px-5 py-2 sm:py-3 font-bold text-lg rounded-lg flex items-center transition-all duration-300 shadow-md hover:shadow-lg text-nowrap"
                 endIcon={<NextIcon />}
               >
@@ -717,24 +770,24 @@ useEffect(() => {
             </Box>
           </Box>
 
-      {/* --------------------------------- SNACKBAR --------------------------- */}
-      {/* --------------------------------- SNACKBAR --------------------------- */}
-      {/* --------------------------------- SNACKBAR --------------------------- */}
+          {/* --------------------------------- SNACKBAR --------------------------- */}
+          {/* --------------------------------- SNACKBAR --------------------------- */}
+          {/* --------------------------------- SNACKBAR --------------------------- */}
 
-      <Snackbar
-        open={modalMsg.open}
-        autoHideDuration={3000}
-        onClose={() => setModalMsg({ ...modalMsg, open: false })}
-        anchorOrigin={{ vertical: "top", horizontal: "center" }}
-      >
-        <Alert
-          onClose={() => setModalMsg({ ...modalMsg, open: false })}
-          severity={modalMsg.severity}
-          sx={{ width: "100%" }}
-        >
-          <b>{modalMsg.msg}</b>
-        </Alert>
-      </Snackbar>
+          <Snackbar
+            open={modalMsg.open}
+            autoHideDuration={3000}
+            onClose={() => setModalMsg({ ...modalMsg, open: false })}
+            anchorOrigin={{ vertical: "top", horizontal: "center" }}
+          >
+            <Alert
+              onClose={() => setModalMsg({ ...modalMsg, open: false })}
+              severity={modalMsg.severity}
+              sx={{ width: "100%" }}
+            >
+              <b>{modalMsg.msg}</b>
+            </Alert>
+          </Snackbar>
         </>
       )}
     </>
