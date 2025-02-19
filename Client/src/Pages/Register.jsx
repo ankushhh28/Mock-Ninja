@@ -457,7 +457,7 @@ className="bg-gradient-to-br from-purple-700 to-purple-200 flex h-screen w-scree
           type="text"
           value={expertData.expertName}
           onChange={handleExpertChange}
-          label="Interviewer Name"
+          label="Full Name"
           fullWidth
           required
           placeholder="Enter your Name"

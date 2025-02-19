@@ -30,7 +30,7 @@ const Footer = () => {
       <Box className="flex flex-col sm:flex-row justify-between  py-6 sm:py-6 px-6 sm:px-20">
         {/* Logo */}
         <Box>
-          <img src={Logo} alt="Logo" className="h-60 sm:h-80 " />
+          <img src={Logo} alt="Logo" className="h-60 sm:h-60 " />
         </Box>
 
         {/* Links */}
@@ -51,9 +51,6 @@ const Footer = () => {
             </Box>
             <Box className="hover:text-gray-300 cursor-pointer text-lg sm:text-xl">
               Resume ATS Score
-            </Box>
-            <Box className="hover:text-gray-300 cursor-pointer text-lg sm:text-xl">
-              Real Interview
             </Box>
           </Box>
           <Box className="flex flex-col gap-4">

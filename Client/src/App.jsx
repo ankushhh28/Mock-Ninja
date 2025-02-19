@@ -109,7 +109,7 @@ const App = () => {
                 <Route path="/Feedback/:mockId" element={<CanFeedbackPage/>}/>
                 </Route>
 
-                {/*-------------------------- SELECTOR ROUTES (WITH LOGIN) ----------------*/}
+                {/*-------------------------- EXPERT ROUTES (WITH LOGIN) ----------------*/}
 
                 {/* <Route element={<InterviewerPrivate />}> */}
                   <Route path="/Expert/Home" element={<ExpertHome />} />

@@ -10,15 +10,6 @@ const useregisterschema = mongoose.Schema({
   candidatePassword:{
     type:String
   },
-  expertName:{
-    type:String
-  },
-  expertOrgEmail:{
-    type:String
-  },
-  expertPassword:{
-    type:String
-  },
   role:{
     type:String
   },
@@ -41,6 +32,87 @@ const useregisterschema = mongoose.Schema({
     type:String
   },
   candidateCity:{
+    type:String
+  },
+  expertName:{
+    type:String
+  },
+  expertOrgEmail:{
+    type:String
+  },
+  expertPassword:{
+    type:String
+  },
+  expertPersonalEmail:{
+    type:String
+  },
+  expertExperience:{
+    type:String
+  },
+  expertProfilePhoto:{
+    type:String
+  },
+  expertPhoneNumber:{
+    type:String
+  },
+  expertGender:{
+    type:String
+  },
+  expertCity:{
+    type:String
+  },
+  expertCountry:{
+    type:String
+  },
+  expertState:{
+    type:String
+  },
+  expertDOB:{
+    type:Date
+  },
+  expertLinkedin:{
+    type:String
+  },
+  expertYoutube:{
+    type:String
+  },
+  expertInstagram:{
+    type:String
+  },
+  expertCurrentCompany:{
+    type:String
+  },
+  expertBio:{
+    type:String
+  },
+  expertAbout:{
+    type:String
+  },
+  expertIndAccountNumber:{
+    type:String
+  },
+  expertIndAccountHolderName:{
+    type:String
+  },
+  expertIndIfscCode:{
+    type:String
+  },
+  expertIndBranchName:{
+    type:String
+  },
+  expertIndUPI:{
+    type:String
+  },
+  expertOUTaccountNumber:{
+    type:String
+  },
+  expertOUTaccountHolderName:{
+    type:String
+  },
+  expertOUTianNumber:{
+    type:String
+  },
+  expertOUTswiftCode:{
     type:String
   },
 }) 

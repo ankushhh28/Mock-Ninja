@@ -8,6 +8,7 @@ import bodyParser from "body-parser";
 import ConnectionDB from "./Database/Database.js";
 import Router from "./Routes/Routes.js";
 import CandidateRouter from "./Routes/CandidateRoute.js";
+import ExpertRouter from "./Routes/ExpertRoutes.js";
 
 dotenv.config();
 
@@ -19,6 +20,7 @@ app.use(bodyParser.json());
 
 app.use("/", Router);
 app.use("/Can", CandidateRouter);
+app.use("/Exp", ExpertRouter);
 
 const StartServer = () => {
   const PORT = process.env.PORT_NUMBER || 5000;
