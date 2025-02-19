@@ -268,7 +268,7 @@ className="bg-gradient-to-br from-purple-700 to-purple-200 flex h-screen w-scree
       <Typography
         className={`font-bold text-sm md:text-[15px] text-black`}
       >
-        Interviewer
+        Expert
       </Typography>
     </Box>
   </Box>

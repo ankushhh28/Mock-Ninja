@@ -56,7 +56,7 @@ const Login = () => {
           if (response.data.role === "Candidate") {
             navigate("/Candidate/Home");
           } else if (response.data.role === "Interviewer") {
-            navigate("/Interviewer/Home");
+            navigate("/Expert/Home");
           }
         } catch (error) {
           setErrorMsg(

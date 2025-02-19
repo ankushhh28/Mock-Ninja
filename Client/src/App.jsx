@@ -35,7 +35,10 @@ const CanRating = lazy(() => import("./Candidate/Component/Can_Rating"));
 
 //------------------------------- SELECTOR IMPORTS ONLY -------------------------
 
-const SelectorHome = lazy(() => import("./Selector/Sel_Pages/SelectorHome"));
+const ExpertHome = lazy(() => import("./Expert/Exp_Pages/ExpertHome"));
+const Exp_Profile = lazy(() => import("./Expert/Exp_Pages/Exp_Profile"));
+const Exp_Packages = lazy(() => import("./Expert/Exp_Pages/Exp_Packages"));
+const Exp_Notify = lazy(() => import("./Expert/Exp_Pages/Exp_Notify"));
 
 // ------------------------------ CANDIDATE PROTECTED ---------------------------
 
@@ -86,7 +89,7 @@ const App = () => {
                 <Route path="/Register" element={<Register />} />
                 <Route path="/Login" element={<Login />} />
                 <Route path="/Forgot-password" element={<ForgotPass />} />
-                <Route path="/Interviewer-Home" element={<InterviewerHome />} />
+                <Route path="/Expert-Home" element={<InterviewerHome />} />
                 <Route path="/test/Feedback" element={<Can_Feedback />} />
 
                 {/*-------------------------- STUDENT ROUTES (WITH LOGIN) ----------------*/}
@@ -106,17 +109,15 @@ const App = () => {
                 <Route path="/Feedback/:mockId" element={<CanFeedbackPage/>}/>
                 </Route>
 
-        <Route path="/" element={<Home />} />
-        <Route path="/About" element={<About />} />
-        <Route path="/Contact-us" element={<ContactUs />} />
-        <Route path="/Register" element={<Register />} />
-        <Route path="/Login" element={<Login />} />
-        <Route path="/Forgot-password" element={<ForgotPass />} />
-        <Route path="/Interviewer-Home" element={<InterviewerHome />} />
+                {/*-------------------------- SELECTOR ROUTES (WITH LOGIN) ----------------*/}
 
-                <Route element={<InterviewerPrivate />}>
-                  <Route path="/Interviewer/Home" element={<SelectorHome />} />
-                </Route>
+                {/* <Route element={<InterviewerPrivate />}> */}
+                  <Route path="/Expert/Home" element={<ExpertHome />} />
+                  <Route path="/Expert/Profile" element={<Exp_Profile />} />
+                  <Route path="/Expert/Notify" element={<Exp_Notify />} />
+                  <Route path="/Expert/Packages" element={<Exp_Packages />} />
+                {/* </Route> */}
+
               </Routes>
             </Suspense>
           </BrowserRouter>

@@ -47,7 +47,7 @@ rounded-full bg-gray-200 shadow-md p-2 mt-6">
   >
   <Typography
     className={`font-extrabold tracking-wider text-base md:text-lg ml-2 ${
-      isActive !== "Interviewer-Home" ? "text-white" : "text-black"
+      isActive !== "Expert-Home" ? "text-white" : "text-black"
     }`}
   >
     Candidate
@@ -55,16 +55,16 @@ rounded-full bg-gray-200 shadow-md p-2 mt-6">
   </Box>
   </NavLink>
 
-  <NavLink to={"/Interviewer-Home"}>
+  <NavLink to={"/Expert-Home"}>
   <Box
   className="flex-1 flex justify-center items-center text-nowrap px-4 py-2 rounded-full cursor-pointer relative z-10 transition-all"
   >
   <Typography
-    className={`font-bold md:font-extrabold tracking-wider text-base md:text-lg ml-2 ${
-      isActive === "Interviewer-Home" ? "text-white" : "text-black"
+    className={`font-bold md:font-extrabold tracking-wider text-base md:text-lg ml-2 mr-6 md:mr-4 ${
+      isActive === "Expert-Home" ? "text-white" : "text-black"
     }`}
   >
-    Interviewer
+    Expert
   </Typography>
   </Box>
   </NavLink>
