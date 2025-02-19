@@ -19,6 +19,7 @@ import Intructions from "./Component/InstructionsAI";
 import CountdownAnimation from "./Component/CountDown";
 
 const Can_AiIntPage = () => {
+  
   const { backendUrl, account } = useContext(DataContext);
 
   // -------------- Fetching Mock ID in URL -------------------------
@@ -699,14 +700,14 @@ useEffect(() => {
             <Box className="flex flex-col sm:flex-row justify-center gap-4 sm:gap-6 md:gap-8">
               <Button
                 onClick={handleNextQuestionWithDisable}
-                // disabled={isSpeaking || isNextButtonDisabled}
+                disabled={isSpeaking || isNextButtonDisabled}
                 className="text-white bg-gradient-to-r from-blue-500 to-blue-700 hover:from-blue-600 hover:to-blue-700 px-4 sm:px-5 py-2 sm:py-3 font-bold text-lg rounded-lg flex items-center transition-all duration-300 shadow-md hover:shadow-lg text-nowrap"
                 endIcon={<SkipNextIcon />}
               >
                 Skip
               </Button>
               <Button
-                // disabled={isSpeaking || isNextButtonDisabled}
+                disabled={isSpeaking || isNextButtonDisabled}
                 onClick={() => {handleNextQuestionWithDisable(); setNextClicked((data) => !data)}}
                 className="text-white bg-gradient-to-r from-blue-500 to-blue-700 hover:from-blue-600 hover:to-blue-700 px-4 sm:px-5 py-2 sm:py-3 font-bold text-lg rounded-lg flex items-center transition-all duration-300 shadow-md hover:shadow-lg text-nowrap"
                 endIcon={<NextIcon />}
