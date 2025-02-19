@@ -97,13 +97,12 @@ const App = () => {
                 <Route path="/Candidate/Mock" element={<CanMock />} />
                 <Route path="/Candidate/ATS" element={<CanATS />} />
                 <Route path="/Candidate/Profile" element={<CanProfile />} />
-                <Route path="/Candidate/Rating" element={<CanRating />} />
+
                 <Route element={<CandidateAiInterviewHomePrivate />}>
-                  <Route
-                    path="/Candidate/Interview/:mockID"
-                    element={<CanAiIntPage />}
-                  />
+                <Route path="/Candidate/Interview/:mockID" element={<CanAiIntPage />}/>
+                <Route path="/Candidate/Rating/:mockID" element={<CanRating />} />
                 </Route>
+
                 <Route path="/Feedback/:mockId" element={<CanFeedbackPage/>}/>
                 </Route>
 

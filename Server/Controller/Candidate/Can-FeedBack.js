@@ -1,6 +1,7 @@
 import axios from "axios";
 import FeedbackSchema from "../../Models/FeedbackSchema.js";
 import QuesGenSchema from "../../Models/QuesGenSchema.js";
+import RatingSchema from "../../Models/RatingSchema.js";
 
 const GEMINI_API_KEY = "AIzaSyAjn5ZlEdmcKjtyPQ0Cyeqvi_stG07d1Lo";
 const GEMINI_API_URL =
@@ -298,5 +299,25 @@ export const fetchingFeedbackList = async(req, res) => {
     return res.status(200).json(feedData)
   } catch (error) {
     return res.status(500).json({message:"Something went wrong! Try again later"})
+  }
+}
+
+// ---------------- RATINGS FROM USER ---------------------
+
+export const SavingRatings = async(req, res) => {
+  const { mockID } = req.body
+
+  try {
+    const intData = await RatingSchema.findOne({mockID})
+    if(intData){
+      return  res.status(400).json({message:"Feedback Already Exist For this Interview"})
+    }
+
+    const newFeedback = new RatingSchema(req.body)
+    await newFeedback.save()
+    return res.status(200).json({message:"Feedback Submitted Succesfully"})
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({message:"Error While Submitted Feedback"})
   }
 }

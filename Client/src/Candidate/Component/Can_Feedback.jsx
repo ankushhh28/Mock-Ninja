@@ -74,6 +74,8 @@ const Can_Feedback = () => {
   useEffect(() => {
     sessionStorage.removeItem("SavingGesture");
     sessionStorage.removeItem("OverallFeedbacks");
+    sessionStorage.removeItem("next");
+    sessionStorage.removeItem("count");
   },[])
 
 // ------------ FOR SHOWING GESTURE DATA --------------

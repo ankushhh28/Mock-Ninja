@@ -19,7 +19,6 @@ import SkipNextIcon from "@mui/icons-material/SkipNext";
 import VolumeUpIcon from "@mui/icons-material/VolumeUp";
 import MicIcon from "@mui/icons-material/Mic";
 import MicOffIcon from "@mui/icons-material/MicOff";
-import WarningIcon from "@mui/icons-material/Warning";
 
 import { IoIosWarning } from "react-icons/io";
 
@@ -230,7 +229,7 @@ const Can_AiIntPage = () => {
   useEffect(() => {
     if (OverallFeedbacks && SavingGesture) {
       setTimeout(() => {
-        navigate(`/Feedback/${mockId}`);
+        navigate(`/Candidate/Rating/${mockId}`);
       }, []);
     }
   }, [OverallFeedbacks, SavingGesture]);
@@ -757,7 +756,7 @@ const Can_AiIntPage = () => {
                 Skip
               </Button>
               <Button
-                disabled={isSpeaking || isNextButtonDisabled}
+                // disabled={isSpeaking || isNextButtonDisabled}
                 onClick={() => {
                   handleNextQuestionWithDisable();
                   setNextClicked((data) => !data);
