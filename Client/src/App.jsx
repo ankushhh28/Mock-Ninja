@@ -35,7 +35,7 @@ const CanRating = lazy(() => import("./Candidate/Component/Can_Rating"));
 
 //------------------------------- SELECTOR IMPORTS ONLY -------------------------
 
-const SelectorHome = lazy(() => import("./Selector/SelectorHome"));
+const SelectorHome = lazy(() => import("./Selector/Sel_Pages/SelectorHome"));
 
 // ------------------------------ CANDIDATE PROTECTED ---------------------------
 

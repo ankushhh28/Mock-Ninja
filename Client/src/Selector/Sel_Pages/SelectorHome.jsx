@@ -1,5 +1,5 @@
 import React from 'react'
-import SelectorLayout from './SelLayout/SelectorLayout'
+import SelectorLayout from '../SelLayout/SelectorLayout'
 
 const SelectorHome = () => {
   return (

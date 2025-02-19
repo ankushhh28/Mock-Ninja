@@ -205,6 +205,7 @@ const CanProfile = () => {
 
   return (
     <>
+
     <Can_Layout>
     <Box className="h-auto w-screen py-6">
 
@@ -469,6 +470,7 @@ const CanProfile = () => {
               disabled={isEditing}
             />
           </Box>
+          
       </Box>
     </Box>
   </Box>

@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
-import { data, useNavigate, useNavigation, useParams } from "react-router-dom";
+import { useNavigate, useNavigation, useParams } from "react-router-dom";
 import { DataContext } from "../Context/DataProvider";
 import axios from "axios";
 import {
@@ -639,16 +639,19 @@ const Can_AiIntPage = () => {
                   <h2 className="text-sm sm:text-base md:text-2xl font-semibold tracking-wide text-gray-300">
                     QUESTION
                   </h2>
-                  {/* ------------------------------- Mike Open Warning ----------------------------------------- */}
-                  {/* {!isSpeaking && (
+
+                  {/* ---------------- Mike Open Warning ----------------------- */}
+                  {!isSpeaking && (
                     <p className="text-lg my-2 text-yellow-300 tracking-wide animate-pulse">
                       <span className="mr-2">
                         <WarningIcon />
                       </span>
                       Before answering the question, please click the 'Answer' button
                     </p>
-                  )} */}
-                  {/* --------------------------------------------------------------------------------------- */}
+                  )}
+
+                  {/* ---------------- QUESTIONS ------------------------ */}
+
                   <p
                     id="question"
                     className="text-lg sm:text-xl md:text-3xl font-bold tracking-wide text-center"
