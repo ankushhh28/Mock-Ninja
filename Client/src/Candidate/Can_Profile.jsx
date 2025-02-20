@@ -33,6 +33,7 @@ const CanProfile = () => {
   const handleAvatarClick = () => {
     fileInputRef.current.click();
   };
+  
 // ---------------------------- Use States ----------------------------- 
 
   const [open, setOpen] = useState(false);
