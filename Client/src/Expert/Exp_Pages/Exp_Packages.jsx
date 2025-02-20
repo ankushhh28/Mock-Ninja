@@ -6,7 +6,7 @@ import { TbUserScreen } from "react-icons/tb";
 import { MdDocumentScanner } from "react-icons/md";
 import { GoGoal } from "react-icons/go";
 import { TbMessageChatbotFilled } from "react-icons/tb";
-import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
+import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 
 import AddPackage from "../Exp_Packages/AddPackage";
 import InterviewPackage from "../Exp_Packages/InterviewPackage";
@@ -17,25 +17,28 @@ import Availability from "../Exp_Packages/Availability";
 import { useNavigate, useParams } from "react-router-dom";
 
 const Exp_Packages = () => {
-
   const menuItems = [
-    { icon: <TbUserScreen />, service: "Interview", route:"Interview-Package" },
-    { icon: <GoGoal />, service: "Career Guidance",  route:"Career-Package" },
+    {
+      icon: <TbUserScreen />,
+      service: "Interview",
+      route: "Interview-Package",
+    },
+    { icon: <GoGoal />, service: "Career Guidance", route: "Career-Package" },
     {
       icon: <MdDocumentScanner />,
       service: "Resume Guidance",
-      route:"Resume-Package"
+      route: "Resume-Package",
     },
     {
       icon: <TbMessageChatbotFilled />,
       service: "Priority DM",
-      route:"Priority-Package"
+      route: "Priority-Package",
     },
   ];
 
-  const navigate = useNavigate()
-  const {tab} = useParams()
-  const selectedTab = tab
+  const navigate = useNavigate();
+  const { tab } = useParams();
+  const selectedTab = tab;
 
   // ---------------- RENDERING RIGHT SIDE DATA ------------------------
 
@@ -60,36 +63,35 @@ const Exp_Packages = () => {
       {/* ---------------------- MAIN CONTAINER ---------------------- */}
       <Box className="w-full max-h-screen flex items-start">
         {/* ---------------------- SIDEBAR SECTION ---------------------- */}
-        <Box className="w-1/4 h-screen flex flex-col gap-16 px-6 py-8 bg-gray-500 text-white shadow-lg">
+        <Box className="w-1/4 h-screen flex flex-col px-12 py-8 bg-gray-800 text-white shadow-lg">
           {/* ------- Add Package Button --------- */}
           <Box className="flex flex-col gap-4 items-center justify-center w-full">
             <Button
               onClick={() => navigate("/Expert/Packages/AddPackage")}
-              className="flex  items-center justify-center gap-2 w-full py-4 text-lg font-semibold text-white bg-[#9274ef] rounded-lg shadow-md transition-all"
+              className="flex items-center justify-center gap-2 w-full py-4 text-lg font-semibold text-white bg-purple-600 rounded-lg shadow-md  transition-all"
             >
               <IoMdAdd className="text-xl" />
               Add Package
             </Button>
 
             {/* ------- Availability Button --------- */}
-            
+
             <Button
-              onClick={() => { navigate("/Expert/Packages/Availability")}}
-              className="flex items-center justify-center gap-2 w-full py-4 text-lg font-semibold text-white bg-[#9274ef] rounded-lg shadow-md  transition-all"
+              onClick={() => {
+                navigate("/Expert/Packages/Availability");
+              }}
+              className="flex items-center justify-center gap-2 w-full py-4 text-lg font-semibold text-white bg-purple-600 rounded-lg shadow-md  transition-all"
             >
               <CalendarMonthIcon className="text-xl" />
               Availability
             </Button>
-          </Box>
 
-
-          {/* ------- Sidebar Menu Items --------- */}
-          <Box className="flex flex-col gap-4">
+            {/* ------- Sidebar Menu Items --------- */}
             {menuItems.map((item, index) => (
               <Button
                 key={index}
                 onClick={() => navigate(`/Expert/Packages/${item.route}`)}
-                className="flex items-center gap-2 px-4 py-4 w-full text-lg font-medium text-white bg-gray-800 rounded-lg  transition-all"
+                className="flex items-center justify-center gap-2 w-full py-4 text-lg font-semibold text-white bg-purple-600 rounded-lg shadow-md  transition-all"
               >
                 <span className="text-xl">{item.icon}</span>
                 {item.service}
@@ -99,7 +101,9 @@ const Exp_Packages = () => {
         </Box>
 
         {/* ---------------------- RIGHT SIDE SECTION ---------------------- */}
-        <Box className="w-3/4 px-10 py-8 overflow-y-auto">{RenderComponent()}</Box>
+        <Box className="w-3/4 px-10 py-8 overflow-y-auto">
+          {RenderComponent()}
+        </Box>
       </Box>
     </ExpertLayout>
   );
