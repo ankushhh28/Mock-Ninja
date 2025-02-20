@@ -21,12 +21,11 @@ import MicIcon from "@mui/icons-material/Mic";
 import MicOffIcon from "@mui/icons-material/MicOff";
 
 import { IoIosWarning } from "react-icons/io";
-
+import WarningIcon from "@mui/icons-material/Warning";
 import Intructions from "./Component/InstructionsAI";
 import CountdownAnimation from "./Component/CountDown";
 
 const Can_AiIntPage = () => {
-  
   const { backendUrl, account } = useContext(DataContext);
 
   // -------------- Fetching Mock ID in URL -------------------------
@@ -646,7 +645,8 @@ const Can_AiIntPage = () => {
                       <span className="mr-2">
                         <WarningIcon />
                       </span>
-                      Before answering the question, please click the 'Answer' button
+                      Before answering the question, please click the 'Answer'
+                      button
                     </p>
                   )}
 

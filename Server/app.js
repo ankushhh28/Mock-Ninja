@@ -23,7 +23,7 @@ app.use("/Can", CandidateRouter);
 app.use("/Exp", ExpertRouter);
 
 const StartServer = () => {
-  const PORT = process.env.PORT_NUMBER || 5000;
+  const PORT = 5001;
   app.listen(PORT, () => {
     console.log(`http://localhost:${PORT}`);
   });
