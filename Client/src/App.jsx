@@ -39,6 +39,7 @@ const ExpertHome = lazy(() => import("./Expert/Exp_Pages/ExpertHome"));
 const Exp_Profile = lazy(() => import("./Expert/Exp_Pages/Exp_Profile"));
 const Exp_Packages = lazy(() => import("./Expert/Exp_Pages/Exp_Packages"));
 const Exp_Notify = lazy(() => import("./Expert/Exp_Pages/Exp_Notify"));
+const Tab_Packages = lazy(() => import("./Expert/Exp_Packages/Tab_Packages"));
 
 // ------------------------------ CANDIDATE PROTECTED ---------------------------
 
@@ -115,8 +116,10 @@ const App = () => {
                   <Route path="/Expert/Home" element={<ExpertHome />} />
                   <Route path="/Expert/Profile" element={<Exp_Profile />} />
                   <Route path="/Expert/Notify" element={<Exp_Notify />} />
-                  <Route path="/Expert/Packages" element={<Exp_Packages />} />
-                {/* </Route> */}
+                  <Route path="/Expert/Packages/AddPackage" element={<Exp_Packages />} />
+                  <Route path="/Expert/Packages/:tab" element={<Tab_Packages />} />
+                  
+                {/* {/* </Route> */}
 
               </Routes>
             </Suspense>

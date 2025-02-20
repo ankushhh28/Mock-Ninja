@@ -75,13 +75,25 @@ const ExpertNavBar = () => {
   </Box>
   </NavLink>
   
-  <NavLink to={"/Expert/Packages"}>
+  <NavLink to={"/Expert/Packages/AddPackage"}>
   <Box 
-  variant="outlined"
-  className={` text-nowrap text-[17px] font-bold border-none transition-all btn-line-animation ${activePage === "/Expert/Packages" ? "text-gray-800" : "text-white"}`}>
+    variant="outlined"
+    className={`text-nowrap text-[17px] font-bold border-none transition-all btn-line-animation ${
+      ["/Expert/Packages/AddPackage",
+        "/Expert/Packages/Availability",
+        "/Expert/Packages/Interview-Package",
+        "/Expert/Packages/Resume-Package",
+        "/Expert/Packages/Priority-Package",
+        "/Expert/Packages/Career-Package"
+      ].includes(activePage) 
+      ? "text-gray-800" 
+      : "text-white"
+    }`}
+  >
     Packages
   </Box>
-  </NavLink>
+</NavLink>
+
 
   <NavLink to={"/Expert/Profile"}>
   <Box 
