@@ -171,11 +171,11 @@ const ExpertNavBar = () => {
     </Button>
     </NavLink>
     
-    <NavLink to={"/Expert/Packages"}>
+    <NavLink to={"/Expert/Packages/AddPackage"}>
     <Button
     startIcon={<TbPackages/>}
     variant="contained"
-    className={`text-black pr-[30px] text-[15px] hover:rounded-[20px] rounded-[20px] hover:bg-gray-300 hover:text-black transition-all ${activePage === "/Expert/Packages" ? "bg-black text-white" : ""} font-bold bg-[#E5E5E5] shadow-none hover:shadow-none w-full`}
+    className={`text-black pr-[30px] text-[15px] hover:rounded-[20px] rounded-[20px] hover:bg-gray-300 hover:text-black transition-all ${activePage === "/Expert/Packages/AddPackage" ? "bg-black text-white" : ""} font-bold bg-[#E5E5E5] shadow-none hover:shadow-none w-full`}
     >
       Packages
     </Button>
