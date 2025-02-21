@@ -532,6 +532,7 @@ const Can_Card = () => {
             ) : (
               <Box className="mx-auto absoulte mt-5 sm:mt-6">
                 <Button
+                disabled={loading}
                   onClick={handleResumeSubmit}
                   variant="contained"
                   className="bg-blue-500 font-semibold hover:bg-blue-600 "
@@ -554,6 +555,7 @@ const Can_Card = () => {
                 </Box>
               ) : (
                 <Button
+                disabled={loading}
                   onClick={handleDomainSubmit}
                   variant="contained"
                   className="bg-blue-500 font-semibold hover:bg-blue-600 "
@@ -576,6 +578,7 @@ const Can_Card = () => {
                 </Box>
               ) : (
                 <Button
+                disabled={loading}
                   onClick={handleSkillSubmit}
                   variant="contained"
                   className="bg-blue-500 font-semibold hover:bg-blue-600 "

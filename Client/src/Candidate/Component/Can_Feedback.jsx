@@ -1,9 +1,12 @@
 import axios from "axios";
 import { useContext, useEffect, useState } from "react";
 import { DataContext } from "../../Context/DataProvider";
-import { useParams } from "react-router-dom";
+import { NavLink, useParams } from "react-router-dom";
 import { useMemo } from "react";
 import Can_Layout from "../CanLayout/Can_Layout"
+import { Box, Button, Typography } from "@mui/material";
+
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 
 const Can_Feedback = () => {
 
@@ -23,9 +26,13 @@ const Can_Feedback = () => {
   const [GestureFeedback, setGestureFeedback] = useState([]);
   const [QuesAnswerFeedback, setQuesAnswerFeedback] = useState([]);
   const [intType, setIntType] = useState("");
+  const [loading, setLoading] = useState(false)
+
+  // ------------  FETCHING FEEDBACK DATA ---------------
   
   useEffect(() => {
     const fetchingFeedback = async () => {
+      setLoading(true)
       try {
         const response = await axios.get(
           `${backendUrl}/Can/Fetching-Gesture-Feedback`,
@@ -65,11 +72,15 @@ const Can_Feedback = () => {
         }
       } catch (error) {
         console.log(error.response?.data?.message || "Error fetching feedback");
+      } finally {
+        setLoading(false)
       }
     };
 
     fetchingFeedback();
   }, [mockId, backendUrl]);
+
+  // ------------  DELETING SESSION STORAGE ---------------
 
   useEffect(() => {
     sessionStorage.removeItem("SavingGesture");
@@ -156,6 +167,14 @@ const parsedFeedbacks = useMemo(() => {
   return (
     <Can_Layout>
     <div className="w-full h-auto px-6 sm:px-12 md:px-16 py-10 sm:py-4 bg-purple-50 flex flex-col mx-auto">
+    
+    <NavLink to={"/Candidate/AI/Mock"}>
+    <Box className="relative right-12">
+        <Typography>
+          <ArrowBackIcon/>
+        </Typography>
+      </Box>
+    </NavLink>
       {/* ------------------------------------------------------------------------------------------ */}
 
       <h1 className="text-center text-4xl font-semibold text-purple-700 underline underline-offset-2 mb-12  uppercase ">
@@ -171,12 +190,21 @@ const parsedFeedbacks = useMemo(() => {
             <span className="text-primary font-semibold">
               Interview Details:
             </span>{" "}
-            {intType}
+            {loading ? (<span className="text-black font-bold text-[16px]">Loading...</span>) : (
+              <>
+              {intType}
+              </>
+            )}
           </p>
 
           <p className="text-lg sm:text-xl  text-gray-700">
             <span className="text-primary font-semibold">Date:</span>{" "}
-            {formattedDate}
+            {loading ? ((<span className="text-black font-bold text-[16px]">Loading...</span>)) : 
+            (
+              <>
+              {formattedDate}
+              </>
+            )}
           </p>
         </div>
       </div>
@@ -189,22 +217,32 @@ const parsedFeedbacks = useMemo(() => {
           <h2 className="text-xl font-semibold text-[#8667F2] mb-2">
             Overall Technical Feedback
           </h2>
-          <p className="text-gray-700">
-          {parsedFeedbacks.length > 12 ? parsedFeedbacks[12].overallFeedback : "No overall feedback available"}
-          </p>
+          {loading ? (
+            <p className="text-black font-bold">Loading...</p>
+          ) : (
+            <p className="text-gray-700">
+            {parsedFeedbacks.length > 12 ? parsedFeedbacks[12].overallFeedback : "No overall feedback available"}
+            </p>
+          )}
         </div>
 
         <div className="p-6 bg-[#F4F1FF] border border-[#8667F2] rounded-2xl shadow-md">
-  <h2 className="text-xl font-semibold text-[#8667F2] mb-2">
-    Overall Gestures Feedback
-  </h2>
-  <p className="text-gray-700">
-    <strong>Area of Improvement:</strong> {parsedFeedback.areas_for_improvement || "Not available."}
-  </p>
-  <p className="text-gray-700">
-    <strong>Suggestions:</strong> {parsedFeedback.suggestions || "No suggestions available."}
-  </p>
-</div>
+          <h2 className="text-xl font-semibold text-[#8667F2] mb-2">
+            Overall Gestures Feedback
+          </h2>
+          {loading ? (
+            <p className="text-black font-bold">Loading...</p>
+          ) : (
+            <>
+            <p className="text-gray-700">
+            <strong>Area of Improvement:</strong> {parsedFeedback.areas_for_improvement || "Not available."}
+          </p>
+          <p className="text-gray-700">
+            <strong>Suggestions:</strong> {parsedFeedback.suggestions || "No suggestions available."}
+          </p>
+          </>
+          )}
+        </div>
 
 
       </div>
@@ -232,7 +270,11 @@ const parsedFeedbacks = useMemo(() => {
               </button>
               {activeStep === step.id && (
                 <>
-                  <p className="text-gray-700 px-4 pb-3">
+                {loading ? (
+                  <p className="text-black font-bold mb-6">Loading...</p>
+                ) : (
+                  <>
+                    <p className="text-gray-700 px-4 pb-3">
                     Question: {step.question}
                   </p>
                   <p className="text-gray-700 px-4 pb-3">
@@ -241,6 +283,8 @@ const parsedFeedbacks = useMemo(() => {
                   <p className="text-gray-700 px-4 pb-3">
                     Feedback: {step.feedback}
                   </p>
+                  </>
+                )}
                 </>
               )}
             </div>

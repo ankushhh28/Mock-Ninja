@@ -21,6 +21,7 @@ import MicIcon from "@mui/icons-material/Mic";
 import MicOffIcon from "@mui/icons-material/MicOff";
 
 import { IoIosWarning } from "react-icons/io";
+import { FaRobot } from "react-icons/fa";
 import WarningIcon from "@mui/icons-material/Warning";
 import Intructions from "./Component/InstructionsAI";
 import CountdownAnimation from "./Component/CountDown";
@@ -640,14 +641,15 @@ const Can_AiIntPage = () => {
                   </h2>
 
                   {/* ---------------- Mike Open Warning ----------------------- */}
-                  {!isSpeaking && (
-                    <p className="text-lg my-2 text-yellow-300 tracking-wide animate-pulse">
-                      <span className="mr-2">
-                        <WarningIcon />
-                      </span>
-                      Before answering the question, please click the 'Answer'
-                      button
-                    </p>
+                  {!isListening ? (
+                    <p className="text-sm md:text-base lg:text-lg my-2 text-yellow-300 tracking-wide animate-pulse flex items-center gap-2 ml-4 sm:ml-0">
+                    <WarningIcon className="w-5 h-5" />
+                    Before answering the question, please click the 'Answer' button.
+                  </p>
+                  
+                  ) : (
+                  <p className="text-green-400 text-lg my-2 font-medium animate-pulse flex">
+                  <span className="mt-1 mr-1"><FaRobot/></span>  AI is listening...</p>
                   )}
 
                   {/* ---------------- QUESTIONS ------------------------ */}
@@ -759,7 +761,7 @@ const Can_AiIntPage = () => {
                 Skip
               </Button>
               <Button
-                // disabled={isSpeaking || isNextButtonDisabled}
+                disabled={isSpeaking || isNextButtonDisabled}
                 onClick={() => {
                   handleNextQuestionWithDisable();
                   setNextClicked((data) => !data);

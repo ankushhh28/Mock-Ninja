@@ -48,7 +48,7 @@ const Can_Rating = () => {
         }
       })
       if(response.status === 200){
-        setModalMsg({open:true, msg:response.data.message, severity:"Success"});
+        setModalMsg({open:true, msg:response?.data?.message || "Check Your Conntection! Try Later.", severity:"success"});
         setTimeout(() => {
           navigate(`/Feedback/${mockID}`)
         },1000)
