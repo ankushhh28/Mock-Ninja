@@ -22,14 +22,16 @@ const ResumePackage = () => {
   <Button 
   onClick={() => setToggle((prev) => !prev)}
   variant='outlined' startIcon={<EditIcon/>}
-  className='border-primary text-purple-900 rounded-3xl py-2 px-6'>
+  className='border-primary text-purple-900 rounded-3xl py-2 px-6 hover:bg-primary 
+  hover:text-white transition-all'>
     Edit
   </Button>
 ) : (
   <Button 
   onClick={() => setToggle((prev) => !prev)}
   variant='outlined' startIcon={<TurnedInIcon/>}
-  className='border-primary text-purple-900 rounded-3xl py-2 px-6'>
+  className='border-primary text-purple-900 rounded-3xl py-2 px-6 hover:bg-primary 
+  hover:text-white transition-all'>
     Save
   </Button>
   )}
