@@ -15,7 +15,7 @@ import {
   Alert,
   Radio,
   RadioGroup,
-  FormControlLabel
+  FormControlLabel,
 } from "@mui/material";
 
 import LogoutIcon from "@mui/icons-material/Logout";
@@ -24,12 +24,11 @@ import TurnedInIcon from "@mui/icons-material/TurnedIn";
 import { DataContext } from "../../Context/DataProvider";
 
 const Exp_Profile = () => {
-
   const { account, setAccount, backendUrl } = useContext(DataContext);
-  
-  const fileInputRef = useRef(null); 
 
-// -------------------- USE STATES ------------------
+  const fileInputRef = useRef(null);
+
+  // -------------------- USE STATES ------------------
 
   const [errors, setErrors] = useState({});
   const [bankType, setBankType] = useState("domestic");
@@ -71,13 +70,13 @@ const Exp_Profile = () => {
     expertOUTswiftCode: "",
   });
 
-// ---------------  HANDLE AVATAR CLICK -----------------
+  // ---------------  HANDLE AVATAR CLICK -----------------
 
   const handleAvatarClick = () => {
     fileInputRef.current.click();
   };
 
-// ---------------- HANDLING FORM VALIDATION -----------------
+  // ---------------- HANDLING FORM VALIDATION -----------------
 
   const validateExpertData = () => {
     let newErrors = {};
@@ -192,14 +191,14 @@ const Exp_Profile = () => {
     return isValid;
   };
 
-// ----------------- HANDLE CHANGE ----------------------
+  // ----------------- HANDLE CHANGE ----------------------
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setExpertData({ ...expertData, [name]: value });
   };
 
-// ------------------ HANDLE FORM SUBMIT ------------------
+  // ------------------ HANDLE FORM SUBMIT ------------------
 
   const handleSaveChanges = () => {
     // const isValid = validateExpertData();
@@ -207,123 +206,116 @@ const Exp_Profile = () => {
     // if (isValid) {
     //   console.log("Saving changes...");
     // } else {
-      setModalMsg({
-        open: true,
-        message: "Please fix the errors before saving.",
-        severity: "error",
-      });
-      setIsEditing(false)
+    setModalMsg({
+      open: true,
+      message: "Please fix the errors before saving.",
+      severity: "error",
+    });
+    setIsEditing(false);
     // }
   };
 
   return (
     <ExpertLayout>
-    {/* ------------------------TOP NAVBAR-------------------------- */}
+      {/* ------------------------TOP NAVBAR-------------------------- */}
 
-    <Box className="px-6 pt-7 md:px-16 sticky h-24 z-10 top-0 bg-gray-50 border-b-2 border-gray-200">
-      <Box className=" flex justify-between items-center px-4 sm:px-8 pb-6">
-        <Typography variant="h5" className="font-semibold text-gray-800">
-          Profile
-        </Typography>
+      <Box className="px-6 pt-7 md:px-16 sticky h-24 z-10 top-0 bg-gray-50 border-b-2 border-gray-200">
+        <Box className=" flex justify-between items-center px-4 sm:px-8 pb-6">
+          <Typography variant="h5" className="font-semibold text-gray-800">
+            Profile
+          </Typography>
 
-      {/*---------------EDIT AND SAVE CHANGES BUTTON------------------- */}
+          {/*---------------EDIT AND SAVE CHANGES BUTTON------------------- */}
 
-      <Box className="flex gap-4">
-        {!isEditing ? (
-          <Button
-            onClick={() => setIsEditing(!isEditing)}
-            variant="contained"
-            startIcon={<EditIcon />}
-            className="bg-blue-600 hover:bg-blue-700 text-white w-fit font-light 
+          <Box className="flex gap-4">
+            {!isEditing ? (
+              <Button
+                onClick={() => setIsEditing(!isEditing)}
+                variant="contained"
+                startIcon={<EditIcon />}
+                className="bg-blue-600 hover:bg-blue-700 text-white w-fit font-light 
             md:font-medium rounded-lg transition-all duration-300 text-wrap"
-            sx={{
-              fontSize: { xs: "0.50rem", md: "0.75rem" },
-              width: { xs: "3rem", md: "6rem" },
-              fontWeight: { xs: 300, md: 500 },
-            }}
-          >
-            Edit Profile
-          </Button>
-        ) : loading ? (
-          <CircularProgress size={24} className="text-blue-600" />
-        ) : (
-          <Button
-            type="submit"
-            variant="contained"
-            startIcon={<TurnedInIcon />}
-            className="bg-green-600 hover:bg-green-700 text-white font-medium rounded-lg transition-all duration-300"
-            onClick={handleSaveChanges}
-          >
-            Save Changes
-          </Button>
-        )}
+                sx={{
+                  fontSize: { xs: "0.50rem", md: "0.75rem" },
+                  width: { xs: "3rem", md: "6rem" },
+                  fontWeight: { xs: 300, md: 500 },
+                }}
+              >
+                Edit Profile
+              </Button>
+            ) : loading ? (
+              <CircularProgress size={24} className="text-blue-600" />
+            ) : (
+              <Button
+                type="submit"
+                variant="contained"
+                startIcon={<TurnedInIcon />}
+                className="bg-green-600 hover:bg-green-700 text-white font-medium rounded-lg transition-all duration-300"
+                onClick={handleSaveChanges}
+              >
+                Save Changes
+              </Button>
+            )}
 
-        {/* ----------------LOGOUT BUTTON---------------------- */}
-        <Button
-          onClick={() => setOpen(true)}
-          variant="contained"
-          startIcon={<LogoutIcon />}
-          className="bg-red-600 hover:bg-red-700 text-white font-medium rounded-lg transition-all duration-300"
-        >
-          Logout
-        </Button>
+            {/* ----------------LOGOUT BUTTON---------------------- */}
+            <Button
+              onClick={() => setOpen(true)}
+              variant="contained"
+              startIcon={<LogoutIcon />}
+              className="bg-red-600 hover:bg-red-700 text-white font-medium rounded-lg transition-all duration-300"
+            >
+              Logout
+            </Button>
+          </Box>
+        </Box>
       </Box>
-    </Box>
-    </Box>
 
       {/* ------------------------------ FORM SECTION ----------------------------- */}
       {/* ------------------------------ FORM SECTION ----------------------------- */}
       {/* ------------------------------ FORM SECTION ----------------------------- */}
 
       <Box className="min-h-screen w-full bg-gray-50 py-2">
-
-
         <Box className="flex flex-col md:flex-row gap-8 w-full max-w-7xl mx-auto mt-8 px-4 sm:px-8">
-
           {/* ---------------------INFORMATION FROM USER----------------------------- */}
           {/* ---------------------INFORMATION FROM USER----------------------------- */}
           {/* ---------------------INFORMATION FROM USER----------------------------- */}
 
           <Box className="flex flex-col  w-full md:w-[120%] py-6 rounded-3xl mx-auto">
-
             {/* ----------------------------- PROFILE IMAGE-------------------------------- */}
 
             <Box className="flex justify-center mb-8 ">
-            <Badge
-              color="info"
-              overlap="circular"
-              className="cursor-pointer"
-              badgeContent={<EditIcon fontSize="small" />}
-              anchorOrigin={{
-                vertical: "bottom",
-                horizontal: "right",
-              }}
-              onClick={handleAvatarClick} 
+              <Badge
+                color="info"
+                overlap="circular"
+                className="cursor-pointer"
+                badgeContent={<EditIcon fontSize="small" />}
+                anchorOrigin={{
+                  vertical: "bottom",
+                  horizontal: "right",
+                }}
+                onClick={handleAvatarClick}
               >
                 <Avatar
                   // src={candidateData.candidatePicture}
                   className="w-28 md:w-32 h-28 md:h-32"
-                  onClick={(e) => e.stopPropagation()} 
+                  onClick={(e) => e.stopPropagation()}
                 />
-              <input
-                type="file"
-                ref={fileInputRef}
-                className="hidden"
-                // onChange={(e) => setProfileImage(e.target.files[0])}
-                disabled={!isEditing}
-              />
-             </Badge>
+                <input
+                  type="file"
+                  ref={fileInputRef}
+                  className="hidden"
+                  // onChange={(e) => setProfileImage(e.target.files[0])}
+                  disabled={!isEditing}
+                />
+              </Badge>
             </Box>
 
             {/* ------------------------Personal Information------------------------ */}
             {/* ------------------------Personal Information------------------------ */}
 
-            <Box className="mx-6 md:mx-16 space-y-5">
+            <Box className="mx-6 md:mx-16 space-y-5 p-4 border border-black rounded-3xl m-3">
               <Box>
-                <Typography
-                  variant=""
-                  className="text-black font-semibold text-2xl md:text-3xl mb-3 sm:mb-5 mt-2 sm:mt-8"
-                >
+                <Typography className="text-black font-semibold text-2xl md:text-3xl mb-3 sm:mb-5 mt-3 sm:mt-5">
                   Personal Information
                 </Typography>
 
@@ -528,12 +520,9 @@ const Exp_Profile = () => {
 
             {/* -----------------------PROFESSIONAL DETAILS------------------------- */}
             {/* -----------------------PROFESSIONAL DETAILS------------------------- */}
-            <Box className="mx-6 md:mx-16 space-y-5">
+            <Box className="mx-6 md:mx-16 space-y-5 p-4 border border-black rounded-3xl m-3">
               <Box>
-                <Typography
-                  variant=""
-                  className="text-black font-semibold text-2xl md:text-3xl mb-3 sm:mb-5 mt-2 sm:mt-8"
-                >
+                <Typography className="text-black font-semibold text-2xl md:text-3xl mb-3 sm:mb-5 mt-3 sm:mt-5">
                   Professional Information
                 </Typography>
 
@@ -735,282 +724,282 @@ const Exp_Profile = () => {
 
             {/* ---------------------------BANK DETAILS-------------------------- */}
             {/* ---------------------------BANK DETAILS-------------------------- */}
-            <Box className="mx-6 md:mx-16 space-y-5">
-            <Typography className="text-black font-semibold text-2xl md:text-3xl mb-3 sm:mb-2 mt-2 sm:mt-8">
-              Bank Details
-            </Typography>
+            <Box className="mx-6 md:mx-16 space-y-5 p-4 border border-black rounded-3xl m-3">
+              <Typography className="text-black font-semibold text-2xl md:text-3xl mb-3 sm:mb-2 mt-3 sm:mt-5">
+                Bank Details
+              </Typography>
 
-            {/* Radio Buttons for Bank Type */}
-            <RadioGroup
-              row
-              value={bankType}
-              onChange={(e) => setBankType(e.target.value)}
-            >
-              <FormControlLabel
-                value="domestic"
-                control={<Radio />}
-                label="Domestic"
-              />
-              <FormControlLabel
-                value="international"
-                control={<Radio />}
-                label="International"
-              />
-            </RadioGroup>
+              {/* Radio Buttons for Bank Type */}
+              <RadioGroup
+                row
+                value={bankType}
+                onChange={(e) => setBankType(e.target.value)}
+              >
+                <FormControlLabel
+                  value="domestic"
+                  control={<Radio />}
+                  label="Domestic"
+                />
+                <FormControlLabel
+                  value="international"
+                  control={<Radio />}
+                  label="International"
+                />
+              </RadioGroup>
 
-            {bankType === "domestic" ? (
-              <>
-                <Box className="w-full flex gap-5 flex-wrap sm:flex-nowrap">
-                  <Box className="w-full">
-                    <TextField
-                      label="Account Holder Name"
-                      type="text"
-                      disabled={!isEditing}
-                      value={expertData.expertIndAccountHolderName}
-                      onChange={handleChange}
-                      required
-                      placeholder="Enter account holder name"
-                      variant="outlined"
-                      name="expertIndAccountHolderName"
-                      className="mb-5 bg-gray-100 rounded-lg w-full"
-                      sx={{
-                        "& .MuiOutlinedInput-root": {
-                          "&.Mui-focused fieldset": {
-                            borderColor: "black",
+              {bankType === "domestic" ? (
+                <>
+                  <Box className="w-full flex gap-5 flex-wrap sm:flex-nowrap">
+                    <Box className="w-full">
+                      <TextField
+                        label="Account Holder Name"
+                        type="text"
+                        disabled={!isEditing}
+                        value={expertData.expertIndAccountHolderName}
+                        onChange={handleChange}
+                        required
+                        placeholder="Enter account holder name"
+                        variant="outlined"
+                        name="expertIndAccountHolderName"
+                        className="mb-5 bg-gray-100 rounded-lg w-full"
+                        sx={{
+                          "& .MuiOutlinedInput-root": {
+                            "&.Mui-focused fieldset": {
+                              borderColor: "black",
+                            },
                           },
-                        },
-                        "& .MuiInputLabel-root.Mui-focused": {
-                          color: "black",
-                        },
-                      }}
-                    />
+                          "& .MuiInputLabel-root.Mui-focused": {
+                            color: "black",
+                          },
+                        }}
+                      />
+                    </Box>
+
+                    <Box className="w-full">
+                      <TextField
+                        label="Account Number"
+                        type="number"
+                        disabled={!isEditing}
+                        value={expertData.expertIndAccountNumber}
+                        onChange={handleChange}
+                        required
+                        placeholder="Enter your Account number"
+                        variant="outlined"
+                        name="expertIndAccountNumber"
+                        error={!!errors.expertIndAccountNumber}
+                        helperText={errors.expertIndAccountNumber || ""}
+                        className="mb-5 bg-gray-100 rounded-lg w-full"
+                        sx={{
+                          "& .MuiOutlinedInput-root": {
+                            "&.Mui-focused fieldset": {
+                              borderColor: "black",
+                            },
+                          },
+                          "& .MuiInputLabel-root.Mui-focused": {
+                            color: "black",
+                          },
+                        }}
+                      />
+                    </Box>
+                  </Box>
+                  {/* --------------------Ifsc code and branch name------------------------ */}
+                  <Box className="w-full flex gap-5 flex-wrap sm:flex-nowrap">
+                    <Box className="w-full">
+                      <TextField
+                        label="Ifsc Code"
+                        type="number"
+                        disabled={!isEditing}
+                        value={expertData.expertIndIfscCode}
+                        onChange={handleChange}
+                        required
+                        placeholder="Enter IFSC Code"
+                        variant="outlined"
+                        name="expertIndIfscCode"
+                        className="mb-5 bg-gray-100 rounded-lg w-full"
+                        sx={{
+                          "& .MuiOutlinedInput-root": {
+                            "&.Mui-focused fieldset": {
+                              borderColor: "black",
+                            },
+                          },
+                          "& .MuiInputLabel-root.Mui-focused": {
+                            color: "black",
+                          },
+                        }}
+                      />
+                    </Box>
+
+                    <Box className="w-full">
+                      <TextField
+                        label="Branch Name"
+                        type="text"
+                        disabled={!isEditing}
+                        value={expertData.expertIndBranchName}
+                        onChange={handleChange}
+                        required
+                        placeholder="Enter Branch Name"
+                        variant="outlined"
+                        name="expertBranchName"
+                        className="mb-5 bg-gray-100 rounded-lg w-full"
+                        sx={{
+                          "& .MuiOutlinedInput-root": {
+                            "&.Mui-focused fieldset": {
+                              borderColor: "black",
+                            },
+                          },
+                          "& .MuiInputLabel-root.Mui-focused": {
+                            color: "black",
+                          },
+                        }}
+                      />
+                    </Box>
                   </Box>
 
-                  <Box className="w-full">
-                    <TextField
-                      label="Account Number"
-                      type="number"
-                      disabled={!isEditing}
-                      value={expertData.expertIndAccountNumber}
-                      onChange={handleChange}
-                      required
-                      placeholder="Enter your Account number"
-                      variant="outlined"
-                      name="expertIndAccountNumber"
-                      error={!!errors.expertIndAccountNumber}
-                      helperText={errors.expertIndAccountNumber || ""}
-                      className="mb-5 bg-gray-100 rounded-lg w-full"
-                      sx={{
-                        "& .MuiOutlinedInput-root": {
-                          "&.Mui-focused fieldset": {
-                            borderColor: "black",
+                  {/* --------------------- UPI PIN-----------------------*/}
+
+                  <Box className="w-full flex gap-5 flex-wrap sm:flex-nowrap">
+                    <Box className="w-full">
+                      <TextField
+                        label="UPI"
+                        type="text"
+                        disabled={!isEditing}
+                        value={expertData.expertIndUPI}
+                        onChange={handleChange}
+                        required
+                        placeholder="enter upi pin"
+                        variant="outlined"
+                        name="expertIndUPI"
+                        className="mb-5 bg-gray-100 rounded-lg w-full"
+                        sx={{
+                          "& .MuiOutlinedInput-root": {
+                            "&.Mui-focused fieldset": {
+                              borderColor: "black",
+                            },
                           },
-                        },
-                        "& .MuiInputLabel-root.Mui-focused": {
-                          color: "black",
-                        },
-                      }}
-                    />
+                          "& .MuiInputLabel-root.Mui-focused": {
+                            color: "black",
+                          },
+                        }}
+                      />
+                    </Box>
                   </Box>
-                </Box>
-                {/* --------------------Ifsc code and branch name------------------------ */}
-                <Box className="w-full flex gap-5 flex-wrap sm:flex-nowrap">
-                  <Box className="w-full">
-                    <TextField
-                      label="Ifsc Code"
-                      type="number"
-                      disabled={!isEditing}
-                      value={expertData.expertIndIfscCode}
-                      onChange={handleChange}
-                      required
-                      placeholder="Enter IFSC Code"
-                      variant="outlined"
-                      name="expertIndIfscCode"
-                      className="mb-5 bg-gray-100 rounded-lg w-full"
-                      sx={{
-                        "& .MuiOutlinedInput-root": {
-                          "&.Mui-focused fieldset": {
-                            borderColor: "black",
+                </>
+              ) : (
+                <>
+                  {/* --------------------- ACCOUNT NO & HOLDER NAME ---------------------------  */}
+                  <Box className="w-full flex gap-5 flex-wrap sm:flex-nowrap">
+                    <Box className="w-full">
+                      <TextField
+                        label="Account Holder Name"
+                        type="text"
+                        disabled={!isEditing}
+                        value={expertData.expertOUTaccountHolderName}
+                        onChange={handleChange}
+                        required
+                        placeholder="Enter account holder name"
+                        variant="outlined"
+                        name="expertOUTaccountHolderName"
+                        className="mb-5 bg-gray-100 rounded-lg w-full"
+                        sx={{
+                          "& .MuiOutlinedInput-root": {
+                            "&.Mui-focused fieldset": {
+                              borderColor: "black",
+                            },
                           },
-                        },
-                        "& .MuiInputLabel-root.Mui-focused": {
-                          color: "black",
-                        },
-                      }}
-                    />
+                          "& .MuiInputLabel-root.Mui-focused": {
+                            color: "black",
+                          },
+                        }}
+                      />
+                    </Box>
+
+                    <Box className="w-full">
+                      <TextField
+                        label="Account Number"
+                        type="number"
+                        disabled={!isEditing}
+                        value={expertData.expertOUTaccountNumber}
+                        onChange={handleChange}
+                        required
+                        placeholder="Enter your Account number"
+                        variant="outlined"
+                        name="expertOUTaccountNumber"
+                        error={!!errors.expertOUTaccountNumber}
+                        helperText={errors.expertOUTaccountNumber || ""}
+                        className="mb-5 bg-gray-100 rounded-lg w-full"
+                        sx={{
+                          "& .MuiOutlinedInput-root": {
+                            "&.Mui-focused fieldset": {
+                              borderColor: "black",
+                            },
+                          },
+                          "& .MuiInputLabel-root.Mui-focused": {
+                            color: "black",
+                          },
+                        }}
+                      />
+                    </Box>
                   </Box>
 
-                  <Box className="w-full">
-                    <TextField
-                      label="Branch Name"
-                      type="text"
-                      disabled={!isEditing}
-                      value={expertData.expertIndBranchName}
-                      onChange={handleChange}
-                      required
-                      placeholder="Enter Branch Name"
-                      variant="outlined"
-                      name="expertBranchName"
-                      className="mb-5 bg-gray-100 rounded-lg w-full"
-                      sx={{
-                        "& .MuiOutlinedInput-root": {
-                          "&.Mui-focused fieldset": {
-                            borderColor: "black",
-                          },
-                        },
-                        "& .MuiInputLabel-root.Mui-focused": {
-                          color: "black",
-                        },
-                      }}
-                    />
-                  </Box>
-                </Box>
+                  {/* --------------------- IAN NUMBER-----------------------*/}
 
-                {/* --------------------- UPI PIN-----------------------*/}
-
-                <Box className="w-full flex gap-5 flex-wrap sm:flex-nowrap">
-                  <Box className="w-full">
-                    <TextField
-                      label="UPI"
-                      type="text"
-                      disabled={!isEditing}
-                      value={expertData.expertIndUPI}
-                      onChange={handleChange}
-                      required
-                      placeholder="enter upi pin"
-                      variant="outlined"
-                      name="expertIndUPI"
-                      className="mb-5 bg-gray-100 rounded-lg w-full"
-                      sx={{
-                        "& .MuiOutlinedInput-root": {
-                          "&.Mui-focused fieldset": {
-                            borderColor: "black",
+                  <Box className="w-full flex gap-5 flex-wrap sm:flex-nowrap">
+                    <Box className="w-full">
+                      <TextField
+                        label="IAN number"
+                        type="number"
+                        disabled={!isEditing}
+                        value={expertData.expertOUTianNumber}
+                        onChange={handleChange}
+                        required
+                        placeholder="enter IAN number"
+                        variant="outlined"
+                        name="expertOUTianNumber"
+                        className="mb-5 bg-gray-100 rounded-lg w-full"
+                        sx={{
+                          "& .MuiOutlinedInput-root": {
+                            "&.Mui-focused fieldset": {
+                              borderColor: "black",
+                            },
                           },
-                        },
-                        "& .MuiInputLabel-root.Mui-focused": {
-                          color: "black",
-                        },
-                      }}
-                    />
-                  </Box>
-                </Box>
-              </>
-            ) : (
-              <>
-                {/* --------------------- ACCOUNT NO & HOLDER NAME ---------------------------  */}
-                <Box className="w-full flex gap-5 flex-wrap sm:flex-nowrap">
-                  <Box className="w-full">
-                    <TextField
-                      label="Account Holder Name"
-                      type="text"
-                      disabled={!isEditing}
-                      value={expertData.expertOUTaccountHolderName}
-                      onChange={handleChange}
-                      required
-                      placeholder="Enter account holder name"
-                      variant="outlined"
-                      name="expertOUTaccountHolderName"
-                      className="mb-5 bg-gray-100 rounded-lg w-full"
-                      sx={{
-                        "& .MuiOutlinedInput-root": {
-                          "&.Mui-focused fieldset": {
-                            borderColor: "black",
+                          "& .MuiInputLabel-root.Mui-focused": {
+                            color: "black",
                           },
-                        },
-                        "& .MuiInputLabel-root.Mui-focused": {
-                          color: "black",
-                        },
-                      }}
-                    />
+                        }}
+                      />
+                    </Box>
                   </Box>
+                  {/* --------------------- swift code-----------------------*/}
 
-                  <Box className="w-full">
-                    <TextField
-                      label="Account Number"
-                      type="number"
-                      disabled={!isEditing}
-                      value={expertData.expertOUTaccountNumber}
-                      onChange={handleChange}
-                      required
-                      placeholder="Enter your Account number"
-                      variant="outlined"
-                      name="expertOUTaccountNumber"
-                      error={!!errors.expertOUTaccountNumber}
-                      helperText={errors.expertOUTaccountNumber || ""}
-                      className="mb-5 bg-gray-100 rounded-lg w-full"
-                      sx={{
-                        "& .MuiOutlinedInput-root": {
-                          "&.Mui-focused fieldset": {
-                            borderColor: "black",
+                  <Box className="w-full flex gap-5 flex-wrap sm:flex-nowrap">
+                    <Box className="w-full">
+                      <TextField
+                        label="Swift code"
+                        type="text"
+                        disabled={!isEditing}
+                        value={expertData.expertOUTswiftCode}
+                        onChange={handleChange}
+                        required
+                        placeholder="enter swift code"
+                        variant="outlined"
+                        name="expertOUTswiftCode"
+                        className="mb-5 bg-gray-100 rounded-lg w-full"
+                        sx={{
+                          "& .MuiOutlinedInput-root": {
+                            "&.Mui-focused fieldset": {
+                              borderColor: "black",
+                            },
                           },
-                        },
-                        "& .MuiInputLabel-root.Mui-focused": {
-                          color: "black",
-                        },
-                      }}
-                    />
-                  </Box>
-                </Box>
-
-                {/* --------------------- IAN NUMBER-----------------------*/}
-
-                <Box className="w-full flex gap-5 flex-wrap sm:flex-nowrap">
-                  <Box className="w-full">
-                    <TextField
-                      label="IAN number"
-                      type="number"
-                      disabled={!isEditing}
-                      value={expertData.expertOUTianNumber}
-                      onChange={handleChange}
-                      required
-                      placeholder="enter IAN number"
-                      variant="outlined"
-                      name="expertOUTianNumber"
-                      className="mb-5 bg-gray-100 rounded-lg w-full"
-                      sx={{
-                        "& .MuiOutlinedInput-root": {
-                          "&.Mui-focused fieldset": {
-                            borderColor: "black",
+                          "& .MuiInputLabel-root.Mui-focused": {
+                            color: "black",
                           },
-                        },
-                        "& .MuiInputLabel-root.Mui-focused": {
-                          color: "black",
-                        },
-                      }}
-                    />
+                        }}
+                      />
+                    </Box>
                   </Box>
-                </Box>
-                {/* --------------------- swift code-----------------------*/}
-
-                <Box className="w-full flex gap-5 flex-wrap sm:flex-nowrap">
-                  <Box className="w-full">
-                    <TextField
-                      label="Swift code"
-                      type="text"
-                      disabled={!isEditing}
-                      value={expertData.expertOUTswiftCode}
-                      onChange={handleChange}
-                      required
-                      placeholder="enter swift code"
-                      variant="outlined"
-                      name="expertOUTswiftCode"
-                      className="mb-5 bg-gray-100 rounded-lg w-full"
-                      sx={{
-                        "& .MuiOutlinedInput-root": {
-                          "&.Mui-focused fieldset": {
-                            borderColor: "black",
-                          },
-                        },
-                        "& .MuiInputLabel-root.Mui-focused": {
-                          color: "black",
-                        },
-                      }}
-                    />
-                  </Box>
-                </Box>
-              </>
-            )}
-          </Box>
+                </>
+              )}
+            </Box>
 
             {/* <Box className="flex flex-col gap-y-4 w-full">
     {[
