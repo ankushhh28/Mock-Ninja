@@ -13,6 +13,7 @@ import { useState } from "react";
 const AddPackage = () => {
 
   //* ---------------------------------- PACKAGES ARRAY ----------------------------------
+
   const packages = [
     "Interview",
     "Career Guidance",
@@ -21,10 +22,11 @@ const AddPackage = () => {
   ];
 
   //* ----------------------------------- USE STATES -------------------------------------
+
   const [status, setStatus] = useState({});
 
-
   //* ----------------------------------- PACKAGE ACTIVE ---------------------------------
+
   const handleActivate = (index) => {
     setStatus((prevStatus) => ({
       ...prevStatus,
@@ -113,13 +115,13 @@ const AddPackage = () => {
                   className="text-sm sm:text-lg font-semibold"
                 >
                   <span
-                    className={`px-2 sm:px-3 py-1 rounded-full text-xs sm:text-sm font-medium ${
+                    className={`px-2 sm:px-3 py-2 flex items-center justify-center font-bold rounded-full text-xs sm:text-sm ${
                       status[index]
                         ? "bg-green-100 text-green-700"
                         : "bg-red-100 text-red-700"
                     }`}
                   >
-                    {status[index] ? "Active" : "Not Active"}
+                    <span className="animate-pulse"><span className="inline mb-2">o </span>{status[index] ? "Active" : "Not Active"}</span>
                   </span>
                 </TableCell>
               </TableRow>

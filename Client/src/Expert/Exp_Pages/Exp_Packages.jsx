@@ -91,7 +91,7 @@ const Exp_Packages = () => {
 
       {/* ------------------- MOBILE VIEW SIDE BAR ---------------------- */}
 
-      <Box className="w-full h-20 absolute bottom-0 md:hidden bg-primary overflow-x-hidden">
+      <Box className="w-full h-20 z-10 absolute bottom-0 md:hidden bg-primary overflow-x-hidden">
 
         <Box className="flex items-end h-full w-full justify-between pb-3">
 

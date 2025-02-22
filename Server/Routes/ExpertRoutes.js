@@ -2,6 +2,7 @@ import express from "express"
 import cors from "cors"
 import { verifyExpertToken } from "../Utils/ExpAuth.js"
 import { fetchingCareerPackage, fetchingInterviewPackage, fetchingPriorityDMPackage, fetchingResumePackage, updatingCareerPackage, updatingInterviewPackage, updatingPriorityDMPackage, updatingResumePackage } from "../Controller/Expert/Packages.js"
+import { AddingTimings, FetchingTimings, deletingTimeData } from "../Controller/Expert/Availability.js"
 
 const ExpertRouter = express.Router()
 
@@ -20,5 +21,9 @@ ExpertRouter.post("/Updating-Resume-Package-Details", updatingResumePackage)
 
 ExpertRouter.get("/Fetching-PriorityDM-Package-Details", fetchingPriorityDMPackage)
 ExpertRouter.post("/Updating-PriorityDM-Package-Details", updatingPriorityDMPackage)
+
+ExpertRouter.post("/Adding-Availability-Timing", AddingTimings)
+ExpertRouter.get("/Fetching-Availability-Timing", FetchingTimings)
+ExpertRouter.delete("/Delete-Availability-Timing", deletingTimeData)
 
 export default ExpertRouter
