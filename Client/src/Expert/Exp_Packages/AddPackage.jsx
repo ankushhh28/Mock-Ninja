@@ -1,11 +1,132 @@
-import { Box } from "@mui/material";
-import React from "react";
+import {
+  Box,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Button,
+} from "@mui/material";
+import { useState } from "react";
 
 const AddPackage = () => {
+
+  //* ---------------------------------- PACKAGES ARRAY ----------------------------------
+  const packages = [
+    "Interview",
+    "Career Guidance",
+    "Resume Guidance",
+    "Priority DM",
+  ];
+
+  //* ----------------------------------- USE STATES -------------------------------------
+  const [status, setStatus] = useState({});
+
+
+  //* ----------------------------------- PACKAGE ACTIVE ---------------------------------
+  const handleActivate = (index) => {
+    setStatus((prevStatus) => ({
+      ...prevStatus,
+      [index]: true,
+    }));
+  };
+
+  //* ---------------------------------- PACKAGE DEACTIVATE ------------------------------- 
+  const handleDeactivate = (index) => {
+    setStatus((prevStatus) => ({
+      ...prevStatus,
+      [index]: false,
+    }));
+  };
+
   return (
-    <Box className="w-full h-full ">
-      <Box>Modi pariatur maxime recusandae minus officiis qui ab non nihil voluptates, ex fugit praesentium facilis dicta error delectus velit similique animi reiciendis deserunt ducimus consequuntur. Quam, dolorem quos illo consectetur tempore unde alias qui neque facilis, culpa dolor dignissimos, fugit excepturi atque. Blanditiis provident assumenda quas asperiores in. Voluptatem, itaque quas totam laudantium assumenda nobis adipisci illo odio, aliquam veritatis dignissimos nisi repellat blanditiis aperiam voluptatum nostrum aut vitae hic perferendis. Aspernatur quod laborum laudantium provident odit repudiandae vitae doloremque unde excepturi modi, dolorum blanditiis, perspiciatis animi? Obcaecati soluta quam veniam, quasi ut magnam distinctio culpa ipsam laudantium laborum reiciendis assumenda. Modi necessitatibus debitis maxime, voluptatum nam quia ipsam nostrum, vel quos libero distinctio nobis tempore mollitia expedita quod quae, temporibus blanditiis veritatis non inventore nesciunt hic officia doloribus voluptates. Esse magni qui pariatur ut quas quia iusto similique non quisquam impedit at nemo libero, dicta cumque? Eos aspernatur esse unde voluptatum? Iure quidem facilis sapiente. Hic, a illum? Excepturi illum voluptas eos autem numquam minima libero repellat, animi laboriosam molestiae eaque quo magnam nemo tempore sed amet minus eum delectus, quis ipsam officiis. Accusantium odit ad quibusdam corrupti ipsam sint minus, illo qui consequatur nihil excepturi? Nulla, recusandae aliquid consequuntur facilis praesentium explicabo iusto sint nihil consectetur repellat et consequatur incidunt aut veritatis ratione nam itaque reprehenderit! Rem ex earum quidem porro aliquid. Consectetur, deserunt fugiat numquam eos animi ipsam! Hic, veritatis minus. Animi qui voluptatibus tenetur nisi dolore nobis eos iure quam, minus doloremque. Cupiditate fugiat eaque id nobis ipsam voluptate saepe delectus!</Box>
-      <Box></Box>
+    <Box className="w-full h-full flex justify-center items-center mt-16  bg-gradient-to-r from-purple-50 to-blue-50 ">
+      <TableContainer className="shadow-xl rounded-2xl overflow-hidden w-full overflow-x-auto">
+        <Table className="min-w-[600px] sm:min-w-full">
+          <TableHead>
+            <TableRow className="bg-gradient-to-r from-purple-600 via-primary to-blue-500">
+              <TableCell
+                align="center"
+                className="font-bold text-sm sm:text-lg text-white border-r border-white/20"
+              >
+                S.no.
+              </TableCell>
+              <TableCell className="font-bold text-sm sm:text-lg text-white border-r border-white/20">
+                Package Name
+              </TableCell>
+              <TableCell
+                align="center"
+                className="font-bold text-sm sm:text-lg text-white border-r border-white/20"
+              >
+                Activate
+              </TableCell>
+              <TableCell
+                align="center"
+                className="font-bold text-sm sm:text-lg text-white border-r border-white/20"
+              >
+                Deactivate
+              </TableCell>
+              <TableCell
+                align="center"
+                className="font-bold text-sm sm:text-lg text-white"
+              >
+                Status
+              </TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {packages.map((item, index) => (
+              <TableRow
+                key={index}
+                className="bg-white/80 hover:bg-purple-50 transition-all duration-300 border-b border-purple-400/80"
+              >
+                <TableCell
+                  align="center"
+                  className="text-sm sm:text-lg font-medium text-gray-700"
+                >
+                  {index + 1}.
+                </TableCell>
+                <TableCell className="text-sm sm:text-lg font-medium text-gray-700">
+                  {item}
+                </TableCell>
+                <TableCell align="center">
+                  <Button
+                    variant="contained"
+                    onClick={() => handleActivate(index)}
+                    className="bg-blue-500 hover:bg-blue-600 normal-case px-4 sm:px-6 py-1 text-sm sm:text-lg shadow-md hover:shadow-lg transition-all duration-300"
+                  >
+                    Add
+                  </Button>
+                </TableCell>
+                <TableCell align="center">
+                  <Button
+                    variant="contained"
+                    onClick={() => handleDeactivate(index)}
+                    className="bg-red-500 hover:bg-red-600 normal-case px-3 sm:px-4 py-1 text-sm sm:text-lg shadow-md hover:shadow-lg transition-all duration-300"
+                  >
+                    Remove
+                  </Button>
+                </TableCell>
+                <TableCell
+                  align="center"
+                  className="text-sm sm:text-lg font-semibold"
+                >
+                  <span
+                    className={`px-2 sm:px-3 py-1 rounded-full text-xs sm:text-sm font-medium ${
+                      status[index]
+                        ? "bg-green-100 text-green-700"
+                        : "bg-red-100 text-red-700"
+                    }`}
+                  >
+                    {status[index] ? "Active" : "Not Active"}
+                  </span>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
     </Box>
   );
 };
