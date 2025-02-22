@@ -33,6 +33,7 @@ const Exp_Profile = () => {
   const [errors, setErrors] = useState({});
   const [bankType, setBankType] = useState("domestic");
   const [open, setOpen] = useState(false);
+  const [updateLoading, setUpdateLoading] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [modalMsg, setModalMsg] = useState({
     open: false,
@@ -76,121 +77,6 @@ const Exp_Profile = () => {
     fileInputRef.current.click();
   };
 
-  // ---------------- HANDLING FORM VALIDATION -----------------
-
-  const validateExpertData = () => {
-    let newErrors = {};
-    let isValid = true;
-
-    // Regex Patterns
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    const nameRegex = /^[a-zA-Z]+ [a-zA-Z]+$/;
-    const phoneRegex = /^\d{10}$/;
-    const experienceRegex = /^[0-9]+$/;
-    const accountNumberRegex = /^[0-9]+$/;
-    const ifscRegex = /^[A-Z]{4}0[A-Z0-9]{6}$/;
-    const linkedInRegex =
-      /^(https?:\/\/)?(www\.)?linkedin\.com\/(in|pub|company)\/[a-zA-Z0-9-_%]+\/?$/;
-
-    const requiredFields = [
-      "expertName",
-      "expertPersonalEmail",
-      "expertOrgEmail",
-      "expertPhoneNumber",
-      "expertDOB",
-      "expertExperience",
-      "expertIndAccountNumber",
-      "expertIndIfscCode",
-      "currentCompany",
-      "linkedin",
-    ];
-
-    requiredFields.forEach((field) => {
-      if (!expertData[field] || expertData[field].trim() === "") {
-        newErrors[field] = "This field is required.";
-        isValid = false;
-      }
-    });
-
-    // Name Validation
-    if (expertData.expertName && !nameRegex.test(expertData.expertName)) {
-      newErrors.expertName = "Enter a valid name.";
-      isValid = false;
-    }
-
-    // Email Validation
-    if (
-      expertData.expertPersonalEmail &&
-      !emailRegex.test(expertData.expertPersonalEmail)
-    ) {
-      newErrors.expertPersonalEmail = "Enter a valid personal email.";
-      isValid = false;
-    }
-
-    // Email Validation
-    if (
-      expertData.expertOrgEmail &&
-      !emailRegex.test(expertData.expertOrgEmail)
-    ) {
-      newErrors.expertOrgEmail = "Enter a valid organizational email.";
-      isValid = false;
-    }
-
-    // Phone Validation
-    if (
-      expertData.expertPhoneNumber &&
-      !phoneRegex.test(expertData.expertPhoneNumber)
-    ) {
-      newErrors.expertPhoneNumber = "Enter a valid 10-digit mobile number.";
-      isValid = false;
-    }
-
-    // DOB Validation (24 years old)
-    if (expertData.expertDOB && !dobRegex.test(expertData.expertDOB)) {
-      const birthDate = new Date(expertData.expertDOB);
-      const age = new Date().getFullYear() - birthDate.getFullYear();
-      if (age < 24) {
-        newErrors.expertDOB = "Expert must be at least 24 years old.";
-        isValid = false;
-      }
-    }
-
-    // Experience Validation
-    if (
-      expertData.expertExperience &&
-      !experienceRegex.test(expertData.expertExperience)
-    ) {
-      newErrors.expertExperience = "Experience should be a number.";
-      isValid = false;
-    }
-
-    // Account Number Validation
-    if (!accountNumberRegex.test(expertData.expertIndAccountNumber)) {
-      newErrors.expertIndAccountNumber = "Enter a valid account number.";
-      isValid = false;
-    }
-
-    // IFSC Code Validation
-    if (!ifscRegex.test(expertData.expertIndIfscCode)) {
-      newErrors.expertIndIfscCode = "Enter a valid IFSC code.";
-      isValid = false;
-    }
-
-    //linkedIn Validation
-    if (
-      expertData.expertLinkedin &&
-      !linkedInRegex.test(expertData.expertLinkedin)
-    ) {
-      newErrors.expertLinkedin = "Enter a valid LinkedIn URL.";
-      isValid = false;
-    }
-
-    // Update errors state
-    setErrors(newErrors);
-
-    return isValid;
-  };
-
   // ----------------- HANDLE CHANGE ----------------------
 
   const handleChange = (e) => {
@@ -201,19 +87,86 @@ const Exp_Profile = () => {
   // ------------------ HANDLE FORM SUBMIT ------------------
 
   const handleSaveChanges = () => {
-    // const isValid = validateExpertData();
-
-    // if (isValid) {
-    //   console.log("Saving changes...");
-    // } else {
-    setModalMsg({
-      open: true,
-      message: "Please fix the errors before saving.",
-      severity: "error",
-    });
-    setIsEditing(false);
-    // }
+    setUpdateLoading(true);
+  
+    // Name Validation
+    if (!expertData.expertName || expertData.expertName.trim() === "") {
+      setUpdateLoading(false);
+      setModalMsg({ open: true, message: "Expert name is required.", severity: "error" });
+      return;
+    }
+    if (!/^[a-zA-Z]+(?: [a-zA-Z]+)*$/.test(expertData.expertName.trim())) {
+      setUpdateLoading(false);
+      setModalMsg({ open: true, message: "Enter a valid full name.", severity: "error" });
+      return;
+    }
+  
+    // Email Validation
+    if (!expertData.expertPersonalEmail || !/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(expertData.expertPersonalEmail.trim())) {
+      setUpdateLoading(false);
+      setModalMsg({ open: true, message: "Enter a valid personal email.", severity: "error" });
+      return;
+    }
+  
+    if (!expertData.expertOrgEmail || !/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(expertData.expertOrgEmail.trim())) {
+      setUpdateLoading(false);
+      setModalMsg({ open: true, message: "Enter a valid organizational email.", severity: "error" });
+      return;
+    }
+  
+    // Phone Number Validation
+    if (!/^(?:\+91)?\d{10}$/.test(expertData.expertPhoneNumber.trim())) {
+      setUpdateLoading(false);
+      setModalMsg({ open: true, message: "Enter a valid 10-digit phone number.", severity: "error" });
+      return;
+    }
+  
+    // DOB Validation (24+ years old)
+    const today = new Date();
+    const birthDate = new Date(expertData.expertDOB);
+    let age = today.getFullYear() - birthDate.getFullYear();
+    const monthDiff = today.getMonth() - birthDate.getMonth();
+    if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+      age--;
+    }
+    if (age < 24) {
+      setUpdateLoading(false);
+      setModalMsg({ open: true, message: "Expert must be at least 24 years old.", severity: "error" });
+      return;
+    }
+  
+    // Experience Validation
+    if (!/^\d+$/.test(expertData.expertExperience) || parseInt(expertData.expertExperience) < 0) {
+      setUpdateLoading(false);
+      setModalMsg({ open: true, message: "Experience should be a positive number.", severity: "error" });
+      return;
+    }
+  
+    // Account Number Validation
+    if (!/^\d{9,18}$/.test(expertData.expertIndAccountNumber.trim())) {
+      setUpdateLoading(false);
+      setModalMsg({ open: true, message: "Enter a valid account number (9-18 digits).", severity: "error" });
+      return;
+    }
+  
+    // IFSC Code Validation
+    if (!/^[A-Za-z]{4}0[A-Za-z0-9]{6}$/.test(expertData.expertIndIfscCode.trim())) {
+      setUpdateLoading(false);
+      setModalMsg({ open: true, message: "Enter a valid IFSC code.", severity: "error" });
+      return;
+    }
+  
+    // LinkedIn URL Validation
+    if (!/^(https?:\/\/)?(www\.)?linkedin\.com\/(in|pub|company)\/[a-zA-Z0-9-]+\/?$/.test(expertData.expertLinkedin.trim())) {
+      setUpdateLoading(false);
+      setModalMsg({ open: true, message: "Enter a valid LinkedIn URL.", severity: "error" });
+      return;
+    }
+  
+    console.log(expertData);
   };
+  
+  
 
   return (
     <ExpertLayout>
@@ -234,7 +187,7 @@ const Exp_Profile = () => {
                 variant="contained"
                 startIcon={<EditIcon />}
                 className="bg-blue-600 hover:bg-blue-700 text-white w-fit font-light 
-            md:font-medium rounded-lg transition-all duration-300 text-wrap"
+            md:font-medium rounded-lg text-wrap"
                 sx={{
                   fontSize: { xs: "0.50rem", md: "0.75rem" },
                   width: { xs: "3rem", md: "6rem" },
@@ -250,7 +203,7 @@ const Exp_Profile = () => {
                 type="submit"
                 variant="contained"
                 startIcon={<TurnedInIcon />}
-                className="bg-green-600 hover:bg-green-700 text-white font-medium rounded-lg transition-all duration-300"
+                className="bg-green-600 hover:bg-green-700 text-white font-medium rounded-lg"
                 onClick={handleSaveChanges}
               >
                 Save Changes
@@ -281,6 +234,7 @@ const Exp_Profile = () => {
           {/* ---------------------INFORMATION FROM USER----------------------------- */}
 
           <Box className="flex flex-col  w-full md:w-[120%] py-6 rounded-3xl mx-auto">
+
             {/* ----------------------------- PROFILE IMAGE-------------------------------- */}
 
             <Box className="flex justify-center mb-8 ">
@@ -436,7 +390,7 @@ const Exp_Profile = () => {
               <Box className="w-full flex gap-5 flex-wrap sm:flex-nowrap">
                 <Box className="w-full">
                   <TextField
-                    label="Email"
+                    label="Personal Email"
                     type="text"
                     disabled={!isEditing}
                     value={expertData.expertPersonalEmail}
@@ -463,7 +417,7 @@ const Exp_Profile = () => {
 
                 <Box className="w-full">
                   <TextField
-                    label="Email"
+                    label="Org Email"
                     type="text"
                     disabled={!isEditing}
                     value={expertData.expertOrgEmail}
@@ -520,6 +474,7 @@ const Exp_Profile = () => {
 
             {/* -----------------------PROFESSIONAL DETAILS------------------------- */}
             {/* -----------------------PROFESSIONAL DETAILS------------------------- */}
+
             <Box className="mx-6 md:mx-16 space-y-5 p-4 border border-black rounded-3xl m-3">
               <Box>
                 <Typography className="text-black font-semibold text-2xl md:text-3xl mb-3 sm:mb-5 mt-3 sm:mt-5">
@@ -582,61 +537,8 @@ const Exp_Profile = () => {
                 </Box>
               </Box>
 
-              {/* ---------------------YOUTUBE & INSTAGRAM-----------------------------------*/}
-              <Box className="w-full flex gap-5 flex-wrap sm:flex-nowrap">
-                <Box className="w-full">
-                  <TextField
-                    label="youtube"
-                    type="text"
-                    disabled={!isEditing}
-                    value={expertData.expertYoutube}
-                    onChange={handleChange}
-                    required
-                    placeholder="Enter your youtube channel name"
-                    variant="outlined"
-                    name="expertYoutube"
-                    className="mb-5 bg-gray-100 rounded-lg w-full"
-                    sx={{
-                      "& .MuiOutlinedInput-root": {
-                        "&.Mui-focused fieldset": {
-                          borderColor: "black",
-                        },
-                      },
-                      "& .MuiInputLabel-root.Mui-focused": {
-                        color: "black",
-                      },
-                    }}
-                  />
-                </Box>
-
-                <Box className="w-full">
-                  <TextField
-                    label="Instagram"
-                    type="text"
-                    disabled={!isEditing}
-                    value={expertData.expertInstagram}
-                    onChange={handleChange}
-                    required
-                    placeholder="Enter your youtube channel name"
-                    variant="outlined"
-                    name="expertInstagram"
-                    className="mb-5 bg-gray-100 rounded-lg w-full"
-                    sx={{
-                      "& .MuiOutlinedInput-root": {
-                        "&.Mui-focused fieldset": {
-                          borderColor: "black",
-                        },
-                      },
-                      "& .MuiInputLabel-root.Mui-focused": {
-                        color: "black",
-                      },
-                    }}
-                  />
-                </Box>
-              </Box>
-
-              {/* --------------------- LINKEDIN ----------------------------------- */}
-              <Box className="w-full flex gap-5 flex-wrap sm:flex-nowrap">
+          {/* --------------------- LINKEDIN ----------------------------------- */}
+                <Box className="w-full flex gap-5 flex-wrap sm:flex-nowrap">
                 <Box className="w-full">
                   <TextField
                     label="LinkedIn"
@@ -665,17 +567,70 @@ const Exp_Profile = () => {
                 </Box>
               </Box>
 
+              {/* ---------------------YOUTUBE & INSTAGRAM-----------------------------------*/}
+              <Box className="w-full flex gap-5 flex-wrap sm:flex-nowrap">
+                <Box className="w-full">
+                  <TextField
+                    label="youtube"
+                    type="text"
+                    disabled={!isEditing}
+                    value={expertData.expertYoutube}
+                    onChange={handleChange}
+                    placeholder="Enter your youtube channel name"
+                    variant="outlined"
+                    name="expertYoutube"
+                    className="mb-5 bg-gray-100 rounded-lg w-full"
+                    sx={{
+                      "& .MuiOutlinedInput-root": {
+                        "&.Mui-focused fieldset": {
+                          borderColor: "black",
+                        },
+                      },
+                      "& .MuiInputLabel-root.Mui-focused": {
+                        color: "black",
+                      },
+                    }}
+                  />
+                </Box>
+
+                <Box className="w-full">
+                  <TextField
+                    label="Instagram"
+                    type="text"
+                    disabled={!isEditing}
+                    value={expertData.expertInstagram}
+                    onChange={handleChange}
+                    placeholder="Enter your youtube channel name"
+                    variant="outlined"
+                    name="expertInstagram"
+                    className="mb-5 bg-gray-100 rounded-lg w-full"
+                    sx={{
+                      "& .MuiOutlinedInput-root": {
+                        "&.Mui-focused fieldset": {
+                          borderColor: "black",
+                        },
+                      },
+                      "& .MuiInputLabel-root.Mui-focused": {
+                        color: "black",
+                      },
+                    }}
+                  />
+                </Box>
+              </Box>
+
               {/* --------------------- BIO -----------------------------------*/}
               <Box className="w-full flex gap-5 flex-wrap sm:flex-nowrap">
                 <Box className="w-full">
                   <TextField
-                    label="bio"
+                    label="Bio"
                     type="text"
+                    multiline
+                    rows={2}
                     disabled={!isEditing}
                     value={expertData.expertBio}
                     onChange={handleChange}
                     required
-                    // placeholder="your bio"
+                    placeholder="Enter your Profile Bio here"
                     variant="outlined"
                     name="expertBio"
                     className="mb-5 bg-gray-100 rounded-lg w-full"
@@ -699,11 +654,13 @@ const Exp_Profile = () => {
                   <TextField
                     label="About"
                     type="text"
+                    multiline
+                    rows={4}
                     disabled={!isEditing}
                     value={expertData.expertAbout}
                     onChange={handleChange}
                     required
-                    placeholder="your about section"
+                    placeholder="Your About Section"
                     variant="outlined"
                     name="expertAbout"
                     className="mb-5 bg-gray-100 rounded-lg w-full"
@@ -724,6 +681,7 @@ const Exp_Profile = () => {
 
             {/* ---------------------------BANK DETAILS-------------------------- */}
             {/* ---------------------------BANK DETAILS-------------------------- */}
+
             <Box className="mx-6 md:mx-16 space-y-5 p-4 border border-black rounded-3xl m-3">
               <Typography className="text-black font-semibold text-2xl md:text-3xl mb-3 sm:mb-2 mt-3 sm:mt-5">
                 Bank Details
@@ -1001,71 +959,7 @@ const Exp_Profile = () => {
               )}
             </Box>
 
-            {/* <Box className="flex flex-col gap-y-4 w-full">
-    {[
-      { label: "Name", name: "expertName" },
-      { label: "Email", name: "expertOrgEmail" },
-      { label: "Personal Email", name: "expertPersonalEmail" },
-      { label: "Contact no.", name: "expertPhoneNumber" },
-      { label: "City", name: "expertCity" },
-      { label: "Address", name: "expertAddress" },
-      //-------------------------------------------
-      { label: "Experience", name: "expertExperience" },
-      { label: "Profile Photo URL", name: "expertProfilePhoto" },
-      { label: "LinkedIn", name: "expertLinkedin" },
-      { label: "YouTube", name: "expertYoutube" },
-      { label: "Instagram", name: "expertInstagram" },
-      { label: "Current Company", name: "expertCurrentCompany" },
-      { label: "Bio", name: "expertBio" },
-      { label: "About", name: "expertAbout" },
-      //-------------------------------------------
-      {
-        label: "Individual Account Number",
-        name: "expertIndAccountNumber",
-      },
-      {
-        label: "Individual Account Holder Name",
-        name: "expertIndAccountHolderName",
-      },
-      { label: "Individual IFSC Code", name: "expertIndIfscCode" },
-      { label: "Individual Branch Name", name: "expertIndBranchName" },
-      { label: "Individual UPI ID", name: "expertIndUPI" },
-      {
-        label: "Outward Account Number",
-        name: "expertOUTaccountNumber",
-      },
-      {
-        label: "Outward Account Holder Name",
-        name: "expertOUTaccountHolderName",
-      },
-      { label: "Outward IAN Number", name: "expertOUTianNumber" },
-      { label: "Outward SWIFT Code", name: "expertOUTswiftCode" },
-    ].map(({ label, name }) => (
-      <TextField
-        key={name}
-        label={label}
-        fullWidth
-        value={expertData[name]}
-        onChange={handleChange}
-        variant="outlined"
-        name={name}
-        className="my-5 bg-gray-50 rounded-lg"
-        error={!!errors[name]} // Show error if exists
-        helperText={errors[name] || ""}
-        sx={{
-          "& .MuiOutlinedInput-root": {
-            "&.Mui-focused fieldset": {
-              borderColor: "blue-300",
-            },
-          },
-          "& .MuiInputLabel-root.Mui-focused": {
-            color: "black",
-          },
-        }}
-        disabled={isEditing}
-      />
-    ))}
-  </Box> */}
+{/* ----------------- LOGOUT CONFIRM MODAL --------------------------- */}
 
             <Dialog open={open} onClose={() => setOpen(false)}>
               <DialogTitle className="mt-2">
@@ -1089,6 +983,8 @@ const Exp_Profile = () => {
                 </Button>
               </DialogActions>
             </Dialog>
+
+{/* ----------------- SNACK BAR -------------------------------------- */}
 
             <Snackbar
               open={modalMsg.open}
