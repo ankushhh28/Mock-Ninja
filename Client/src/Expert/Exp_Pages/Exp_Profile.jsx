@@ -90,11 +90,6 @@ const Exp_Profile = () => {
     setUpdateLoading(true);
   
     // Name Validation
-    if (!expertData.expertName || expertData.expertName.trim() === "") {
-      setUpdateLoading(false);
-      setModalMsg({ open: true, message: "Expert name is required.", severity: "error" });
-      return;
-    }
     if (!/^[a-zA-Z]+(?: [a-zA-Z]+)*$/.test(expertData.expertName.trim())) {
       setUpdateLoading(false);
       setModalMsg({ open: true, message: "Enter a valid full name.", severity: "error" });
@@ -141,8 +136,17 @@ const Exp_Profile = () => {
       setModalMsg({ open: true, message: "Experience should be a positive number.", severity: "error" });
       return;
     }
-  
+
+    // LinkedIn URL Validation
+    // if (!/^(https?:\/\/)?(www\.)?linkedin\.com\/(in|pub|company)\/[a-zA-Z0-9-]+\/?$/.test(expertData.expertLinkedin.trim())) {
+    //   setUpdateLoading(false);
+    //   setModalMsg({ open: true, message: "Enter a valid LinkedIn URL.", severity: "error" });
+    //   return;
+    // }
+
+    // ---NATIONAL---
     // Account Number Validation
+    if(expertData.bankType === 'Domestic'){
     if (!/^\d{9,18}$/.test(expertData.expertIndAccountNumber.trim())) {
       setUpdateLoading(false);
       setModalMsg({ open: true, message: "Enter a valid account number (9-18 digits).", severity: "error" });
@@ -154,33 +158,61 @@ const Exp_Profile = () => {
       setUpdateLoading(false);
       setModalMsg({ open: true, message: "Enter a valid IFSC code.", severity: "error" });
       return;
-    }
+    }}
   
-    // LinkedIn URL Validation
-    if (!/^(https?:\/\/)?(www\.)?linkedin\.com\/(in|pub|company)\/[a-zA-Z0-9-]+\/?$/.test(expertData.expertLinkedin.trim())) {
+    // ---INTERNATIONAL---
+    // Swift code validation
+    if(expertData.bankType === 'International'){
+    if (!/^[A-Z]{6}[A-Z0-9]{2}([A-Z0-9]{3})?$/.test(expertData.expertOUTswiftCode.trim())) {
       setUpdateLoading(false);
-      setModalMsg({ open: true, message: "Enter a valid LinkedIn URL.", severity: "error" });
+      setModalMsg({ open: true, message: "Enter a valid SWIFT code.", severity: "error" });
+      return;
+    }}
+
+    //ALL FIELDS REQUIRED
+    if (!validateForm()) {
+      setModalMsg({ open: true, severity: "error", message: "Please fill all required fields." });
       return;
     }
   
+    
     console.log(expertData);
   };
-  
+
+  const validateForm = () => {
+    if (bankType === "domestic") {
+      return (
+        expertData.expertIndIfscCode?.trim() &&
+        expertData.expertIndBranchName?.trim() &&
+        expertData.expertIndAccountHolderName?.trim() &&
+        expertData.expertIndAccountNumber?.trim() 
+      );
+    } else if (bankType === "international") {
+      return (
+        expertData.expertOUTaccountHolderName?.trim() &&
+        expertData.expertOUTaccountNumber?.trim() &&
+        expertData.expertOUTianNumber?.trim() &&
+        expertData.expertOUTswiftCode?.trim()
+      );
+    }
+    return false; 
+  };
   
 
   return (
     <ExpertLayout>
       {/* ------------------------TOP NAVBAR-------------------------- */}
 
-      <Box className="px-6 pt-7 md:px-16 sticky h-24 z-10 top-0 bg-gray-50 border-b-2 border-gray-200">
+      <Box className="px-1 pt-7 md:px-16 sticky h-24 z-10 top-0 bg-gray-50 border-b-2 border-gray-200">
         <Box className=" flex justify-between items-center px-4 sm:px-8 pb-6">
-          <Typography variant="h5" className="font-semibold text-gray-800">
-            Profile
-          </Typography>
-
+          
           {/*---------------EDIT AND SAVE CHANGES BUTTON------------------- */}
 
-          <Box className="flex gap-4">
+          <Box className="w-full flex gap-4" 
+          sx={{
+            display: "flex",
+            justifyContent: { xs: "center", sm: "flex-end", md: "flex-end" },
+          }}>
             {!isEditing ? (
               <Button
                 onClick={() => setIsEditing(!isEditing)}
@@ -189,9 +221,11 @@ const Exp_Profile = () => {
                 className="bg-blue-600 hover:bg-blue-700 text-white w-fit font-light 
             md:font-medium rounded-lg text-wrap"
                 sx={{
-                  fontSize: { xs: "0.50rem", md: "0.75rem" },
-                  width: { xs: "3rem", md: "6rem" },
-                  fontWeight: { xs: 300, md: 500 },
+                  fontSize: { xs: "0.75rem", sm: "1rem" },
+                  // width: { xs: "1.5rem", sm: "6rem" },
+                  // height: {xs:"1.5rem", sm:"2.5rem"},
+                  // fontWeight: { xs: 300, sm: 500 },
+                  // padding: { xs: "2px 6px", md: "6px 12px" },
                 }}
               >
                 Edit Profile
@@ -203,8 +237,16 @@ const Exp_Profile = () => {
                 type="submit"
                 variant="contained"
                 startIcon={<TurnedInIcon />}
-                className="bg-green-600 hover:bg-green-700 text-white font-medium rounded-lg"
+                className="bg-green-600 hover:bg-green-700 text-white w-fit font-light 
+            md:font-medium rounded-lg text-wrap"
                 onClick={handleSaveChanges}
+                sx={{
+                  fontSize: { xs: "0.70rem", md: "0.75rem" },
+                  // width: { xs: "1.5rem", md: "6rem" },
+                  // height: {xs:"1.5rem", md:"2.5rem"},
+                  // fontWeight: { xs: 300, md: 500 },
+                  // padding: { xs: "1px 3px", md: "6px 12px" },
+                }}
               >
                 Save Changes
               </Button>
@@ -228,12 +270,15 @@ const Exp_Profile = () => {
       {/* ------------------------------ FORM SECTION ----------------------------- */}
 
       <Box className="min-h-screen w-full bg-gray-50 py-2">
-        <Box className="flex flex-col md:flex-row gap-8 w-full max-w-7xl mx-auto mt-8 px-4 sm:px-8">
+        <Box className="flex flex-col md:flex-row w-full max-w-7xl mx-auto mt-3 px-4 sm:px-8">
           {/* ---------------------INFORMATION FROM USER----------------------------- */}
           {/* ---------------------INFORMATION FROM USER----------------------------- */}
           {/* ---------------------INFORMATION FROM USER----------------------------- */}
 
-          <Box className="flex flex-col  w-full md:w-[120%] py-6 rounded-3xl mx-auto">
+          <Box className="flex flex-col space-y-5 w-full md:w-[120%] rounded-3xl mx-auto">
+          <Typography variant="h3" className="font-semibold text-gray-800" align="center">
+            Profile
+          </Typography>
 
             {/* ----------------------------- PROFILE IMAGE-------------------------------- */}
 
@@ -267,7 +312,7 @@ const Exp_Profile = () => {
             {/* ------------------------Personal Information------------------------ */}
             {/* ------------------------Personal Information------------------------ */}
 
-            <Box className="mx-6 md:mx-16 space-y-5 p-4 border border-black rounded-3xl m-3">
+            <Box className="mx-3 md:mx-16 p-2 md:p-4 border border-black rounded-3xl m-0 md:m-3">
               <Box>
                 <Typography className="text-black font-semibold text-2xl md:text-3xl mb-3 sm:mb-5 mt-3 sm:mt-5">
                   Personal Information
@@ -275,7 +320,7 @@ const Exp_Profile = () => {
 
                 {/* --------------------- NAME & GENDER ---------------------------  */}
 
-                <Box className="w-full flex gap-5 flex-wrap sm:flex-nowrap">
+                <Box className="w-full sm:gap-x-3 flex flex-wrap sm:flex-nowrap">
                   <Box className="w-full">
                     <TextField
                       label="Name"
@@ -314,8 +359,6 @@ const Exp_Profile = () => {
                       placeholder="Enter your gender"
                       variant="outlined"
                       name="expertGender"
-                      error={!!errors.expertGender}
-                      helperText={errors.expertGender || ""}
                       className="mb-5 bg-gray-100 rounded-lg w-full"
                       sx={{
                         "& .MuiOutlinedInput-root": {
@@ -333,7 +376,7 @@ const Exp_Profile = () => {
               </Box>
 
               {/* --------------------- CONTACT and DOB -----------------------------------*/}
-              <Box className="w-full flex gap-5 flex-wrap sm:flex-nowrap">
+              <Box className="w-full sm:gap-x-3 flex flex-wrap sm:flex-nowrap">
                 <Box className="w-full">
                   <TextField
                     label="Contact"
@@ -387,7 +430,7 @@ const Exp_Profile = () => {
               </Box>
 
               {/* --------------------- PERSONAL MAIL & ORG MAIL -----------------------------------*/}
-              <Box className="w-full flex gap-5 flex-wrap sm:flex-nowrap">
+              <Box className="w-full flex sm:gap-x-3 flex-wrap sm:flex-nowrap">
                 <Box className="w-full">
                   <TextField
                     label="Personal Email"
@@ -444,7 +487,7 @@ const Exp_Profile = () => {
               </Box>
 
               {/* --------------------- ADDRESSS -----------------------------------*/}
-              <Box className="w-full flex gap-5 space-y-3 flex-wrap sm:flex-nowrap">
+              <Box className="w-full flex space-y-3 flex-wrap sm:flex-nowrap">
                 <Box className="w-full">
                   <TextField
                     label="Address"
@@ -475,14 +518,14 @@ const Exp_Profile = () => {
             {/* -----------------------PROFESSIONAL DETAILS------------------------- */}
             {/* -----------------------PROFESSIONAL DETAILS------------------------- */}
 
-            <Box className="mx-6 md:mx-16 space-y-5 p-4 border border-black rounded-3xl m-3">
+            <Box className="mx-3 md:mx-16 p-2 md:p-4 border border-black rounded-3xl m-0 md:m-3">
               <Box>
                 <Typography className="text-black font-semibold text-2xl md:text-3xl mb-3 sm:mb-5 mt-3 sm:mt-5">
                   Professional Information
                 </Typography>
 
                 {/* --------------------- COMPANY & EXPERIENCE ---------------------------  */}
-                <Box className="w-full flex gap-5 flex-wrap sm:flex-nowrap">
+                <Box className="w-full flex sm:gap-x-3 flex-wrap sm:flex-nowrap">
                   <Box className="w-full">
                     <TextField
                       label="CurrentCompany"
@@ -538,7 +581,7 @@ const Exp_Profile = () => {
               </Box>
 
           {/* --------------------- LINKEDIN ----------------------------------- */}
-                <Box className="w-full flex gap-5 flex-wrap sm:flex-nowrap">
+                <Box className="w-full flex flex-wrap sm:flex-nowrap">
                 <Box className="w-full">
                   <TextField
                     label="LinkedIn"
@@ -550,8 +593,6 @@ const Exp_Profile = () => {
                     placeholder="copy your linkedIn profile url"
                     variant="outlined"
                     name="expertLinkedin"
-                    error={!!errors.expertLinkedin}
-                    helperText={errors.expertLinkedin || ""}
                     className="mb-5 bg-gray-100 rounded-lg w-full"
                     sx={{
                       "& .MuiOutlinedInput-root": {
@@ -568,7 +609,7 @@ const Exp_Profile = () => {
               </Box>
 
               {/* ---------------------YOUTUBE & INSTAGRAM-----------------------------------*/}
-              <Box className="w-full flex gap-5 flex-wrap sm:flex-nowrap">
+              <Box className="w-full flex sm:gap-x-3 flex-wrap sm:flex-nowrap">
                 <Box className="w-full">
                   <TextField
                     label="youtube"
@@ -619,7 +660,7 @@ const Exp_Profile = () => {
               </Box>
 
               {/* --------------------- BIO -----------------------------------*/}
-              <Box className="w-full flex gap-5 flex-wrap sm:flex-nowrap">
+              <Box className="w-full flex flex-wrap sm:flex-nowrap">
                 <Box className="w-full">
                   <TextField
                     label="Bio"
@@ -649,7 +690,7 @@ const Exp_Profile = () => {
               </Box>
 
               {/* --------------------------ABOUT-----------------------------*/}
-              <Box className="w-full flex gap-5 flex-wrap sm:flex-nowrap">
+              <Box className="w-full flex flex-wrap sm:flex-nowrap">
                 <Box className="w-full">
                   <TextField
                     label="About"
@@ -682,7 +723,7 @@ const Exp_Profile = () => {
             {/* ---------------------------BANK DETAILS-------------------------- */}
             {/* ---------------------------BANK DETAILS-------------------------- */}
 
-            <Box className="mx-6 md:mx-16 space-y-5 p-4 border border-black rounded-3xl m-3">
+            <Box className="mx-3 md:mx-16 p-2 md:p-4 border border-black rounded-3xl m-0 md:m-3">
               <Typography className="text-black font-semibold text-2xl md:text-3xl mb-3 sm:mb-2 mt-3 sm:mt-5">
                 Bank Details
               </Typography>
@@ -707,7 +748,7 @@ const Exp_Profile = () => {
 
               {bankType === "domestic" ? (
                 <>
-                  <Box className="w-full flex gap-5 flex-wrap sm:flex-nowrap">
+                  <Box className="w-full flex sm:gap-x-3 flex-wrap sm:flex-nowrap">
                     <Box className="w-full">
                       <TextField
                         label="Account Holder Name"
@@ -760,12 +801,12 @@ const Exp_Profile = () => {
                       />
                     </Box>
                   </Box>
-                  {/* --------------------Ifsc code and branch name------------------------ */}
-                  <Box className="w-full flex gap-5 flex-wrap sm:flex-nowrap">
+                  {/* --------------------IFSC code and branch name------------------------ */}
+                  <Box className="w-full flex sm:gap-x-3 flex-wrap sm:flex-nowrap">
                     <Box className="w-full">
                       <TextField
-                        label="Ifsc Code"
-                        type="number"
+                        label="IFSC Code"
+                        type="text"
                         disabled={!isEditing}
                         value={expertData.expertIndIfscCode}
                         onChange={handleChange}
@@ -797,7 +838,7 @@ const Exp_Profile = () => {
                         required
                         placeholder="Enter Branch Name"
                         variant="outlined"
-                        name="expertBranchName"
+                        name="expertIndBranchName"
                         className="mb-5 bg-gray-100 rounded-lg w-full"
                         sx={{
                           "& .MuiOutlinedInput-root": {
@@ -815,16 +856,16 @@ const Exp_Profile = () => {
 
                   {/* --------------------- UPI PIN-----------------------*/}
 
-                  <Box className="w-full flex gap-5 flex-wrap sm:flex-nowrap">
+                  <Box className="w-full flex sm:gap-x-3 flex-wrap sm:flex-nowrap">
                     <Box className="w-full">
                       <TextField
-                        label="UPI"
+                        label="UPI Id"
                         type="text"
                         disabled={!isEditing}
                         value={expertData.expertIndUPI}
                         onChange={handleChange}
                         required
-                        placeholder="enter upi pin"
+                        placeholder="enter UPI Id"
                         variant="outlined"
                         name="expertIndUPI"
                         className="mb-5 bg-gray-100 rounded-lg w-full"
@@ -845,7 +886,7 @@ const Exp_Profile = () => {
               ) : (
                 <>
                   {/* --------------------- ACCOUNT NO & HOLDER NAME ---------------------------  */}
-                  <Box className="w-full flex gap-5 flex-wrap sm:flex-nowrap">
+                  <Box className="w-full flex sm:gap-x-3 flex-wrap sm:flex-nowrap">
                     <Box className="w-full">
                       <TextField
                         label="Account Holder Name"
@@ -882,8 +923,6 @@ const Exp_Profile = () => {
                         placeholder="Enter your Account number"
                         variant="outlined"
                         name="expertOUTaccountNumber"
-                        error={!!errors.expertOUTaccountNumber}
-                        helperText={errors.expertOUTaccountNumber || ""}
                         className="mb-5 bg-gray-100 rounded-lg w-full"
                         sx={{
                           "& .MuiOutlinedInput-root": {
@@ -901,7 +940,7 @@ const Exp_Profile = () => {
 
                   {/* --------------------- IAN NUMBER-----------------------*/}
 
-                  <Box className="w-full flex gap-5 flex-wrap sm:flex-nowrap">
+                  <Box className="w-full flex flex-wrap sm:flex-nowrap">
                     <Box className="w-full">
                       <TextField
                         label="IAN number"
@@ -929,7 +968,7 @@ const Exp_Profile = () => {
                   </Box>
                   {/* --------------------- swift code-----------------------*/}
 
-                  <Box className="w-full flex gap-5 flex-wrap sm:flex-nowrap">
+                  <Box className="w-full flex flex-wrap sm:flex-nowrap">
                     <Box className="w-full">
                       <TextField
                         label="Swift code"
