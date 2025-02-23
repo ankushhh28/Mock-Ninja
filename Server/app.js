@@ -31,14 +31,14 @@ const StartServer = () => {
   ConnectionDB();
 };
 
-// if (cluster.isMaster) {
-//   for (let i = 0; i < numCPUs; i++) {
-//     cluster.fork();
-//   }
+if (cluster.isMaster) {
+  for (let i = 0; i < numCPUs; i++) {
+    cluster.fork();
+  }
 
-//   cluster.on("exit", (worker, code, signal) => {
-//     console.log(`Worker ${worker.process.pid} died`);
-//   });
-// } else {
+  cluster.on("exit", (worker, code, signal) => {
+    console.log(`Worker ${worker.process.pid} died`);
+  });
+} else {
   StartServer();
-// }
+}

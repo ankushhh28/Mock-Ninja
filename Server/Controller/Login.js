@@ -13,7 +13,7 @@ export const Login = async(req, res) => {
     const user = await UserRegisterSchema.findOne({
       $or: [
         {candidateEmail: email},
-        {expertOrgEmail: email }
+        {expertPersonalEmail: email }
       ]
     })
 
@@ -39,7 +39,7 @@ export const Login = async(req, res) => {
         accessToken, 
         refreshToken, 
         name: user.candidateName || user.expertName, 
-        email: user.candidateEmail || user.expertOrgEmail,
+        email: user.candidateEmail || user.expertPersonalEmail,
         role:user.role})
     }
     else{
@@ -63,7 +63,7 @@ export const GoogleLogin = async(req,res) => {
   const userExists = await UserRegisterSchema.findOne({
     $or:[
       {candidateEmail:email},
-      {expertOrgEmail:email}
+      {expertPersonalEmail:email}
     ]})
 
   if(!userExists){
@@ -84,7 +84,7 @@ export const GoogleLogin = async(req,res) => {
     accessToken,
     refreshToken,
     name: userExists.candidateName || userExists.candidateEmail,
-    email: userExists.candidateEmail || userExists.expertOrgEmail,
+    email: userExists.candidateEmail || userExists.expertPersonalEmail,
     role: userExists.role
   })
 

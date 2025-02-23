@@ -34,11 +34,11 @@ export const candidateRegister = async(req, res) => {
 
 export const interviewerRegister = async(req, res) => {
 
-  const {expertOrgEmail, expertPassword, ...otherDetails} = req.body
+  const {expertPersonalEmail, expertPassword, ...otherDetails} = req.body
 
   try {
 
-    const emailExist = await UserRegisterSchema.findOne({expertOrgEmail})
+    const emailExist = await UserRegisterSchema.findOne({expertPersonalEmail})
     if(emailExist){
       return res.status(400).json({message:"Email already exists"})
     }
@@ -46,7 +46,7 @@ export const interviewerRegister = async(req, res) => {
     const hashedPassword = await bcrypt.hash(expertPassword, 10)
 
     const newUser = new UserRegisterSchema({
-      expertOrgEmail,
+      expertPersonalEmail,
       expertPassword: hashedPassword,
       ...otherDetails
     })

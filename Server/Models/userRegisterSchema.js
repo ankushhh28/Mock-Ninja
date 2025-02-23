@@ -37,9 +37,6 @@ const useregisterschema = mongoose.Schema({
   expertName:{
     type:String
   },
-  expertPicture:{
-    type:String
-  },
   expertOrgEmail:{
     type:String
   },
@@ -61,13 +58,7 @@ const useregisterschema = mongoose.Schema({
   expertGender:{
     type:String
   },
-  expertCity:{
-    type:String
-  },
-  expertCountry:{
-    type:String
-  },
-  expertState:{
+  expertAddress:{
     type:String
   },
   expertDOB:{

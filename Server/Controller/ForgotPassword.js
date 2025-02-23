@@ -54,7 +54,7 @@ export const ForgotPasswordEmailSend = async(req, res) => {
     const emailExist = await UserRegisterSchema.findOne({
       $or: [
         {candidateEmail: email},
-        {expertOrgEmail: email }
+        {expertPersonalEmail: email }
       ]
     })
 
@@ -120,13 +120,13 @@ export const PasswordChange = async(req, res) => {
     const user = await UserRegisterSchema.findOne({
       $or: [
         {candidateEmail: email},
-        {expertOrgEmail: email }
+        {expertPersonalEmail: email }
       ]
     })
 
     if (user.candidateEmail === email) {
       user.candidatePassword = hashedPassword;
-    } else if (user.expertOrgEmail === email) {
+    } else if (user.expertPersonalEmail === email) {
       user.expertPassword = hashedPassword;
     }
 

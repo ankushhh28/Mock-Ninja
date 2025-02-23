@@ -3,6 +3,7 @@ import cors from "cors"
 import { verifyExpertToken } from "../Utils/ExpAuth.js"
 import { FetchingPackage, addingPackage, deletingPackage, fetchingCareerPackage, fetchingInterviewPackage, fetchingPriorityDMPackage, fetchingResumePackage, updatingCareerPackage, updatingInterviewPackage, updatingPriorityDMPackage, updatingResumePackage } from "../Controller/Expert/Packages.js"
 import { AddingTimings, FetchingTimings, deletingTimeData } from "../Controller/Expert/Availability.js"
+import { FetchingProfileData, UpdatingProfile, UploadingImage } from "../Controller/Expert/Profile.js"
 
 const ExpertRouter = express.Router()
 
@@ -29,5 +30,9 @@ ExpertRouter.delete("/Delete-Availability-Timing", deletingTimeData)
 ExpertRouter.put("/Adding-Package", addingPackage)
 ExpertRouter.put("/Deleting-Package", deletingPackage)
 ExpertRouter.get("/Fetching-Package", FetchingPackage)
+
+ExpertRouter.post("/Updating-Profile", UpdatingProfile)
+ExpertRouter.get("/Fetching-Profile", FetchingProfileData)
+ExpertRouter.post("/Image-Saved-to-expert", UploadingImage)
 
 export default ExpertRouter

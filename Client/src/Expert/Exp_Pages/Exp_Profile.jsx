@@ -1,3 +1,4 @@
+import axios from "axios"
 import React, { useState, useEffect, useRef, useContext } from "react";
 import ExpertLayout from "../ExpertLayout/ExpertLayout";
 import {
@@ -16,6 +17,10 @@ import {
   Radio,
   RadioGroup,
   FormControlLabel,
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
 } from "@mui/material";
 
 import LogoutIcon from "@mui/icons-material/Logout";
@@ -32,20 +37,23 @@ const Exp_Profile = () => {
 
   const [errors, setErrors] = useState({});
   const [bankType, setBankType] = useState("domestic");
+  const [profileImage, setProfileImage] = useState("");
+  const [imageLoading, setImageLoading] = useState(false)
   const [open, setOpen] = useState(false);
   const [updateLoading, setUpdateLoading] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [modalMsg, setModalMsg] = useState({
     open: false,
     message: "",
     severity: "",
   });
-  const [loading, setLoading] = useState(false);
   const [expertData, setExpertData] = useState({
+    role:account.role,
     //------------ personal details------------
     expertName: "",
     expertOrgEmail: "",
-    expertPersonalEmail: "",
+    expertPersonalEmail: account.email,
     expertPhoneNumber: "",
     expertGender: "",
     expertAddress: "",
@@ -84,9 +92,30 @@ const Exp_Profile = () => {
     setExpertData({ ...expertData, [name]: value });
   };
 
+  // ------------------ HANDLING BANK VALIDATIONS ----------------
+
+  const validateForm = () => {
+    if (bankType === "domestic") {
+      return (
+        expertData.expertIndIfscCode?.trim() &&
+        expertData.expertIndBranchName?.trim() &&
+        expertData.expertIndAccountHolderName?.trim() &&
+        expertData.expertIndAccountNumber?.trim() 
+      );
+    } else if (bankType === "international") {
+      return (
+        expertData.expertOUTaccountHolderName?.trim() &&
+        expertData.expertOUTaccountNumber?.trim() &&
+        expertData.expertOUTianNumber?.trim() &&
+        expertData.expertOUTswiftCode?.trim()
+      );
+    }
+    return false; 
+  };
+
   // ------------------ HANDLE FORM SUBMIT ------------------
 
-  const handleSaveChanges = () => {
+  const handleSaveChanges = async() => {
     setUpdateLoading(true);
   
     // Name Validation
@@ -137,15 +166,6 @@ const Exp_Profile = () => {
       return;
     }
 
-    // LinkedIn URL Validation
-    // if (!/^(https?:\/\/)?(www\.)?linkedin\.com\/(in|pub|company)\/[a-zA-Z0-9-]+\/?$/.test(expertData.expertLinkedin.trim())) {
-    //   setUpdateLoading(false);
-    //   setModalMsg({ open: true, message: "Enter a valid LinkedIn URL.", severity: "error" });
-    //   return;
-    // }
-
-    // ---NATIONAL---
-    // Account Number Validation
     if(expertData.bankType === 'Domestic'){
     if (!/^\d{9,18}$/.test(expertData.expertIndAccountNumber.trim())) {
       setUpdateLoading(false);
@@ -171,33 +191,108 @@ const Exp_Profile = () => {
 
     //ALL FIELDS REQUIRED
     if (!validateForm()) {
-      setModalMsg({ open: true, severity: "error", message: "Please fill all required fields." });
+      setModalMsg({ open: true, severity: "error", message: "Please Fill All Required Fields Below." });
       return;
     }
-  
-    
-    console.log(expertData);
-  };
 
-  const validateForm = () => {
-    if (bankType === "domestic") {
-      return (
-        expertData.expertIndIfscCode?.trim() &&
-        expertData.expertIndBranchName?.trim() &&
-        expertData.expertIndAccountHolderName?.trim() &&
-        expertData.expertIndAccountNumber?.trim() 
-      );
-    } else if (bankType === "international") {
-      return (
-        expertData.expertOUTaccountHolderName?.trim() &&
-        expertData.expertOUTaccountNumber?.trim() &&
-        expertData.expertOUTianNumber?.trim() &&
-        expertData.expertOUTswiftCode?.trim()
-      );
+    try {
+      const response = await axios.post(`${backendUrl}/Exp//Updating-Profile`, expertData , {
+        headers:{
+          Authorization: `Bearer ${account.accessToken}`
+        }
+      })
+      if(response.status === 200){
+        setModalMsg({ open: true, message: response?.data?.message || "Profile Updated Successfully", severity: "success" });
+        setIsEditing(false)
+      }
+    } catch (error) {
+      setModalMsg({ open: true, message: error.response?.data?.message || "Check Your Conntection! Try Again Later", severity: "error" });
+    } finally {
+      setUpdateLoading(false)
     }
-    return false; 
   };
   
+  // ------------- FETCHING PROFILE DATA ---------------------
+
+  useEffect(() => {
+    const fetching = async() => {
+      setLoading(true)
+      try {
+        const response = await axios.get(`${backendUrl}/Exp/Fetching-Profile`, {
+          params:{email:account.email, role:account.role},
+          headers:{
+            Authorization:`Bearer ${account.accessToken}`
+          }
+        })
+        if(response.status === 200){
+          setExpertData({...response.data, expertDOB: response.data.expertDOB ? response.data.expertDOB.split("T")[0] : ""})
+        }
+      } catch (error) {
+        setModalMsg({ open: true, message: error.response?.data?.message || "Check Your Conntection! Try Again Later", severity: "error" });
+      } finally {
+        setLoading(false)
+      }
+    }
+    fetching()
+  },[updateLoading])
+
+  // -------------- IMAGE UPLOADING TO PROFILE ---------------
+
+  const UploadImage = async(img) => {
+    const serverResponse = {
+      email:account.email,
+      role:account.role,
+      img:img,
+    }
+
+    try {
+      const response = await axios.post(`${backendUrl}/Exp/Image-Saved-to-expert`, serverResponse, {
+        headers: {
+          Authorization: `Bearer ${account.accessToken}`
+        }
+      })
+      if(response.status === 200){
+        setModalMsg({ open: true, message: response?.data?.message || "Check your connection! Try later", severity: 'success' })
+      }
+    } catch (error) {
+      setModalMsg({ open: true, message: error.response?.data?.message || "Check your connection! Try later", severity: 'error' })
+    } finally {
+      setProfileImage("")
+    }
+  }
+
+  // ------------- IMAGE UPLOADING TO DATABSE -------------------
+
+  const handleImageUpload = async() => {
+    if(profileImage === ""){return}
+    const formdata = new FormData();
+    formdata.append("file", profileImage)
+    formdata.append("role", account.role);
+    setImageLoading(true)
+    try {
+      const response = await axios.post(`${backendUrl}/Can/Image-Upload-Database`, formdata,  {
+        headers: {
+          Authorization: `Bearer ${account.accessToken}`,
+          "Content-Type": "multipart/form-data"
+        }
+      })
+      if(response.status === 200){
+        const imageUrl = `${backendUrl}/Can/file/${response.data}`
+        await UploadImage(imageUrl); 
+        setIsEditing(false)
+      }
+    } catch (error) {
+      setModalMsg({ open: true, message: error.response?.data?.message || "Check your connection! Try later", severity: 'error' })
+    } finally {
+      setImageLoading(false)
+    }
+  }
+
+  useEffect(() => {
+    if (profileImage !== "") {
+      handleImageUpload();
+    }
+  }, [profileImage, imageLoading]);
 
   return (
     <ExpertLayout>
@@ -205,33 +300,33 @@ const Exp_Profile = () => {
 
       <Box className="px-1 pt-7 md:px-16 sticky h-24 z-10 top-0 bg-gray-50 border-b-2 border-gray-200">
         <Box className=" flex justify-between items-center px-4 sm:px-8 pb-6">
+        {loading ? (
+          <CircularProgress size={30} className="text-black"/>
+        ) : (
+          <Typography variant="h3" className="font-semibold text-xl sm:text-4xl text-gray-800" align="center">
+          Profile
+        </Typography>
+        )}
           
           {/*---------------EDIT AND SAVE CHANGES BUTTON------------------- */}
 
-          <Box className="w-full flex gap-4" 
+          <Box className="w-full flex gap-2 sm:gap-4 justify-end" 
           sx={{
             display: "flex",
             justifyContent: { xs: "center", sm: "flex-end", md: "flex-end" },
           }}>
-            {!isEditing ? (
+            {(!isEditing && !updateLoading) ? (
               <Button
                 onClick={() => setIsEditing(!isEditing)}
                 variant="contained"
                 startIcon={<EditIcon />}
                 className="bg-blue-600 hover:bg-blue-700 text-white w-fit font-light 
             md:font-medium rounded-lg text-wrap"
-                sx={{
-                  fontSize: { xs: "0.75rem", sm: "1rem" },
-                  // width: { xs: "1.5rem", sm: "6rem" },
-                  // height: {xs:"1.5rem", sm:"2.5rem"},
-                  // fontWeight: { xs: 300, sm: 500 },
-                  // padding: { xs: "2px 6px", md: "6px 12px" },
-                }}
               >
-                Edit Profile
+                Edit <span className="hidden sm:block">Profile</span>
               </Button>
-            ) : loading ? (
-              <CircularProgress size={24} className="text-blue-600" />
+            ) : updateLoading ? (
+              <CircularProgress size={30} className="text-green-600 mr-10" />
             ) : (
               <Button
                 type="submit"
@@ -240,15 +335,8 @@ const Exp_Profile = () => {
                 className="bg-green-600 hover:bg-green-700 text-white w-fit font-light 
             md:font-medium rounded-lg text-wrap"
                 onClick={handleSaveChanges}
-                sx={{
-                  fontSize: { xs: "0.70rem", md: "0.75rem" },
-                  // width: { xs: "1.5rem", md: "6rem" },
-                  // height: {xs:"1.5rem", md:"2.5rem"},
-                  // fontWeight: { xs: 300, md: 500 },
-                  // padding: { xs: "1px 3px", md: "6px 12px" },
-                }}
               >
-                Save Changes
+                Save <span className="hidden sm:block">Changes</span>
               </Button>
             )}
 
@@ -271,18 +359,19 @@ const Exp_Profile = () => {
 
       <Box className="min-h-screen w-full bg-gray-50 py-2">
         <Box className="flex flex-col md:flex-row w-full max-w-7xl mx-auto mt-3 px-4 sm:px-8">
+          
           {/* ---------------------INFORMATION FROM USER----------------------------- */}
           {/* ---------------------INFORMATION FROM USER----------------------------- */}
           {/* ---------------------INFORMATION FROM USER----------------------------- */}
 
           <Box className="flex flex-col space-y-5 w-full md:w-[120%] rounded-3xl mx-auto">
-          <Typography variant="h3" className="font-semibold text-gray-800" align="center">
-            Profile
-          </Typography>
 
             {/* ----------------------------- PROFILE IMAGE-------------------------------- */}
-
-            <Box className="flex justify-center mb-8 ">
+            
+            <Box className="flex justify-center mb-2 mt-1 ">
+            {imageLoading ? (
+              <CircularProgress size={30} className="text-black"/>
+            ) : (
               <Badge
                 color="info"
                 overlap="circular"
@@ -295,7 +384,7 @@ const Exp_Profile = () => {
                 onClick={handleAvatarClick}
               >
                 <Avatar
-                  // src={candidateData.candidatePicture}
+                  src={expertData.expertProfilePhoto}
                   className="w-28 md:w-32 h-28 md:h-32"
                   onClick={(e) => e.stopPropagation()}
                 />
@@ -303,10 +392,11 @@ const Exp_Profile = () => {
                   type="file"
                   ref={fileInputRef}
                   className="hidden"
-                  // onChange={(e) => setProfileImage(e.target.files[0])}
+                  onChange={(e) => setProfileImage(e.target.files[0])}
                   disabled={!isEditing}
                 />
               </Badge>
+            )}
             </Box>
 
             {/* ------------------------Personal Information------------------------ */}
@@ -349,17 +439,13 @@ const Exp_Profile = () => {
                   </Box>
 
                   <Box className="w-full">
-                    <TextField
-                      label="Gender"
-                      type="text"
-                      disabled={!isEditing}
-                      value={expertData.expertGender}
+                  <FormControl fullWidth variant="outlined" className="mb-5 bg-gray-100 rounded-lg" disabled={!isEditing}>
+                    <InputLabel>Gender</InputLabel>
+                    <Select
+                      value={expertData.expertGender || "male"}
                       onChange={handleChange}
-                      required
-                      placeholder="Enter your gender"
-                      variant="outlined"
                       name="expertGender"
-                      className="mb-5 bg-gray-100 rounded-lg w-full"
+                      label="Gender"
                       sx={{
                         "& .MuiOutlinedInput-root": {
                           "&.Mui-focused fieldset": {
@@ -370,7 +456,12 @@ const Exp_Profile = () => {
                           color: "black",
                         },
                       }}
-                    />
+                    >
+                      <MenuItem value="male">Male</MenuItem>
+                      <MenuItem value="female">Female</MenuItem>
+                      <MenuItem value="other">Other</MenuItem>
+                    </Select>
+                  </FormControl>
                   </Box>
                 </Box>
               </Box>
@@ -612,7 +703,7 @@ const Exp_Profile = () => {
               <Box className="w-full flex sm:gap-x-3 flex-wrap sm:flex-nowrap">
                 <Box className="w-full">
                   <TextField
-                    label="youtube"
+                    label="Youtube"
                     type="text"
                     disabled={!isEditing}
                     value={expertData.expertYoutube}
