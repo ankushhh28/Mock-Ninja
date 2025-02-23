@@ -75,7 +75,7 @@ const CanProfile = () => {
         setModalMsg({ open: true, message: response?.data?.message || "Check your connection! Try later", severity: 'success' })
       }
     } catch (error) {
-      console.log(error.response.data.message)
+      setModalMsg({ open: true, message: error.response?.data?.message || "Check your connection! Try later", severity: 'error' })
     } finally {
       setProfileImage("")
     }
@@ -123,6 +123,8 @@ const CanProfile = () => {
 // ---------------------------------------------------------------------------------
 
   const handleSaveChange = async() => {
+
+    setLoading(true)
 
     const { candidateNumber, candidateEmail, candidateName, city } = candidateData;
 
@@ -200,7 +202,7 @@ const CanProfile = () => {
     };
 
     fetchCandidateDetails();
-  }, []);
+  }, [loading, imageLoading]);
 
 // -------------------------------------------------------------------------------
 

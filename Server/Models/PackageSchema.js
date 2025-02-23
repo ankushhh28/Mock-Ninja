@@ -5,16 +5,20 @@ const packageschema = new mongoose.Schema({
     type:String
   },
   InterviewPackage:{
-    type:Boolean
+    type:Boolean,
+    default:false
   },
   ResumePackage:{
-    type:Boolean
+    type:Boolean,
+    default:false
   },
   CarrierPackage:{
-    type:Boolean
+    type:Boolean,
+    default:false
   },
   PriorityPackage:{
-    type:Boolean
+    type:Boolean,
+    default:false
   },
   Availability: {
     Monday: [{ type: String }],   

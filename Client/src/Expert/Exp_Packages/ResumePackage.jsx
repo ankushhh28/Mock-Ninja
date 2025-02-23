@@ -25,7 +25,8 @@ const ResumePackage = () => {
     Price:"",
     Description:"",
     Time:"",
-    email:account.email
+    email:account.email,
+    role:account.role
   })
 
 // ------------- HANDLING CHANGES --------------
@@ -45,7 +46,7 @@ useEffect(() => {
     setFetchLoad(true)
     try {
       const response = await axios.get(`${backendUrl}/Exp/Fetching-Resume-Package-Details`, {
-        params: { email: resumeData.email }, 
+        params: { email: resumeData.email, role:account.role }, 
         headers: {
           Authorization: `Bearer ${account.accessToken}`,
         },

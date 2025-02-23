@@ -1,5 +1,4 @@
-import React, { useEffect, useState } from "react";
-import ExpertLayout from "../ExpertLayout/ExpertLayout";
+import React, { useContext } from "react";
 import { Box, Button } from "@mui/material";
 import { IoMdAdd } from "react-icons/io";
 import { TbUserScreen } from "react-icons/tb";
@@ -16,10 +15,18 @@ import CarrierPackage from "../Exp_Packages/CarrierPackage";
 import Availability from "../Exp_Packages/Availability";
 import { useNavigate, useParams } from "react-router-dom";
 
+import { ExpDataContext } from "../../Context/ExpDataProvider"; 
 import Expert_NavBar from "../ExpertLayout/ExpertNavBar"
 import Footer from "../../Layout/Footer";
 
 const Exp_Packages = () => {
+
+// ------------- USING DATA CONTEXT -------------------
+
+  const { fetchedData } = useContext(ExpDataContext)
+
+// -------------- BUTTON MAPPING ---------------------
+
   const menuItems = [
     {
       icon: <TbUserScreen />,
@@ -43,21 +50,38 @@ const Exp_Packages = () => {
     {
       icon: <TbUserScreen />,
       service: "Interview",
+      name:"Interview",
       route: "Interview-Package",
     },
-    { icon: <GoGoal />, service: "Career", route: "Career-Package" },
+    { icon: <GoGoal />, service: "Career", route: "Career-Package", name:"Career Guidance" },
     {
       icon: <MdDocumentScanner />,
       service: "Resume",
       route: "Resume-Package",
+      name:"Resume Guidance"
     },
     {
       icon: <TbMessageChatbotFilled />,
       service: "PriorityDM",
       route: "Priority-Package",
+      name:"Priority DM"
     },
   ];
 
+// --------------- FILTERING ACTIVE PACKAGES -------------
+
+  const packageKeyMap = {
+    "Interview": "InterviewPackage",
+    "Career Guidance": "CarrierPackage",
+    "Resume Guidance": "ResumePackage",
+    "Priority DM": "PriorityPackage"
+  };
+  
+  const activeMenuItems = menuItems.filter(item => fetchedData[packageKeyMap[item.service]]);
+  const activeMenuItemsMobile = menuItemsMobile.filter(item => fetchedData[packageKeyMap[item.name]]);
+
+// ---------------- FETCHING TAB FROM usePARAMS ----------------------
+  
   const navigate = useNavigate();
   const { tab } = useParams();
   const selectedTab = tab;
@@ -111,7 +135,7 @@ const Exp_Packages = () => {
             Availability
           </Box>
 
-          {menuItemsMobile.map((item, index) => (
+          {activeMenuItemsMobile.map((item, index) => (
               <Box
                 key={index}
                 onClick={() => navigate(`/Expert/Packages/${item.route}`)}
@@ -158,7 +182,7 @@ const Exp_Packages = () => {
             </Button>
 
             {/* ------- Sidebar Menu Items --------- */}
-            {menuItems.map((item, index) => (
+            {activeMenuItems.map((item, index) => (
               <Button
                 key={index}
                 onClick={() => navigate(`/Expert/Packages/${item.route}`)}
@@ -173,13 +197,16 @@ const Exp_Packages = () => {
         </Box>
 
         {/* ---------------------- RIGHT SIDE SECTION ---------------------- */}
+
         <Box className="w-full md:w-3/4 px-4 md:px-10 py-8 overflow-y-auto">
           {RenderComponent()}
         </Box>
+        
       </Box>
       <div className="hidden md:block">
   <Footer />
 </div>
+
       </>
   );
 };

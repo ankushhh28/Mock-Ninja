@@ -4,9 +4,7 @@ import PackageSchema from "../../Models/PackageSchema.js"
 
 export const AddingTimings = async(req, res) => {
 
-  const { dayType, time} = req.body
-
-  const email = "anishsaini9098@gmail.com"
+  const { dayType, time, email} = req.body
 
   const dayMap = {
     Mon: "Monday",
@@ -37,9 +35,8 @@ export const AddingTimings = async(req, res) => {
 // ---------- FETCHING AVAILABILITY TIMING ---------
 
 export const FetchingTimings = async(req, res) => {
-  // const {email} = req.query
 
-  const email = "anishsaini9098@gmail.com"
+  const {email} = req.query
 
   try {
     const timingData = await PackageSchema.findOne({email})
@@ -57,9 +54,7 @@ export const FetchingTimings = async(req, res) => {
 
 export const deletingTimeData = async(req, res) => {
   
-  const { time, dayType } = req.body
-  
-  const email = 'anishsaini9098@gmail.com'
+  const { time, dayType, email } = req.body
 
   const dayMap = {
     Mon: "Monday",

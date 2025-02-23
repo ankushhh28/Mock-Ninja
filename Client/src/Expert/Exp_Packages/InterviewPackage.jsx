@@ -25,7 +25,8 @@ const InterviewPackage = () => {
     Price:"",
     Description:"",
     Time:"",
-    email:account.email
+    email:account.email,
+    role:account.role
   })
 
 // ------------- HANDLING CHANGES --------------
@@ -45,7 +46,7 @@ useEffect(() => {
     setFetchLoad(true)
     try {
       const response = await axios.get(`${backendUrl}/Exp/Fetching-Interview-Package-Details`, {
-        params: { email: intData.email }, 
+        params: { email: intData.email, role:account.role }, 
         headers: {
           Authorization: `Bearer ${account.accessToken}`,
         },

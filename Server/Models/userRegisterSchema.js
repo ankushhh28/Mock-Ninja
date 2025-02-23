@@ -16,9 +16,6 @@ const useregisterschema = mongoose.Schema({
   candidatePicture:{
     type:String
   },
-  expertPicture:{
-    type:String
-  },
   candidateNumber:{
     type:String
   },
@@ -34,7 +31,13 @@ const useregisterschema = mongoose.Schema({
   candidateCity:{
     type:String
   },
+
+// ----------- EXPERT --------------
+
   expertName:{
+    type:String
+  },
+  expertPicture:{
     type:String
   },
   expertOrgEmail:{
