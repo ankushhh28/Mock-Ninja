@@ -10,6 +10,8 @@ import {
 import { Box, CircularProgress } from "@mui/material";
 import DataProvider, { DataContext } from "./Context/DataProvider";
 import CanDataProvider, { CanDataContext } from "./Context/CanDataProvider";
+import ExpDataProvider from "./Context/ExpDataProvider";
+
 import Can_Feedback from "./Candidate/Component/Can_Feedback";
 
 //-------------------------------- PUBLIC IMPORTS ONLY --------------------------
@@ -73,6 +75,7 @@ const App = () => {
     <>
       <DataProvider>
         <CanDataProvider>
+          <ExpDataProvider>
           <BrowserRouter>
             <Suspense
               fallback={
@@ -112,18 +115,19 @@ const App = () => {
 
                 {/*-------------------------- EXPERT ROUTES (WITH LOGIN) ----------------*/}
 
-                {/* <Route element={<InterviewerPrivate />}> */}
+                <Route element={<InterviewerPrivate />}>
                   <Route path="/Expert/Home" element={<ExpertHome />} />
                   <Route path="/Expert/Profile" element={<Exp_Profile />} />
                   <Route path="/Expert/Notify" element={<Exp_Notify />} />
                   <Route path="/Expert/Packages/AddPackage" element={<Exp_Packages />} />
                   <Route path="/Expert/Packages/:tab" element={<Tab_Packages />} />
                   
-                {/* {/* </Route> */}
+                </Route>
 
               </Routes>
             </Suspense>
           </BrowserRouter>
+          </ExpDataProvider>
         </CanDataProvider>
       </DataProvider>
     </>

@@ -2,6 +2,7 @@ import InterviewPackageSchema from "../../Models/PackageDetails/InterviewPackage
 import CarrierPackageSchema from "../../Models/PackageDetails/CarrierPackageSchema.js"
 import ResumePackageSchema from "../../Models/PackageDetails/ResumePackageSchema.js"
 import PriorityPackageSchema from "../../Models/PackageDetails/PriorityPackageSchema.js"
+import PackageSchema from "../../Models/PackageSchema.js"
 
 // ---------------- FETCHING INTERVIEW PACKAGE DETAILS ------------------
 
@@ -162,6 +163,93 @@ export const updatingPriorityDMPackage = async(req, res) => {
     await updateData.save()
     return res.status(200).json({message:"Priority DM Package Updated Successfully"})
 
+  } catch (error) {
+    return res.status(500).json({message:"Something Went Wrong! Try Later"})
+  }
+}
+
+// ------------------ ADDING PACKAGES -------------------------------
+
+export const addingPackage = async (req, res) => {
+  const { email, packageName } = req.body;
+
+  let Package;
+  if (packageName === "Interview") {
+    Package = "InterviewPackage";
+  } else if (packageName === "Resume Guidance") {
+    Package = "ResumePackage";
+  } else if (packageName === "Career Guidance") {
+    Package = "CarrierPackage";
+  } else if (packageName === "Priority DM") {
+    Package = "PriorityPackage";
+  } else {
+    return res.status(400).json({ message: "Invalid package name" });
+  }
+
+  try {
+    const existPackage = await PackageSchema.findOne({ email, [Package]: true });
+    if (existPackage) {
+      return res.status(400).json({ message: `${Package} is already Active!` });
+    }
+
+    const newPackage = await PackageSchema.findOneAndUpdate(
+      { email },
+      { $set: { [Package]: true } },
+      { new: true, upsert: true }
+    );
+
+    return res.status(200).json({ message: `${Package} Activated Successfully!`, newPackage });
+  } catch (error) {
+    return res.status(500).json({ message: "Something Went Wrong! Try Later" });
+  }
+};
+
+// -------------------- DELETING PACKAGES --------------------------
+
+export const deletingPackage = async (req, res) => {
+  const { email, packageName } = req.body;
+
+  let Package;
+  if (packageName === "Interview") {
+    Package = "InterviewPackage";
+  } else if (packageName === "Resume Guidance") {
+    Package = "ResumePackage";
+  } else if (packageName === "Career Guidance") {
+    Package = "CarrierPackage";
+  } else if (packageName === "Priority DM") {
+    Package = "PriorityPackage";
+  } else {
+    return res.status(400).json({ message: "Invalid package name" });
+  }
+
+  try {
+    const existPackage = await PackageSchema.findOne({ email });
+
+    if (!existPackage || !existPackage[Package]) {
+      return res.status(400).json({ message: `${packageName} is not Active!` });
+    }
+
+    await PackageSchema.findOneAndUpdate(
+      { email },
+      { $set: { [Package]: false } },
+      { new: true }
+    );
+
+    return res.status(200).json({ message: `${packageName} has been Deactivated.` });
+  } catch (error) {
+    return res.status(500).json({ message: "Something Went Wrong! Try Later" });
+  }
+};
+
+// ------------------  FETCHING PACKAGES -------------------------------
+
+export const FetchingPackage = async(req, res) => {
+  const {email} = req.query
+
+  try {
+    const packages = await PackageSchema.findOne({email})
+
+    return res.status(200).json(packages)
   } catch (error) {
     return res.status(500).json({message:"Something Went Wrong! Try Later"})
   }

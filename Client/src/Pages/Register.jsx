@@ -50,9 +50,9 @@ const Register = () => {
 
   const [expertData, setExpertData] = useState({
     expertName: "",
-    expertOrgEmail: "",
+    expertPersonalEmail: "",
     expertPassword: "",
-    expertPicture:"",
+    expertProfilePhoto:"",
     expertConfirmPassword: "",
     role:"Interviewer"
   });
@@ -70,8 +70,8 @@ const Register = () => {
     else{
       setExpertData({...expertData,
         expertName:credentials.name,
-        expertOrgEmail:credentials.email,
-        expertPicture:credentials.picture
+        expertPersonalEmail:credentials.email,
+        expertProfilePhoto:credentials.picture
       })}
     } 
     handleGoogleData()
@@ -164,7 +164,7 @@ useEffect(() => {
 
     const validateEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-    if (!validateEmail.test(expertData.expertOrgEmail)) {
+    if (!validateEmail.test(expertData.expertPersonalEmail)) {
       setLoading(false);
       setErrorMsg("Please enter a valid email address.");
       return;
@@ -480,14 +480,14 @@ className="bg-gradient-to-br from-purple-700 to-purple-200 flex h-screen w-scree
       <Box className="sm:px-4">
         <TextField
           type="email"
-          value={expertData.expertOrgEmail}
+          value={expertData.expertPersonalEmail}
           onChange={handleExpertChange}
           label="Organization Email"
           fullWidth
           required
           placeholder="Enter your work email"
           variant="outlined"
-          name="expertOrgEmail"
+          name="expertPersonalEmail"
           className="mb-5 bg-gray-100 rounded-lg"
           sx={{
             "& .MuiOutlinedInput-root": {
@@ -595,7 +595,7 @@ className="bg-gradient-to-br from-purple-700 to-purple-200 flex h-screen w-scree
         variant="outlined"
         disabled={
           !expertData.expertName ||
-          !expertData.expertOrgEmail ||
+          !expertData.expertPersonalEmail ||
           !expertData.expertPassword ||
           !expertData.expertConfirmPassword
         }
