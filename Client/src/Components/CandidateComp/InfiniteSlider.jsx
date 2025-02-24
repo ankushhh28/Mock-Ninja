@@ -52,7 +52,7 @@ const InfiniteSlider = () => {
             key={index}
             src={icon}
             alt="Icon"
-            className="w-24 h-32 sm:w-36 sm:h-44 cursor-pointer px-2 sm:px-4 py-3 sm:py-5"
+            className="w-24 h-32 sm:w-36 sm:h-44 cursor-pointer animate-play-state:paused px-2 sm:px-4 py-3 sm:py-5"
           />
         ))}
       </div>

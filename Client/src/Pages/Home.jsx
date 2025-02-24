@@ -6,7 +6,8 @@ import MockDescSection from "../Components/CandidateComp/MockDescSection";
 import StepsHome from "../Components/CandidateComp/StepsHome";
 import CandidateBanner from "../Components/CandidateComp/CandidateBanner";
 import ThreeCircles from "../Components/CandidateComp/ThreeCircles";
-import Ats from "../Components/CandidateComp/Ats"
+import Ats from "../Components/CandidateComp/Ats";
+import ServicesByMentor from "../Components/CandidateComp/ServicesByMentor";
 
 const Home = () => {
   return (
@@ -15,6 +16,7 @@ const Home = () => {
         <div>
           <CandidateBanner />
           <MockDescSection />
+          <ServicesByMentor />
           <InfiniteSlider />
           <StepsHome />
           <ThreeCircles />
