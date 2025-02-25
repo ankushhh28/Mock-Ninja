@@ -12,7 +12,6 @@ const InterviewerHome = () => {
         <InterviewerBanner />
         <WhyMockNinja />
         <StepsInterviewer />
-      
 
       {/* -------------------- REMAINING CONTEXT ----------------------------- */}
     </Layout>
