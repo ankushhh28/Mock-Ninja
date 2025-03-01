@@ -4,7 +4,7 @@ import * as pdfjsLib from 'pdfjs-dist';
 
 
 const GEMINI_API_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent";
-const API_KEY = "AIzaSyAjn5ZlEdmcKjtyPQ0Cyeqvi_stG07d1Lo";
+const API_KEY = "AIzaSyB_h0vO-bcXovKARxxYyMMDLVxKGiO5DxI";
 
 // ------------- PROMPT FOR GENERATING DOMAIN & SKILLS QUESTIONS -------------
 
