@@ -3,7 +3,7 @@ import FeedbackSchema from "../../Models/FeedbackSchema.js";
 import QuesGenSchema from "../../Models/QuesGenSchema.js";
 import RatingSchema from "../../Models/RatingSchema.js";
 
-const GEMINI_API_KEY = "AIzaSyAjn5ZlEdmcKjtyPQ0Cyeqvi_stG07d1Lo";
+const GEMINI_API_KEY = "AIzaSyB_h0vO-bcXovKARxxYyMMDLVxKGiO5DxI";
 const GEMINI_API_URL =
   "https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent";
 
