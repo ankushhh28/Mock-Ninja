@@ -230,6 +230,7 @@ const Can_Card = () => {
       setQuestionGenerated(parsedData);
       savingQues(parsedData, selectedDomain)
     } catch (error) {
+      console.log(error);
       setError({
         open: true,
         msg:

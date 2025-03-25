@@ -3,9 +3,9 @@ import FeedbackSchema from "../../Models/FeedbackSchema.js";
 import QuesGenSchema from "../../Models/QuesGenSchema.js";
 import RatingSchema from "../../Models/RatingSchema.js";
 
-const GEMINI_API_KEY = "AIzaSyAjn5ZlEdmcKjtyPQ0Cyeqvi_stG07d1Lo";
+const GEMINI_API_KEY = "AIzaSyDRzA1WoMPiI8Jkck7dJWvb_i7Fo4OyIBY";
 const GEMINI_API_URL =
-  "https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent";
+"https://generativelanguage.googleapis.com/v1/models/gemini-1.5-pro:generateContent";
 
 // ----------- SAVING FEEDBACKs TO CANDIDATE PROFILE --------------
 
@@ -38,7 +38,6 @@ export const SavingQuestionAsnwer = async(userAnswer,mockId,email) => {
     await newData.save();
     return "Successfully Saved";
   } catch (error) {
-    console.log(error);
     return "Error while Saving Questions";
   }
 };
@@ -139,11 +138,6 @@ export const gestureFeedback = async (req, res) => {
     const feedback = JSON.parse(feedbackText);
     res.status(200).json(feedback);
   } catch (error) {
-    console.error(
-      "Error:",
-      error.response ? error.response.data : error.message
-    );
-
     if (error instanceof SyntaxError) {
       res.status(500).json({ error: "Invalid JSON response from Gemini API" });
     } else {
@@ -253,7 +247,6 @@ export const savingGestureFeedback = async (req, res) => {
     await newData.save();
     return res.status(200).json({ message: "Successfull" });
   } catch (error) {
-    console.log(error);
     return res
       .status(500)
       .json({ message: "Something went wrong! Try again later" });
@@ -279,7 +272,6 @@ export const fetchingFeedback = async (req, res) => {
 
     return res.status(200).json({ feedbackData, feedbackDataType: feedbackDataType ? feedbackDataType.details : null });
   } catch (error) {
-    console.error("Error fetching feedback:", error);
     return res.status(500).json({ message: "Something went wrong! Try again later" });
   }
 };
@@ -317,7 +309,6 @@ export const SavingRatings = async(req, res) => {
     await newFeedback.save()
     return res.status(200).json({message:"Feedback Submitted Succesfully"})
   } catch (error) {
-    console.log(error);
     return res.status(500).json({message:"Error While Submitted Feedback"})
   }
 }

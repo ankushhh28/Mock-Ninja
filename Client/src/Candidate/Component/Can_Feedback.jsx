@@ -71,7 +71,7 @@ const Can_Feedback = () => {
 
         }
       } catch (error) {
-        console.log(error.response?.data?.message || "Error fetching feedback");
+        // console.log(error.response?.data?.message || "Error fetching feedback");
       } finally {
         setLoading(false)
       }
@@ -91,33 +91,33 @@ const Can_Feedback = () => {
 
 // ------------ FOR SHOWING GESTURE DATA --------------
 
-  const FinalGestureFeedback = GestureFeedback && GestureFeedback.GestureFeedback
-  ? typeof GestureFeedback.GestureFeedback === "string"
-    ? GestureFeedback.GestureFeedback.replace(/^"|"$/g, "").replace(/\\/g, "")
-    : JSON.stringify(GestureFeedback.GestureFeedback, null, 2)
-  : "";
+const FinalGestureFeedback = GestureFeedback && GestureFeedback.GestureFeedback
+? typeof GestureFeedback.GestureFeedback === "string"
+  ? GestureFeedback.GestureFeedback.replace(/^"|"$/g, "").replace(/\\/g, "")
+  : JSON.stringify(GestureFeedback.GestureFeedback, null, 2)
+: "";
 
-  const parsedFeedback = FinalGestureFeedback 
-    ? (typeof FinalGestureFeedback === "string" && FinalGestureFeedback.trim() !== "" 
-        ? JSON.parse(FinalGestureFeedback) 
-        : FinalGestureFeedback)
-    : { areas_for_improvement: "No data available", suggestions: "No suggestions available" };
+const parsedFeedback = FinalGestureFeedback 
+  ? (typeof FinalGestureFeedback === "string" && FinalGestureFeedback.trim() !== "" 
+      ? JSON.parse(FinalGestureFeedback) 
+      : FinalGestureFeedback)
+  : { areas_for_improvement: "No data available", suggestions: "No suggestions available" };
 
-    const formattedDate = new Date(GestureFeedback?.createdAt).toLocaleDateString(
-      "en-GB", 
-      { day: "2-digit", month: "short", year: "numeric" }
-    );
-    
+  const formattedDate = new Date(GestureFeedback?.createdAt).toLocaleDateString(
+    "en-GB", 
+    { day: "2-digit", month: "short", year: "numeric" }
+  );
 
-// ------------ FOR SHOWING QUESTIONS DATA --------------  
+// ------------ FOR SHOWING QUESTIONS DATA --------------
 
 let steps = [];
 
 if (QuesAnswerFeedback && QuesAnswerFeedback.userQuestionAnswer) {
-    let userQuestionAnswer = QuesAnswerFeedback.userQuestionAnswer;
+  let userQuestionAnswer = QuesAnswerFeedback.userQuestionAnswer;
 
+  try {
     if (typeof userQuestionAnswer === "string") {
-      userQuestionAnswer = JSON.parse(userQuestionAnswer.replace(/^"|"$/g, '').replace(/\\/g, ''));
+      userQuestionAnswer = JSON.parse(userQuestionAnswer.replace(/^"|"$/g, "").replace(/\\/g, ""));
     }
 
     steps = userQuestionAnswer.map((item, index) => ({
@@ -125,34 +125,58 @@ if (QuesAnswerFeedback && QuesAnswerFeedback.userQuestionAnswer) {
       title: `Question ${index + 1} Feedback`,
       question: item.question || "No question provided",
       answer: item.answer || "No answer provided",
-      feedback: "No feedback Available", 
+      feedback: "No feedback available", 
     }));
-} 
+  } catch (error) {
+    console.error("Error parsing userQuestionAnswer:", error);
+  }
+}
 
-// ------------ FOR SHOWING FEEDBACK DATA --------------  
+// ------------ FOR SHOWING FEEDBACK DATA --------------
 
 let feedbackString = "";
 
 if (OverallFeedback && OverallFeedback.QuestionAnswerFeedback) {
-    feedbackString = OverallFeedback.QuestionAnswerFeedback; 
+    feedbackString = OverallFeedback.QuestionAnswerFeedback;
 
     if (typeof feedbackString === "string") {
-      feedbackString = feedbackString.replace(/\n/g, "").replace(/\\/g, "");
+        try {
+            // Trim unwanted whitespace
+            feedbackString = feedbackString.trim();
 
-      let feedbackData = JSON.parse(feedbackString);
+            // Fix potential JSON issues: remove unwanted backticks and JSON markers
+            feedbackString = feedbackString.replace(/^```json|```$/g, ""); 
 
-      steps = steps.map((step, index) => {
-        if (index < 12 && feedbackData[index]) {
-          const feedbackKey = Object.keys(feedbackData[index])[0]; 
-          return {
-            ...step,
-            feedback: feedbackData[index][feedbackKey] || "No feedback available",
-          };
+            // Escape double quotes inside feedback strings
+            feedbackString = feedbackString.replace(/"([^"]*?)"\s*:/g, '"$1":'); // Fix key-value pairs
+            feedbackString = feedbackString.replace(/:\s*"([^"]*?)"(?=[,}])/g, ': "$1"'); // Fix values
+            
+            // Convert any unescaped double quotes inside values to escaped quotes
+            feedbackString = feedbackString.replace(/:\s*"([^"]*?)"(?=[,}])/g, (match, p1) => {
+                return `: "${p1.replace(/"/g, '\\"')}"`;
+            });
+
+            // Parse the fixed JSON string
+            let feedbackData = JSON.parse(feedbackString);
+
+            steps = steps.map((step, index) => {
+                if (index < 12 && feedbackData[index]) {
+                    const feedbackKey = Object.keys(feedbackData[index])[0];
+                    return {
+                        ...step,
+                        feedback: feedbackData[index][feedbackKey] || "No feedback available",
+                    };
+                }
+                return step;
+            });
+        } catch (error) {
+            console.error("Error parsing feedbackString:", error, "\nFixed JSON:", feedbackString);
+            feedbackString = "";
         }
-        return step;
-      });
     }
 }
+
+// ------------- PARSING THE FEEDBACK DATA -------------
 
 const parsedFeedbacks = useMemo(() => {
   try {
@@ -162,6 +186,7 @@ const parsedFeedbacks = useMemo(() => {
     return [];
   }
 }, [feedbackString]);
+
 
 
   return (

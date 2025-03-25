@@ -2,9 +2,8 @@ import axios from "axios";
 import multer from 'multer';
 import * as pdfjsLib from 'pdfjs-dist';
 
-
-const GEMINI_API_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent";
-const API_KEY = "AIzaSyAjn5ZlEdmcKjtyPQ0Cyeqvi_stG07d1Lo";
+const GEMINI_API_URL = "https://generativelanguage.googleapis.com/v1/models/gemini-1.5-pro:generateContent";
+const API_KEY = "AIzaSyDRzA1WoMPiI8Jkck7dJWvb_i7Fo4OyIBY";
 
 // ------------- PROMPT FOR GENERATING DOMAIN & SKILLS QUESTIONS -------------
 
@@ -68,7 +67,6 @@ async function generateQuestionsWithGemini(domain, level) {
 
     return response.data.candidates[0].content.parts[0].text
   } catch (error) {
-    console.error("Error generating questions:", error.response ? error.response.data : error.message);
     return "Error generating questions.";
   }
 }
@@ -81,6 +79,7 @@ export const domainSkillQuesGeneration = async(req, res) => {
   try {
     const questions = await generateQuestionsWithGemini(domain, level);
     res.status(200).json(questions);
+    
   } catch (error) {
     return res.status(500).json({message:"Something went wrong! Try again later"})
   }

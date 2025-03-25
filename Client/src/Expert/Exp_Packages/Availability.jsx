@@ -96,9 +96,11 @@ useEffect(() => {
       })
       if(response.status === 200){
         setBackendTime(response.data.Availability)
+        
       }
     } catch (error) {
       setModalMsg({open:true, msg:error.response?.data?.message || "Check Your Conntection! Try Later.", severity:"error"});
+      
     } finally {
       setLoad(false)
     }

@@ -88,7 +88,6 @@ export const deletingTimeData = async(req, res) => {
     await userPackage.save();
     res.status(200).json({ message: `Time ${formattedTime} removed from ${fullDayName} successfully.` }); 
   } catch (error) {
-    console.log(error);
     return res.status(500).json({message:"Something Went Wrong! Try Again Later."})
   }
 }
