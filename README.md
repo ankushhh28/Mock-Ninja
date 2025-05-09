@@ -2,7 +2,7 @@
 
 **Mock Ninja** is an AI-powered real-time interview simulation platform built using the **MERN stack**. It offers personalized answer analysis, facial gesture detection, and eye contact tracking — giving users comprehensive feedback to boost their interview performance.
 
-🔗 **Live Demo**: [mockninja.live]((https://mock-ninja-client.onrender.com)) 
+🔗 **Live Demo**: [mockninja.live](https://mock-ninja-client.onrender.com)
 
 ---
 
