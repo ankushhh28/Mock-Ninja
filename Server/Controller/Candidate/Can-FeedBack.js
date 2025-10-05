@@ -130,7 +130,7 @@ export const gestureFeedback = async (req, res) => {
 
   try {
     const response = await axios.post(
-      ` ${GEMINI_API_URL}?key=${GEMINI_API_KEY}`,
+      ` ${GEMINI_API_URL}?key=${API_KEY}`,
       requestBody,
       { headers: { "Content-Type": "application/json" } }
     );
@@ -192,7 +192,7 @@ const GeneratingFeedback = async (questionAnswer) => {
 
   try {
     const response = await axios.post(
-      `${GEMINI_API_URL}?key=${GEMINI_API_KEY}`,
+      `${GEMINI_API_URL}?key=${API_KEY}`,
       {
         contents: [{ parts: [{ text: prompt }] }],
       },
@@ -207,7 +207,7 @@ const GeneratingFeedback = async (questionAnswer) => {
     return response.data.candidates[0].content.parts[0].text;
   } catch (error) {
     console.error(
-      "Error generating questions:",
+      "Error generating feedback:",
       error.response ? error.response.data : error.message
     );
     return "Error generating questions.";
@@ -221,6 +221,7 @@ export const OverallFeedback = async (req, res) => {
 
   try {
     const feedback = await GeneratingFeedback(userAnswer);
+    console.log(feedback);
     const data1 = await SavingOverallFeedback(feedback, mockId, email);
     const data2 = await SavingQuestionAsnwer(userAnswer, mockId, email);
 
