@@ -3,9 +3,11 @@ import FeedbackSchema from "../../Models/FeedbackSchema.js";
 import QuesGenSchema from "../../Models/QuesGenSchema.js";
 import RatingSchema from "../../Models/RatingSchema.js";
 
-const GEMINI_API_KEY = "AIzaSyDRzA1WoMPiI8Jkck7dJWvb_i7Fo4OyIBY";
 const GEMINI_API_URL =
-"https://generativelanguage.googleapis.com/v1/models/gemini-1.5-pro:generateContent";
+  "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-pro:generateContent";
+
+// ❗ Don't hardcode the key here in production — use an .env variable instead.
+const API_KEY = "AIzaSyDxQ3x2ZPtrQu4qR9dxkz0fEXJrvKUsH4A";
 
 // ----------- SAVING FEEDBACKs TO CANDIDATE PROFILE --------------
 
@@ -24,16 +26,15 @@ export const SavingOverallFeedback = async (data, mockId) => {
 
 // ------------ SAVING QUESTION & ANSWER ---------------------
 
-export const SavingQuestionAsnwer = async(userAnswer,mockId,email) => {
-
-  const data = JSON.stringify(userAnswer)
+export const SavingQuestionAsnwer = async (userAnswer, mockId, email) => {
+  const data = JSON.stringify(userAnswer);
   try {
     const questionDoc = await QuesGenSchema.findOne({ mockID: mockId });
     const newData = new FeedbackSchema({
       mockId,
       userQuestionAnswer: data,
       details: questionDoc.details,
-      email
+      email,
     });
     await newData.save();
     return "Successfully Saved";
@@ -220,8 +221,8 @@ export const OverallFeedback = async (req, res) => {
 
   try {
     const feedback = await GeneratingFeedback(userAnswer);
-    const data1 = await  SavingOverallFeedback(feedback, mockId, email)
-    const data2 = await SavingQuestionAsnwer(userAnswer, mockId, email)
+    const data1 = await SavingOverallFeedback(feedback, mockId, email);
+    const data2 = await SavingQuestionAsnwer(userAnswer, mockId, email);
 
     return res.status(200).json({ message: "Successfull" });
   } catch (error) {
@@ -239,7 +240,6 @@ export const savingGestureFeedback = async (req, res) => {
   const savedData = JSON.stringify(data);
 
   try {
-
     const newData = new FeedbackSchema({
       mockId,
       GestureFeedback: savedData,
@@ -264,51 +264,63 @@ export const fetchingFeedback = async (req, res) => {
     }
 
     const feedbackData = await FeedbackSchema.find({ mockId });
-    const feedbackDataType = await QuesGenSchema.findOne({ mockID:mockId });
+    const feedbackDataType = await QuesGenSchema.findOne({ mockID: mockId });
 
     if (!feedbackData) {
-      return res.status(404).json({ message: "No feedback found for the given mockId" });
+      return res
+        .status(404)
+        .json({ message: "No feedback found for the given mockId" });
     }
 
-    return res.status(200).json({ feedbackData, feedbackDataType: feedbackDataType ? feedbackDataType.details : null });
+    return res.status(200).json({
+      feedbackData,
+      feedbackDataType: feedbackDataType ? feedbackDataType.details : null,
+    });
   } catch (error) {
-    return res.status(500).json({ message: "Something went wrong! Try again later" });
+    return res
+      .status(500)
+      .json({ message: "Something went wrong! Try again later" });
   }
 };
 
 // -------------- FETCHING CANDIDATE FEEDBACk LIST -----------
 
-export const fetchingFeedbackList = async(req, res) => {
-
-  const {email} = req.query
+export const fetchingFeedbackList = async (req, res) => {
+  const { email } = req.query;
 
   try {
-    const feedData = await FeedbackSchema.find({email})
-    if(feedData == ""){
-      return res.status(404).json({message:"No previous interview records found."})
+    const feedData = await FeedbackSchema.find({ email });
+    if (feedData == "") {
+      return res
+        .status(404)
+        .json({ message: "No previous interview records found." });
     }
 
-    return res.status(200).json(feedData)
+    return res.status(200).json(feedData);
   } catch (error) {
-    return res.status(500).json({message:"Something went wrong! Try again later"})
+    return res
+      .status(500)
+      .json({ message: "Something went wrong! Try again later" });
   }
-}
+};
 
 // ---------------- RATINGS FROM USER ---------------------
 
-export const SavingRatings = async(req, res) => {
-  const { mockID } = req.body
+export const SavingRatings = async (req, res) => {
+  const { mockID } = req.body;
 
   try {
-    const intData = await RatingSchema.findOne({mockID})
-    if(intData){
-      return  res.status(400).json({message:"Feedback Already Exist For this Interview"})
+    const intData = await RatingSchema.findOne({ mockID });
+    if (intData) {
+      return res
+        .status(400)
+        .json({ message: "Feedback Already Exist For this Interview" });
     }
 
-    const newFeedback = new RatingSchema(req.body)
-    await newFeedback.save()
-    return res.status(200).json({message:"Feedback Submitted Succesfully"})
+    const newFeedback = new RatingSchema(req.body);
+    await newFeedback.save();
+    return res.status(200).json({ message: "Feedback Submitted Succesfully" });
   } catch (error) {
-    return res.status(500).json({message:"Error While Submitted Feedback"})
+    return res.status(500).json({ message: "Error While Submitted Feedback" });
   }
-}
+};

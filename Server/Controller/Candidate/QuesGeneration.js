@@ -1,13 +1,14 @@
 import axios from "axios";
-import multer from 'multer';
-import * as pdfjsLib from 'pdfjs-dist';
+import multer from "multer";
+import * as pdfjsLib from "pdfjs-dist";
 
-const GEMINI_API_URL = "https://generativelanguage.googleapis.com/v1/models/gemini-1.5-pro:generateContent";
-const API_KEY = "AIzaSyDRzA1WoMPiI8Jkck7dJWvb_i7Fo4OyIBY";
+const GEMINI_API_URL =
+  "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-pro:generateContent";
 
-// ------------- PROMPT FOR GENERATING DOMAIN & SKILLS QUESTIONS -------------
+// ❗ Don't hardcode the key here in production — use an .env variable instead.
+const API_KEY = "AIzaSyDxQ3x2ZPtrQu4qR9dxkz0fEXJrvKUsH4A";
 
-async function generateQuestionsWithGemini(domain, level) {
+export async function generateQuestionsWithGemini(domain, level) {
   const prompt = `
   Based on the following criteria, generate **non-repetitive** and **real** interview questions.
   
@@ -52,20 +53,19 @@ async function generateQuestionsWithGemini(domain, level) {
   `;
 
   try {
-
     const response = await axios.post(
       `${GEMINI_API_URL}?key=${API_KEY}`,
       {
-        contents: [{ parts: [{ text: prompt }] }]
+        contents: [{ parts: [{ text: prompt }] }],
       },
       {
         headers: {
-          "Content-Type": "application/json"
-        }
+          "Content-Type": "application/json",
+        },
       }
     );
 
-    return response.data.candidates[0].content.parts[0].text
+    return response.data.candidates[0].content.parts[0].text;
   } catch (error) {
     return "Error generating questions.";
   }
@@ -73,17 +73,18 @@ async function generateQuestionsWithGemini(domain, level) {
 
 // ---------------- DOMAIN & SKILLS QUESTION GENERATION ---------------
 
-export const domainSkillQuesGeneration = async(req, res) => {
+export const domainSkillQuesGeneration = async (req, res) => {
   const { domain, level } = req.body;
 
   try {
     const questions = await generateQuestionsWithGemini(domain, level);
     res.status(200).json(questions);
-    
   } catch (error) {
-    return res.status(500).json({message:"Something went wrong! Try again later"})
+    return res
+      .status(500)
+      .json({ message: "Something went wrong! Try again later" });
   }
-}
+};
 
 // ------------- PROMPT FOR GENERATING RESUME QUESTIONS -------------
 
@@ -94,16 +95,16 @@ const extractTextFromPDF = async (buffer) => {
   try {
     const pdfData = new Uint8Array(buffer);
     const pdf = await pdfjsLib.getDocument({ data: pdfData }).promise;
-    let text = '';
+    let text = "";
 
     for (let i = 0; i < pdf.numPages; i++) {
       const page = await pdf.getPage(i + 1);
       const content = await page.getTextContent();
-      text += content.items.map(item => item.str).join(' ');
+      text += content.items.map((item) => item.str).join(" ");
     }
     return text.trim();
   } catch (error) {
-    console.error('Error extracting text from PDF:', error);
+    console.error("Error extracting text from PDF:", error);
     return null;
   }
 };
@@ -151,20 +152,20 @@ const generateQuestionsWithGeminis = async (resumeText) => {
   `;
 
   const response = await fetch(`${GEMINI_API_URL}?key=${API_KEY}`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
-      contents: [{ parts: [{ text: prompt }] }]
+      contents: [{ parts: [{ text: prompt }] }],
     }),
   });
 
   const data = await response.json();
-  // console.log('Gemini API Response:', data); 
+  // console.log('Gemini API Response:', data);
 
   if (!data.candidates || !data.candidates[0]) {
-    throw new Error('Invalid response from Gemini API');
+    throw new Error("Invalid response from Gemini API");
   }
-  
+
   return data.candidates[0].content.parts[0].text;
 };
 
@@ -173,27 +174,30 @@ const generateQuestionsWithGeminis = async (resumeText) => {
 export const resumeQuesGeneration = async (req, res) => {
   try {
     if (!req.file) {
-      return res.status(400).json({ error: 'No file uploaded.' });
+      return res.status(400).json({ error: "No file uploaded." });
     }
 
     // console.log('Buffer size:', req.file.buffer.length); // Debug buffer size
 
     const resumeText = await extractTextFromPDF(req.file.buffer);
     if (!resumeText) {
-      return res.status(500).json({ error: 'Unable to read resume! Try again later' });
+      return res
+        .status(500)
+        .json({ error: "Unable to read resume! Try again later" });
     }
 
     const questions = await generateQuestionsWithGeminis(resumeText);
     // console.log('Generated Questions:', questions); // Debug generated questions
 
-    if(questions === "NOT AN RESUME"){
-      return res.status(400).json({message:"Your uploaded file is not resume"})
+    if (questions === "NOT AN RESUME") {
+      return res
+        .status(400)
+        .json({ message: "Your uploaded file is not resume" });
     }
 
     res.json({ questions });
-
   } catch (error) {
     // console.error('Detailed Error:', error);
-    res.status(500).json({ error: 'Failed to process the file.' });
+    res.status(500).json({ error: "Failed to process the file." });
   }
 };
